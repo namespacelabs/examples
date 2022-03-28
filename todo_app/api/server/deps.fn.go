@@ -13,8 +13,8 @@ import (
 	"namespacelabs.dev/foundation/std/go/grpc/server"
 	"namespacelabs.dev/foundation/std/monitoring/tracing"
 	"namespacelabs.dev/foundation/std/secrets"
-	"namespacelabs.dev/universe/db/postgres/creds"
-	"namespacelabs.dev/universe/db/postgres/incluster"
+	"namespacelabs.dev/foundation/universe/db/postgres/creds"
+	"namespacelabs.dev/foundation/universe/db/postgres/incluster"
 )
 
 type ServerDeps struct {
@@ -63,7 +63,7 @@ func PrepareDeps(ctx context.Context) (*ServerDeps, error) {
 			p := &secrets.Secret{}
 			core.MustUnwrapProto("ChZwb3N0Z3Jlc19wYXNzd29yZF9maWxlEgIBAg==", p)
 
-			if creds0.Password, err = secrets.ProvideSecret(ctx, "namespacelabs.dev/universe/db/postgres/creds", p); err != nil {
+			if creds0.Password, err = secrets.ProvideSecret(ctx, "namespacelabs.dev/foundation/universe/db/postgres/creds", p); err != nil {
 				return err
 			}
 			return nil
@@ -80,7 +80,7 @@ func PrepareDeps(ctx context.Context) (*ServerDeps, error) {
 			p := &secrets.Secret{}
 			core.MustUnwrapProto("ChJwb3N0Z3Jlc191c2VyX2ZpbGUSAgEC", p)
 
-			if creds0.User, err = secrets.ProvideSecret(ctx, "namespacelabs.dev/universe/db/postgres/creds", p); err != nil {
+			if creds0.User, err = secrets.ProvideSecret(ctx, "namespacelabs.dev/foundation/universe/db/postgres/creds", p); err != nil {
 				return err
 			}
 			return nil
@@ -90,10 +90,10 @@ func PrepareDeps(ctx context.Context) (*ServerDeps, error) {
 	var incluster0 incluster.ExtensionDeps
 
 	di.Register(core.Initializer{
-		PackageName: "namespacelabs.dev/universe/db/postgres/creds",
+		PackageName: "namespacelabs.dev/foundation/universe/db/postgres/creds",
 		Instance:    "incluster0",
 		DependsOn:   []string{"creds0"}, Do: func(ctx context.Context) (err error) {
-			if incluster0.Creds, err = creds.ProvideCredsRequest(ctx, "namespacelabs.dev/universe/db/postgres/incluster", nil, creds0); err != nil {
+			if incluster0.Creds, err = creds.ProvideCredsRequest(ctx, "namespacelabs.dev/foundation/universe/db/postgres/incluster", nil, creds0); err != nil {
 				return err
 			}
 			return nil
@@ -104,7 +104,7 @@ func PrepareDeps(ctx context.Context) (*ServerDeps, error) {
 		PackageName: "namespacelabs.dev/foundation/std/go/core",
 		Instance:    "incluster0",
 		Do: func(ctx context.Context) (err error) {
-			if incluster0.ReadinessCheck, err = core.ProvideReadinessCheck(ctx, "namespacelabs.dev/universe/db/postgres/incluster", nil); err != nil {
+			if incluster0.ReadinessCheck, err = core.ProvideReadinessCheck(ctx, "namespacelabs.dev/foundation/universe/db/postgres/incluster", nil); err != nil {
 				return err
 			}
 			return nil
@@ -112,7 +112,7 @@ func PrepareDeps(ctx context.Context) (*ServerDeps, error) {
 	})
 
 	di.Register(core.Initializer{
-		PackageName: "namespacelabs.dev/universe/db/postgres/incluster",
+		PackageName: "namespacelabs.dev/foundation/universe/db/postgres/incluster",
 		Instance:    "server.todos",
 		DependsOn:   []string{"incluster0"}, Do: func(ctx context.Context) (err error) {
 			// name: "todos"

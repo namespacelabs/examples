@@ -7,9 +7,8 @@ require (
 	github.com/jackc/pgx/v4 v4.15.0
 	google.golang.org/grpc v1.45.0
 	google.golang.org/protobuf v1.27.1
-	namespacelabs.dev/foundation v0.0.7-0.20220323161118-f2abc0ad8e7b
+	namespacelabs.dev/foundation v0.0.7
 	namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e
-	namespacelabs.dev/universe v0.0.8-0.20220321235450-adb8bf5f5774
 )
 
 require (
@@ -22,8 +21,6 @@ require (
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
-	github.com/hashicorp/errwrap v1.1.0 // indirect
-	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.11.0 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
@@ -41,7 +38,6 @@ require (
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/segmentio/ksuid v1.0.4 // indirect
 	github.com/soheilhy/cmux v0.1.5 // indirect
-	github.com/stretchr/objx v0.3.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.29.0 // indirect
 	go.opentelemetry.io/otel v1.4.1 // indirect
 	go.opentelemetry.io/otel/exporters/jaeger v1.4.1 // indirect
@@ -53,4 +49,5 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/genproto v0.0.0-20220302033224-9aa15565e42a // indirect
+	tailscale.com v1.22.2 // indirect
 )

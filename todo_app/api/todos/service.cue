@@ -2,7 +2,7 @@ import (
 	"namespacelabs.dev/foundation/std/fn"
 	"namespacelabs.dev/foundation/std/fn:inputs"
 	"namespacelabs.dev/foundation/std/grpc"
-	"namespacelabs.dev/universe/db/postgres/incluster"
+	"namespacelabs.dev/foundation/universe/db/postgres/incluster"
 )
 
 $proto: inputs.#Proto & {
