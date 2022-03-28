@@ -18,7 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          path: 'main'
+          path: "main"
       - name: Setup cross-invocation caching
         uses: actions/cache@v2
         with:
@@ -29,6 +29,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
       - name: Configure Git
-        run: git config --global url.https://$NSL_GH_SERVICE@github.com/.insteadOf https://github.com/
+        run:
+          git config --global url.https://$NSL_GH_SERVICE@github.com/.insteadOf https://github.com/
       - name: Test
-        run: cd ./main/ && go test ./...
+        run: cd ./main/todo_app && go test ./...
