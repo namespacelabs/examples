@@ -1,0 +1,34 @@
+on: [push, pull_request]
+name: Test
+jobs:
+  test:
+    strategy:
+      matrix:
+        go-version: [1.17.x]
+        os: [ubuntu-18.04, ubuntu-20.04]
+    runs-on: ${{ matrix.os }}
+    env:
+      GOPRIVATE: namespacelabs.dev/*
+      NSL_GH_SERVICE: ${{ secrets.NSL_GH_SERVICE }}
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          path: 'main'
+      - name: Setup cross-invocation caching
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Configure Git
+        run: git config --global url.https://$NSL_GH_SERVICE@github.com/.insteadOf https://github.com/
+      - name: Test
+        run: cd ./main/ && go test ./...

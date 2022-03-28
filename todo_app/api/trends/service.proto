@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package api.trends;
+
+option go_package = "namespacelabs.dev/examples/todo-app/api/trends";
+
+message GetTrendsRequest {
+  string name = 1;
+}
+
+message GetTrendsResponse {
+  uint32 popularity = 1;  // Represents a score. Valid values are within [1, 5]
+}
+
+service TrendsService {
+  rpc GetTrends(GetTrendsRequest) returns (GetTrendsResponse);
+}

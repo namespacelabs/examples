@@ -1,0 +1,16 @@
+.root {
+  display: flex;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 300px;
+  padding: 5px;
+  margin: 10px;
+}
+
+body {
+  font: 14px Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}

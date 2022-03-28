@@ -1,0 +1,10 @@
+module_name: "namespacelabs.dev/examples/todo-app"
+
+dep: {
+  module_name: "namespacelabs.dev/foundation"
+  version: "225bf840fc05d3111f397afee3f56072c0143bf9"
+}
+dep: {
+  module_name: "namespacelabs.dev/universe"
+  version: "4dbce5347765586c4dabb1649721a8bb0e30cd30"
+}

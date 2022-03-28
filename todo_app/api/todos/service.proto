@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package api.todos;
+
+option go_package = "namespacelabs.dev/examples/todo-app/api/todos";
+
+message AddRequest {
+  string name = 1;
+}
+
+message AddResponse {}
+
+message RemoveRequest {
+  string id = 1;
+}
+
+message RemoveResponse {}
+
+message ListRequest {}
+
+message ListResponse {
+  repeated TodoItem items = 1;
+}
+
+message TodoItem {
+  // Assigned by the server.
+  string id = 1;
+
+  string name = 2;
+}
+
+message GetRelatedDataRequest {
+  string id = 1;
+}
+
+message GetRelatedDataResponse {
+  uint32 popularity = 1;  // represents a score. Valid values are within [1, 5]
+}
+
+service TodosService {
+  rpc Add(AddRequest) returns (AddResponse);
+
+  rpc Remove(RemoveRequest) returns (RemoveResponse);
+
+  rpc List(ListRequest) returns (ListResponse);
+
+  rpc GetRelatedData(GetRelatedDataRequest) returns (GetRelatedDataResponse);
+}
