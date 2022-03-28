@@ -17,28 +17,6 @@ export interface TodosService {
 	getRelatedData: (id: string) => Promise<TodoRelatedData>;
 }
 
-// export class InMemoryTodosServiceImpl implements TodosService {
-//   #lastId = 0;
-
-//   readonly #todos = new Map<string, TodoItem>();
-
-//   list = async (): Promise<TodoItem[]> => {
-//     return [...this.#todos.values()];
-//   };
-
-//   add = async (todoItem: { name: string }) => {
-//     const id = `#${++this.#lastId}`;
-//     this.#todos.set(id, {
-//       id: id,
-//       ...todoItem,
-//     });
-//   };
-
-//   remove = async (id: string) => {
-//     this.#todos.delete(id);
-//   };
-// }
-
 export class HttpTodosServiceImpl implements TodosService {
 	readonly #baseUrl: string;
 
