@@ -20,7 +20,7 @@ jobs:
         with:
           path: "main"
       - name: Setup cross-invocation caching
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.cache/go-build
