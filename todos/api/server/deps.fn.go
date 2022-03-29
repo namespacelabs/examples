@@ -93,7 +93,7 @@ func PrepareDeps(ctx context.Context) (*ServerDeps, error) {
 		PackageName: "namespacelabs.dev/foundation/universe/db/postgres/creds",
 		Instance:    "incluster0",
 		DependsOn:   []string{"creds0"}, Do: func(ctx context.Context) (err error) {
-			if incluster0.Creds, err = creds.ProvideCredsRequest(ctx, "namespacelabs.dev/foundation/universe/db/postgres/incluster", nil, creds0); err != nil {
+			if incluster0.Creds, err = creds.ProvideCreds(ctx, "namespacelabs.dev/foundation/universe/db/postgres/incluster", nil, creds0); err != nil {
 				return err
 			}
 			return nil
