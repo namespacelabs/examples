@@ -2856,6 +2856,8 @@ mvdan.cc/unparam v0.0.0-20210104141923-aac4ce9116a7/go.mod h1:hBpJkZE8H/sb+VRFvw
 mvdan.cc/unparam v0.0.0-20211002134041-24922b6997ca/go.mod h1:Mb96j26qXgU/+SOj6MSgC36X30UgAlRYaxckYuYyEmo=
 namespacelabs.dev/foundation v0.0.8 h1:hwc4fU4G1DS035TPdwqZPZLnp7Xmsq58P1+FMENNqm8=
 namespacelabs.dev/foundation v0.0.8/go.mod h1:GNU+gXNdwU8IpiBatM1Mc7wNMWrwN3T90v8Nfpr7vZU=
+namespacelabs.dev/foundation v0.0.9 h1:2VVc7KKeTePoMOCv2aIO7+plbFZyBSytI4dDg0SKxaA=
+namespacelabs.dev/foundation v0.0.9/go.mod h1:GNU+gXNdwU8IpiBatM1Mc7wNMWrwN3T90v8Nfpr7vZU=
 namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e h1:crQthT7TnDNKEtZLcOZ2eHsiLqlzoETD8cwAuHKgUsg=
 namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e/go.mod h1:J+Sd+ngeffnCsaO/M7zgs2bR8Klq/ZBhS0+bbnDEH2M=
 nhooyr.io/websocket v1.8.7/go.mod h1:B70DZP8IakI65RVQ51MsWP/8jndNma26DVA/nFSCgW0=
