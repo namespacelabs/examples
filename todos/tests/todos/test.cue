@@ -8,7 +8,7 @@ test: fn.#Test & {
 	}
 
 	fixture: {
-		sut: "namespacelabs.dev/examples/todo-app/api/server"
+		sut: "namespacelabs.dev/examples/todos/api/server"
 	}
 
 	binary: {

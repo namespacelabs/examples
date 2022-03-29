@@ -1,4 +1,4 @@
-module namespacelabs.dev/examples/todo-app
+module namespacelabs.dev/examples/todos
 
 go 1.17
 

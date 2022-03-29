@@ -5,7 +5,7 @@ import (
 )
 
 $apiServer: inputs.#Server & {
-	packageName: "namespacelabs.dev/examples/todo-app/api/server"
+	packageName: "namespacelabs.dev/examples/todos/api/server"
 }
 
 service: fn.#Service & {

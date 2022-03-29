@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package api.todos;
 
-option go_package = "namespacelabs.dev/examples/todo-app/api/todos";
+option go_package = "namespacelabs.dev/examples/todos/api/todos";
 
 message AddRequest {
   string name = 1;

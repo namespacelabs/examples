@@ -4,8 +4,8 @@ package main
 import (
 	"context"
 
-	"namespacelabs.dev/examples/todo-app/api/todos"
-	"namespacelabs.dev/examples/todo-app/api/trends"
+	"namespacelabs.dev/examples/todos/api/todos"
+	"namespacelabs.dev/examples/todos/api/trends"
 	"namespacelabs.dev/foundation/std/go/core"
 	"namespacelabs.dev/foundation/std/go/grpc"
 	"namespacelabs.dev/foundation/std/go/grpc/interceptors"
@@ -123,7 +123,7 @@ func PrepareDeps(ctx context.Context) (*ServerDeps, error) {
 			p := &incluster.Database{}
 			core.MustUnwrapProto("CgV0b2RvcxKMAQoKc2NoZW1hLnNxbBJ+Q1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgdG9kb3NfdGFibGUgKAogICAgSUQgdmFyY2hhcigyNTUpIE5PVCBOVUxMLAogICAgTmFtZSB2YXJjaGFyKDI1NSkgTk9UIE5VTEwsCiAgICBQUklNQVJZIEtFWShJRCkKKTsK", p)
 
-			if server.todos.Db, err = incluster.ProvideDatabase(ctx, "namespacelabs.dev/examples/todo-app/api/todos", p, incluster0); err != nil {
+			if server.todos.Db, err = incluster.ProvideDatabase(ctx, "namespacelabs.dev/examples/todos/api/todos", p, incluster0); err != nil {
 				return err
 			}
 			return nil
@@ -134,12 +134,12 @@ func PrepareDeps(ctx context.Context) (*ServerDeps, error) {
 		PackageName: "namespacelabs.dev/foundation/std/go/grpc",
 		Instance:    "server.todos",
 		Do: func(ctx context.Context) (err error) {
-			// package_name: "namespacelabs.dev/examples/todo-app/api/trends"
+			// package_name: "namespacelabs.dev/examples/todos/api/trends"
 			// proto_typename: "TrendsService"
 			p := &grpc.Conn{}
-			core.MustUnwrapProto("Ci5uYW1lc3BhY2VsYWJzLmRldi9leGFtcGxlcy90b2RvLWFwcC9hcGkvdHJlbmRzEg1UcmVuZHNTZXJ2aWNl", p)
+			core.MustUnwrapProto("CituYW1lc3BhY2VsYWJzLmRldi9leGFtcGxlcy90b2Rvcy9hcGkvdHJlbmRzEg1UcmVuZHNTZXJ2aWNl", p)
 
-			if server.todos.TrendsConn, err = grpc.ProvideConn(ctx, "namespacelabs.dev/examples/todo-app/api/todos", p); err != nil {
+			if server.todos.TrendsConn, err = grpc.ProvideConn(ctx, "namespacelabs.dev/examples/todos/api/todos", p); err != nil {
 				return err
 			}
 

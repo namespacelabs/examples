@@ -6,6 +6,6 @@ server: fn.#Server & {
 	framework: "WEB"
 
 	urlmap: [
-		{path: "/", import: "namespacelabs.dev/examples/todo-app/web/ui"},
+		{path: "/", import: "namespacelabs.dev/examples/todos/web/ui"},
 	]
 }

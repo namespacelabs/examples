@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"sort"
 
-	"namespacelabs.dev/examples/todo-app/api/todos"
+	"namespacelabs.dev/examples/todos/api/todos"
 	"namespacelabs.dev/foundation/testing"
 )
 
 func main() {
 	testing.Do(func(ctx context.Context, t testing.Test) error {
-		conn, err := t.Connect(ctx, t.MustEndpoint("namespacelabs.dev/examples/todo-app/api/todos", "todos"))
+		conn, err := t.Connect(ctx, t.MustEndpoint("namespacelabs.dev/examples/todos/api/todos", "todos"))
 		if err != nil {
 			return err
 		}

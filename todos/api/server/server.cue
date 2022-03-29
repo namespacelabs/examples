@@ -7,7 +7,7 @@ server: fn.#Server & {
 
 	import: [
 		"namespacelabs.dev/foundation/std/go/grpc/gateway",
-		"namespacelabs.dev/examples/todo-app/api/todos",
-		"namespacelabs.dev/examples/todo-app/api/trends",
+		"namespacelabs.dev/examples/todos/api/todos",
+		"namespacelabs.dev/examples/todos/api/trends",
 	]
 }

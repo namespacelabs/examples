@@ -1,6 +1,6 @@
-module_name: "namespacelabs.dev/examples/todo-app"
+module_name: "namespacelabs.dev/examples/todos"
 
 dep: {
   module_name: "namespacelabs.dev/foundation"
-  version: "225bf840fc05d3111f397afee3f56072c0143bf9"
+  version: "06ed36579248eb0c51ab9c3f1014886792eb9de9"
 }

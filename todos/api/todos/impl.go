@@ -8,7 +8,7 @@ import (
 
 	"github.com/jackc/pgx/v4/pgxpool"
 	"google.golang.org/protobuf/proto"
-	"namespacelabs.dev/examples/todo-app/api/trends"
+	"namespacelabs.dev/examples/todos/api/trends"
 	"namespacelabs.dev/foundation/std/go/grpc/server"
 	"namespacelabs.dev/go-ids"
 )

@@ -10,7 +10,7 @@ $proto: inputs.#Proto & {
 }
 
 $backend: grpc.#Backend & {
-	packageName: "namespacelabs.dev/examples/todo-app/api/trends"
+	packageName: "namespacelabs.dev/examples/todos/api/trends"
 }
 
 service: fn.#Service & {

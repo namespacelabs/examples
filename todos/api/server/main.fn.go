@@ -13,7 +13,7 @@ import (
 func main() {
 	flag.Parse()
 
-	resources := core.PrepareEnv("namespacelabs.dev/examples/todo-app/api/server")
+	resources := core.PrepareEnv("namespacelabs.dev/examples/todos/api/server")
 	defer resources.Close(context.Background())
 
 	ctx := core.WithResources(context.Background(), resources)

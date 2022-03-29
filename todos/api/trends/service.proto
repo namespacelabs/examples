@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package api.trends;
 
-option go_package = "namespacelabs.dev/examples/todo-app/api/trends";
+option go_package = "namespacelabs.dev/examples/todos/api/trends";
 
 message GetTrendsRequest {
   string name = 1;
