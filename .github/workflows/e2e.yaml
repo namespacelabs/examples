@@ -1,0 +1,62 @@
+name: e2e
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  packages: read
+  contents: read
+
+jobs:
+  run_e2e_tests:
+    name: e2e tests
+    runs-on: ubuntu-20.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+        with:
+          path: main
+
+      - name: Checkout foundation
+        uses: actions/checkout@v3
+        with:
+          repository: namespacelabs/foundation
+          path: foundation
+          token: ${{ secrets.NSL_GH_SERVICE }}
+
+      # Required by buildkit gha cache.
+      - name: Expose GitHub Runtime
+        uses: crazy-max/ghaction-github-runtime@v1
+
+      - name: Setup cross-invocation caching (Go)
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-fnrun-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-go-fnrun-
+
+      - name: Build fn
+        env:
+          CGO_ENABLED: 0
+        run: cd ./foundation/ && go install ./cmd/fn
+
+      - name: Prepare development environment
+        run: cd ../main/todos && fn prepare
+
+      - name: Print kubectl cluster-info
+        run: kubectl cluster-info
+
+      - name: Run all tests
+        run: |
+          fn test \
+            --buildkit_import_cache=type=gha \
+            --buildkit_export_cache=type=gha,mode=max \
+            --use_prebuilts=true \
+            --golang_use_buildkit=false \
+            --include_servers
