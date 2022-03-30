@@ -78,7 +78,7 @@ func listTodos(db *pgxpool.Pool) ([]*TodoItem, error) {
 
 	rows, err := db.Query(ctx, "SELECT ID, Name FROM todos_table;")
 	if err != nil {
-		return nil, fmt.Errorf("failed to remove todo: %w", err)
+		return nil, fmt.Errorf("failed list todos: %w", err)
 	}
 	defer rows.Close()
 
