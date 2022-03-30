@@ -27,6 +27,11 @@ jobs:
           path: foundation
           token: ${{ secrets.NSL_GH_SERVICE }}
 
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+
       # Required by buildkit gha cache.
       - name: Expose GitHub Runtime
         uses: crazy-max/ghaction-github-runtime@v1
