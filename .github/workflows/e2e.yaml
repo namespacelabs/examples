@@ -52,14 +52,14 @@ jobs:
         run: cd ./foundation/ && go install ./cmd/fn
 
       - name: Prepare development environment
-        run: cd ../main/todos && fn prepare
+        run: cd ./main/todos && fn prepare
 
       - name: Print kubectl cluster-info
         run: kubectl cluster-info
 
       - name: Run all tests
         run: |
-          fn test \
+          cd ./main/todos && fn test \
             --buildkit_import_cache=type=gha \
             --buildkit_export_cache=type=gha,mode=max \
             --use_prebuilts=true \
