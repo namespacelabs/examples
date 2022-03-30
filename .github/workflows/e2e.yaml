@@ -13,6 +13,9 @@ jobs:
   run_e2e_tests:
     name: e2e tests
     runs-on: ubuntu-20.04
+    env:
+      GOPRIVATE: namespacelabs.dev/*
+      NSL_GH_SERVICE: ${{ secrets.NSL_GH_SERVICE }}
     timeout-minutes: 30
     steps:
       - name: Check out
@@ -31,6 +34,10 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: 1.18
+
+      - name: Configure Git
+        run:
+          git config --global url.https://$NSL_GH_SERVICE@github.com/.insteadOf https://github.com/
 
       # Required by buildkit gha cache.
       - name: Expose GitHub Runtime
