@@ -8,5 +8,7 @@ $proto: inputs.#Proto & {
 }
 
 service: fn.#Service & {
+  framework: "GO_GRPC"
+
 	exportService: $proto.services.TrendsService
 }

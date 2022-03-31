@@ -14,6 +14,8 @@ $backend: grpc.#Backend & {
 }
 
 service: fn.#Service & {
+  framework: "GO_GRPC"
+
 	instantiate: {
 		$backend.instances
 
