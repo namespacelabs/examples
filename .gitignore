@@ -26,3 +26,5 @@ web/ui/dist
 # 
 # api/server/secrets
 # !api/server/secrets/contents.tar.*
+
+.history
