@@ -10,8 +10,4 @@ test: fn.#Test & {
 	fixture: {
 		sut: "namespacelabs.dev/examples/todos/api/server"
 	}
-
-	binary: {
-		from: go_package: "."
-	}
 }
