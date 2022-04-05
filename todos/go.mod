@@ -7,7 +7,7 @@ require (
 	github.com/jackc/pgx/v4 v4.15.0
 	google.golang.org/grpc v1.45.0
 	google.golang.org/protobuf v1.27.1
-	namespacelabs.dev/foundation v0.0.26-0.20220405131105-483394b4c97f
+	namespacelabs.dev/foundation v0.0.26-0.20220405133442-95dd01725b7a
 	namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e
 )
 
