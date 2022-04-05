@@ -13,8 +13,8 @@ import (
 	"namespacelabs.dev/foundation/std/go/grpc/server"
 	"namespacelabs.dev/foundation/std/monitoring/tracing"
 	"namespacelabs.dev/foundation/std/secrets"
-	"namespacelabs.dev/foundation/universe/db/postgres/creds"
 	"namespacelabs.dev/foundation/universe/db/postgres/incluster"
+	"namespacelabs.dev/foundation/universe/db/postgres/incluster/creds"
 )
 
 type ServerDeps struct {
@@ -57,30 +57,14 @@ func PrepareDeps(ctx context.Context) (*ServerDeps, error) {
 		PackageName: "namespacelabs.dev/foundation/std/secrets",
 		Instance:    "creds0",
 		Do: func(ctx context.Context) (err error) {
-			// name: "postgres_password_file"
-			// provision: PROVISION_INLINE
-			// provision: PROVISION_AS_FILE
+			// name: "postgres-password-file"
+			// generate: {
+			//   random_byte_count: 32
+			// }
 			p := &secrets.Secret{}
-			core.MustUnwrapProto("ChZwb3N0Z3Jlc19wYXNzd29yZF9maWxlEgIBAg==", p)
+			core.MustUnwrapProto("ChZwb3N0Z3Jlcy1wYXNzd29yZC1maWxlGgIQIA==", p)
 
-			if creds0.Password, err = secrets.ProvideSecret(ctx, "namespacelabs.dev/foundation/universe/db/postgres/creds", p); err != nil {
-				return err
-			}
-			return nil
-		},
-	})
-
-	di.Register(core.Initializer{
-		PackageName: "namespacelabs.dev/foundation/std/secrets",
-		Instance:    "creds0",
-		Do: func(ctx context.Context) (err error) {
-			// name: "postgres_user_file"
-			// provision: PROVISION_INLINE
-			// provision: PROVISION_AS_FILE
-			p := &secrets.Secret{}
-			core.MustUnwrapProto("ChJwb3N0Z3Jlc191c2VyX2ZpbGUSAgEC", p)
-
-			if creds0.User, err = secrets.ProvideSecret(ctx, "namespacelabs.dev/foundation/universe/db/postgres/creds", p); err != nil {
+			if creds0.Password, err = secrets.ProvideSecret(ctx, "namespacelabs.dev/foundation/universe/db/postgres/incluster/creds", p); err != nil {
 				return err
 			}
 			return nil
@@ -90,7 +74,7 @@ func PrepareDeps(ctx context.Context) (*ServerDeps, error) {
 	var incluster0 incluster.ExtensionDeps
 
 	di.Register(core.Initializer{
-		PackageName: "namespacelabs.dev/foundation/universe/db/postgres/creds",
+		PackageName: "namespacelabs.dev/foundation/universe/db/postgres/incluster/creds",
 		Instance:    "incluster0",
 		DependsOn:   []string{"creds0"}, Do: func(ctx context.Context) (err error) {
 			if incluster0.Creds, err = creds.ProvideCreds(ctx, "namespacelabs.dev/foundation/universe/db/postgres/incluster", nil, creds0); err != nil {
