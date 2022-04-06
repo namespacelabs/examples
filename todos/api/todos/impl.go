@@ -23,10 +23,7 @@ func logRequest(req proto.Message) {
 	log.Printf("new %s request: %+v\n", req.ProtoReflect().Descriptor().FullName(), req)
 }
 
-func addTodo(req *AddRequest, db *pgxpool.Pool) error {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
-
+func addTodo(ctx context.Context, req *AddRequest, db *pgxpool.Pool) error {
 	id := ids.NewSortableID()
 
 	if _, err := db.Exec(ctx, "INSERT INTO todos_table (ID, Name) VALUES ($1, $2);", id, req.Name); err != nil {
@@ -39,7 +36,7 @@ func addTodo(req *AddRequest, db *pgxpool.Pool) error {
 func (svc *Service) Add(ctx context.Context, req *AddRequest) (*AddResponse, error) {
 	logRequest(req)
 
-	if err := addTodo(req, svc.deps.Db); err != nil {
+	if err := addTodo(ctx, req, svc.deps.Db); err != nil {
 		return nil, err
 	}
 
