@@ -44,12 +44,9 @@ func (svc *Service) Add(ctx context.Context, req *AddRequest) (*AddResponse, err
 	return res, nil
 }
 
-func removeTodo(req *RemoveRequest, db *pgxpool.Pool) error {
+func removeTodo(ctx context.Context, req *RemoveRequest, db *pgxpool.Pool) error {
 	// "Development" User Journey:
-	// Uncomment next 5 lines.
-
-	// ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	// defer cancel()
+	// Uncomment next 3 lines.
 
 	// if _, err := db.Exec(ctx, "DELETE FROM todos_table WHERE ID = $1;", req.Id); err != nil {
 	// 	return fmt.Errorf("failed to remove todo: %w", err)
@@ -61,7 +58,7 @@ func removeTodo(req *RemoveRequest, db *pgxpool.Pool) error {
 func (svc *Service) Remove(ctx context.Context, req *RemoveRequest) (*RemoveResponse, error) {
 	logRequest(req)
 
-	if err := removeTodo(req, svc.deps.Db); err != nil {
+	if err := removeTodo(ctx, req, svc.deps.Db); err != nil {
 		return nil, err
 	}
 
