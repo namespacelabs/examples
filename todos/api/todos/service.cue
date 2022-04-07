@@ -14,17 +14,15 @@ $backend: grpc.#Backend & {
 }
 
 service: fn.#Service & {
-  framework: "GO_GRPC"
+	framework: "GO_GRPC"
 
 	instantiate: {
 		$backend.instances
 
 		db: incluster.#Exports.Database & {
-			with: {
-				name:       "todos"
-				schemaFile: inputs.#FromFile & {
-					path: "schema.sql"
-				}
+			name:       "todos"
+			schemaFile: inputs.#FromFile & {
+				path: "schema.sql"
 			}
 		}
 	}

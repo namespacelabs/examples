@@ -6,8 +6,8 @@ server: fn.#Server & {
 	framework: "GO_GRPC"
 
 	import: [
-		"namespacelabs.dev/foundation/std/go/grpc/gateway",
 		"namespacelabs.dev/examples/todos/api/todos",
 		"namespacelabs.dev/examples/todos/api/trends",
+		"namespacelabs.dev/foundation/std/go/grpc/gateway",
 	]
 }
