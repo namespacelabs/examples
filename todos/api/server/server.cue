@@ -9,5 +9,6 @@ server: fn.#Server & {
 		"namespacelabs.dev/examples/todos/api/todos",
 		"namespacelabs.dev/examples/todos/api/trends",
 		"namespacelabs.dev/foundation/std/go/grpc/gateway",
+		"namespacelabs.dev/foundation/std/grpc/logging",
 	]
 }

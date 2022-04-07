@@ -3,7 +3,6 @@ package trends
 import (
 	"context"
 	"hash/fnv"
-	"log"
 
 	"namespacelabs.dev/foundation/std/go/grpc/server"
 )
@@ -21,10 +20,7 @@ func getPopularity(name string) uint32 {
 }
 
 func (svc *Service) GetTrends(ctx context.Context, req *GetTrendsRequest) (*GetTrendsResponse, error) {
-	log.Printf("new request: %v\n", req)
-
 	pop := getPopularity(req.Name)
-
 	res := &GetTrendsResponse{Popularity: pop}
 	return res, nil
 }

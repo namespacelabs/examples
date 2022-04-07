@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v4/pgxpool"
-	"google.golang.org/protobuf/proto"
 	"namespacelabs.dev/examples/todos/api/trends"
 	"namespacelabs.dev/foundation/std/go/grpc/server"
 	"namespacelabs.dev/go-ids"
@@ -20,10 +19,6 @@ type Service struct {
 
 const timeout = 2 * time.Second
 
-func logRequest(req proto.Message) {
-	log.Printf("new %s request: %+v\n", req.ProtoReflect().Descriptor().FullName(), req)
-}
-
 func addTodo(ctx context.Context, req *AddRequest, db *pgxpool.Pool) error {
 	id := ids.NewSortableID()
 
@@ -35,8 +30,6 @@ func addTodo(ctx context.Context, req *AddRequest, db *pgxpool.Pool) error {
 }
 
 func (svc *Service) Add(ctx context.Context, req *AddRequest) (*AddResponse, error) {
-	logRequest(req)
-
 	if err := addTodo(ctx, req, svc.DB); err != nil {
 		return nil, err
 	}
@@ -57,8 +50,6 @@ func removeTodo(ctx context.Context, req *RemoveRequest, db *pgxpool.Pool) error
 }
 
 func (svc *Service) Remove(ctx context.Context, req *RemoveRequest) (*RemoveResponse, error) {
-	logRequest(req)
-
 	if err := removeTodo(ctx, req, svc.DB); err != nil {
 		return nil, err
 	}
@@ -91,8 +82,6 @@ func listTodos(db *pgxpool.Pool) ([]*TodoItem, error) {
 }
 
 func (svc *Service) List(ctx context.Context, req *ListRequest) (*ListResponse, error) {
-	logRequest(req)
-
 	todos, err := listTodos(svc.DB)
 	if err != nil {
 		return nil, err
@@ -130,12 +119,9 @@ func getPopularity(ctx context.Context, name string, client trends.TrendsService
 	}
 
 	return resp.Popularity, nil
-
 }
 
 func (svc *Service) GetRelatedData(ctx context.Context, req *GetRelatedDataRequest) (*GetRelatedDataResponse, error) {
-	logRequest(req)
-
 	name, err := getName(ctx, req.Id, svc.DB)
 	if err != nil {
 		return nil, err
@@ -146,11 +132,7 @@ func (svc *Service) GetRelatedData(ctx context.Context, req *GetRelatedDataReque
 		return nil, err
 	}
 
-	response := &GetRelatedDataResponse{Popularity: pop}
-
-	log.Printf("will reply with: %+v\n", response)
-
-	return response, nil
+	return &GetRelatedDataResponse{Popularity: pop}, nil
 }
 
 func WireService(ctx context.Context, srv *server.Grpc, deps ServiceDeps) {
