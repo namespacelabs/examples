@@ -12,5 +12,8 @@
 	"prettier.quoteProps": "as-needed",
 	"prettier.jsxSingleQuote": false,
 	"prettier.arrowParens": "always",
-	"prettier.jsxBracketSameLine": true
+	"prettier.jsxBracketSameLine": true,
+	"[go]": {
+		"editor.defaultFormatter": "golang.go"
+	}
 }
