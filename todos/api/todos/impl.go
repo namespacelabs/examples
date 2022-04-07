@@ -14,7 +14,8 @@ import (
 )
 
 type Service struct {
-	deps ServiceDeps
+	DB     *pgxpool.Pool
+	Trends trends.TrendsServiceClient
 }
 
 const timeout = 2 * time.Second
@@ -36,7 +37,7 @@ func addTodo(ctx context.Context, req *AddRequest, db *pgxpool.Pool) error {
 func (svc *Service) Add(ctx context.Context, req *AddRequest) (*AddResponse, error) {
 	logRequest(req)
 
-	if err := addTodo(ctx, req, svc.deps.Db); err != nil {
+	if err := addTodo(ctx, req, svc.DB); err != nil {
 		return nil, err
 	}
 
@@ -58,7 +59,7 @@ func removeTodo(ctx context.Context, req *RemoveRequest, db *pgxpool.Pool) error
 func (svc *Service) Remove(ctx context.Context, req *RemoveRequest) (*RemoveResponse, error) {
 	logRequest(req)
 
-	if err := removeTodo(ctx, req, svc.deps.Db); err != nil {
+	if err := removeTodo(ctx, req, svc.DB); err != nil {
 		return nil, err
 	}
 
@@ -92,7 +93,7 @@ func listTodos(db *pgxpool.Pool) ([]*TodoItem, error) {
 func (svc *Service) List(ctx context.Context, req *ListRequest) (*ListResponse, error) {
 	logRequest(req)
 
-	todos, err := listTodos(svc.deps.Db)
+	todos, err := listTodos(svc.DB)
 	if err != nil {
 		return nil, err
 	}
@@ -135,12 +136,12 @@ func getPopularity(ctx context.Context, name string, client trends.TrendsService
 func (svc *Service) GetRelatedData(ctx context.Context, req *GetRelatedDataRequest) (*GetRelatedDataResponse, error) {
 	logRequest(req)
 
-	name, err := getName(ctx, req.Id, svc.deps.Db)
+	name, err := getName(ctx, req.Id, svc.DB)
 	if err != nil {
 		return nil, err
 	}
 
-	pop, err := getPopularity(ctx, name, svc.deps.Trends)
+	pop, err := getPopularity(ctx, name, svc.Trends)
 	if err != nil {
 		return nil, err
 	}
@@ -153,5 +154,5 @@ func (svc *Service) GetRelatedData(ctx context.Context, req *GetRelatedDataReque
 }
 
 func WireService(ctx context.Context, srv *server.Grpc, deps ServiceDeps) {
-	RegisterTodosServiceServer(srv, &Service{deps: deps})
+	RegisterTodosServiceServer(srv, &Service{DB: deps.Db, Trends: deps.Trends})
 }
