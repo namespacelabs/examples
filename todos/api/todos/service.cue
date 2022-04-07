@@ -3,6 +3,7 @@ import (
 	"namespacelabs.dev/foundation/std/fn:inputs"
 	"namespacelabs.dev/foundation/std/grpc"
 	"namespacelabs.dev/foundation/universe/db/postgres/incluster"
+	"namespacelabs.dev/foundation/std/grpc/deadlines"
 )
 
 $proto: inputs.#Proto & {
@@ -24,6 +25,13 @@ service: fn.#Service & {
 			schemaFile: inputs.#FromFile & {
 				path: "schema.sql"
 			}
+		}
+
+		dl: deadlines.#Exports.Deadlines & {
+			configuration: [
+				{serviceName: "api.todos.TodosService", methodName: "List", maximumDeadline:           2.0},
+				{serviceName: "api.todos.TodosService", methodName: "GetRelatedData", maximumDeadline: 2.0},
+			]
 		}
 	}
 

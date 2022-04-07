@@ -11,6 +11,7 @@ import (
 	"namespacelabs.dev/foundation/std/go/grpc/interceptors"
 	"namespacelabs.dev/foundation/std/go/grpc/metrics"
 	"namespacelabs.dev/foundation/std/go/grpc/server"
+	"namespacelabs.dev/foundation/std/grpc/deadlines"
 	"namespacelabs.dev/foundation/std/grpc/logging"
 	"namespacelabs.dev/foundation/std/monitoring/tracing"
 	"namespacelabs.dev/foundation/std/secrets"
@@ -93,6 +94,19 @@ func PrepareDeps(ctx context.Context) (*ServerDeps, error) {
 		},
 	})
 
+	var deadlines0 deadlines.ExtensionDeps
+
+	di.Register(core.Initializer{
+		PackageName: "namespacelabs.dev/foundation/std/go/grpc/interceptors",
+		Instance:    "deadlines0",
+		Do: func(ctx context.Context) (err error) {
+			if deadlines0.Interceptors, err = interceptors.ProvideInterceptorRegistration(ctx, "namespacelabs.dev/foundation/std/grpc/deadlines", nil); err != nil {
+				return err
+			}
+			return nil
+		},
+	})
+
 	di.Register(core.Initializer{
 		PackageName: "namespacelabs.dev/foundation/universe/db/postgres/incluster",
 		Instance:    "server.todos",
@@ -102,6 +116,30 @@ func PrepareDeps(ctx context.Context) (*ServerDeps, error) {
 			core.MustUnwrapProto("CgV0b2Rvcw==", p)
 
 			if server.todos.Db, err = incluster.ProvideDatabase(ctx, "namespacelabs.dev/examples/todos/api/todos", p, incluster0); err != nil {
+				return err
+			}
+			return nil
+		},
+	})
+
+	di.Register(core.Initializer{
+		PackageName: "namespacelabs.dev/foundation/std/grpc/deadlines",
+		Instance:    "server.todos",
+		DependsOn:   []string{"deadlines0"}, Do: func(ctx context.Context) (err error) {
+			// configuration: {
+			//   service_name: "api.todos.TodosService"
+			//   method_name: "List"
+			//   maximum_deadline: 2
+			// }
+			// configuration: {
+			//   service_name: "api.todos.TodosService"
+			//   method_name: "GetRelatedData"
+			//   maximum_deadline: 2
+			// }
+			p := &deadlines.Deadline{}
+			core.MustUnwrapProto("CiMKFmFwaS50b2Rvcy5Ub2Rvc1NlcnZpY2USBExpc3QdAAAAQAotChZhcGkudG9kb3MuVG9kb3NTZXJ2aWNlEg5HZXRSZWxhdGVkRGF0YR0AAABA", p)
+
+			if server.todos.Dl, err = deadlines.ProvideDeadlines(ctx, "namespacelabs.dev/examples/todos/api/todos", p, deadlines0); err != nil {
 				return err
 			}
 			return nil
@@ -152,6 +190,14 @@ func PrepareDeps(ctx context.Context) (*ServerDeps, error) {
 		DependsOn:   []string{"tracing0"},
 		Do: func(ctx context.Context) error {
 			return tracing.Prepare(ctx, tracing0)
+		},
+	})
+
+	di.Register(core.Initializer{
+		PackageName: "namespacelabs.dev/foundation/std/grpc/deadlines",
+		DependsOn:   []string{"deadlines0"},
+		Do: func(ctx context.Context) error {
+			return deadlines.Prepare(ctx, deadlines0)
 		},
 	})
 

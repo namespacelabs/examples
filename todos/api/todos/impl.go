@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/jackc/pgx/v4/pgxpool"
 	"namespacelabs.dev/examples/todos/api/trends"
@@ -17,7 +16,49 @@ type Service struct {
 	Trends trends.TrendsServiceClient
 }
 
-const timeout = 2 * time.Second
+func (svc *Service) Add(ctx context.Context, req *AddRequest) (*AddResponse, error) {
+	if err := addTodo(ctx, req, svc.DB); err != nil {
+		return nil, err
+	}
+
+	res := &AddResponse{}
+	return res, nil
+}
+
+func (svc *Service) Remove(ctx context.Context, req *RemoveRequest) (*RemoveResponse, error) {
+	if err := removeTodo(ctx, req, svc.DB); err != nil {
+		return nil, err
+	}
+
+	res := &RemoveResponse{}
+	return res, nil
+}
+
+func (svc *Service) List(ctx context.Context, req *ListRequest) (*ListResponse, error) {
+	todos, err := fetchTodosList(ctx, svc.DB)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &ListResponse{
+		Items: todos,
+	}
+	return res, nil
+}
+
+func (svc *Service) GetRelatedData(ctx context.Context, req *GetRelatedDataRequest) (*GetRelatedDataResponse, error) {
+	name, err := fetchName(ctx, req.Id, svc.DB)
+	if err != nil {
+		return nil, err
+	}
+
+	pop, err := computePopularity(ctx, name, svc.Trends)
+	if err != nil {
+		return nil, err
+	}
+
+	return &GetRelatedDataResponse{Popularity: pop}, nil
+}
 
 func addTodo(ctx context.Context, req *AddRequest, db *pgxpool.Pool) error {
 	id := ids.NewSortableID()
@@ -27,15 +68,6 @@ func addTodo(ctx context.Context, req *AddRequest, db *pgxpool.Pool) error {
 	}
 
 	return nil
-}
-
-func (svc *Service) Add(ctx context.Context, req *AddRequest) (*AddResponse, error) {
-	if err := addTodo(ctx, req, svc.DB); err != nil {
-		return nil, err
-	}
-
-	res := &AddResponse{}
-	return res, nil
 }
 
 func removeTodo(ctx context.Context, req *RemoveRequest, db *pgxpool.Pool) error {
@@ -49,19 +81,7 @@ func removeTodo(ctx context.Context, req *RemoveRequest, db *pgxpool.Pool) error
 	return nil
 }
 
-func (svc *Service) Remove(ctx context.Context, req *RemoveRequest) (*RemoveResponse, error) {
-	if err := removeTodo(ctx, req, svc.DB); err != nil {
-		return nil, err
-	}
-
-	res := &RemoveResponse{}
-	return res, nil
-}
-
-func listTodos(db *pgxpool.Pool) ([]*TodoItem, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
-
+func fetchTodosList(ctx context.Context, db *pgxpool.Pool) ([]*TodoItem, error) {
 	rows, err := db.Query(ctx, "SELECT ID, Name FROM todos_table;")
 	if err != nil {
 		return nil, fmt.Errorf("failed list todos: %w", err)
@@ -81,22 +101,7 @@ func listTodos(db *pgxpool.Pool) ([]*TodoItem, error) {
 	return res, nil
 }
 
-func (svc *Service) List(ctx context.Context, req *ListRequest) (*ListResponse, error) {
-	todos, err := listTodos(svc.DB)
-	if err != nil {
-		return nil, err
-	}
-
-	res := &ListResponse{
-		Items: todos,
-	}
-	return res, nil
-}
-
-func getName(ctx context.Context, id string, db *pgxpool.Pool) (string, error) {
-	ctx, cancel := context.WithTimeout(ctx, timeout)
-	defer cancel()
-
+func fetchName(ctx context.Context, id string, db *pgxpool.Pool) (string, error) {
 	var name string
 	if err := db.QueryRow(ctx, "SELECT Name FROM todos_table WHERE ID = $1;", id).Scan(&name); err != nil {
 		log.Printf("failed to read todos: %v", err)
@@ -106,10 +111,7 @@ func getName(ctx context.Context, id string, db *pgxpool.Pool) (string, error) {
 	return name, nil
 }
 
-func getPopularity(ctx context.Context, name string, client trends.TrendsServiceClient) (uint32, error) {
-	ctx, cancel := context.WithTimeout(ctx, timeout)
-	defer cancel()
-
+func computePopularity(ctx context.Context, name string, client trends.TrendsServiceClient) (uint32, error) {
 	req := &trends.GetTrendsRequest{
 		Name: name,
 	}
@@ -119,20 +121,6 @@ func getPopularity(ctx context.Context, name string, client trends.TrendsService
 	}
 
 	return resp.Popularity, nil
-}
-
-func (svc *Service) GetRelatedData(ctx context.Context, req *GetRelatedDataRequest) (*GetRelatedDataResponse, error) {
-	name, err := getName(ctx, req.Id, svc.DB)
-	if err != nil {
-		return nil, err
-	}
-
-	pop, err := getPopularity(ctx, name, svc.Trends)
-	if err != nil {
-		return nil, err
-	}
-
-	return &GetRelatedDataResponse{Popularity: pop}, nil
 }
 
 func WireService(ctx context.Context, srv *server.Grpc, deps ServiceDeps) {

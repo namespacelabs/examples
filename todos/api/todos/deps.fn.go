@@ -11,10 +11,12 @@ import (
 	"google.golang.org/grpc"
 	"namespacelabs.dev/examples/todos/api/trends"
 	"namespacelabs.dev/foundation/std/go/grpc/server"
+	"namespacelabs.dev/foundation/std/grpc/deadlines"
 )
 
 type ServiceDeps struct {
 	Db         *pgxpool.Pool
+	Dl         *deadlines.DeadlineRegistration
 	Trends     trends.TrendsServiceClient
 	TrendsConn *grpc.ClientConn
 }
