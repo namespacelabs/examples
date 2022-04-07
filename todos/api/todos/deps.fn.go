@@ -4,9 +4,6 @@ package todos
 import (
 	"context"
 
-	_ "namespacelabs.dev/foundation/std/go/grpc/metrics"
-	_ "namespacelabs.dev/foundation/std/monitoring/tracing"
-
 	"github.com/jackc/pgx/v4/pgxpool"
 	"google.golang.org/grpc"
 	"namespacelabs.dev/examples/todos/api/trends"

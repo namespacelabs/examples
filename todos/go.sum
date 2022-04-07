@@ -2879,6 +2879,10 @@ namespacelabs.dev/foundation v0.0.28-0.20220407202017-a7c0604cde23 h1:tpnQbdf4eh
 namespacelabs.dev/foundation v0.0.28-0.20220407202017-a7c0604cde23/go.mod h1:rAMUroTmUbp3InIxJyG8twA+H/m/bmhfqXqnI6diF2c=
 namespacelabs.dev/foundation v0.0.28-0.20220407203045-3f52708a7031 h1:maclI8T7jtmqZ5C5/xLqbE7KCrnTyRs9fwxqwAfxbeM=
 namespacelabs.dev/foundation v0.0.28-0.20220407203045-3f52708a7031/go.mod h1:rAMUroTmUbp3InIxJyG8twA+H/m/bmhfqXqnI6diF2c=
+namespacelabs.dev/foundation v0.0.28-0.20220407225320-4d73a5181d87 h1:Q7Rae77HLTJ0HpVA3CUh3zhBHBT22KmDJRyJXSE3s5U=
+namespacelabs.dev/foundation v0.0.28-0.20220407225320-4d73a5181d87/go.mod h1:rAMUroTmUbp3InIxJyG8twA+H/m/bmhfqXqnI6diF2c=
+namespacelabs.dev/foundation v0.0.28-0.20220407230017-eb18472f78e9 h1:iuFSNrASxt5YJzugVApdHyQwqosH0Js1BLdhjRCZi/A=
+namespacelabs.dev/foundation v0.0.28-0.20220407230017-eb18472f78e9/go.mod h1:rAMUroTmUbp3InIxJyG8twA+H/m/bmhfqXqnI6diF2c=
 namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e h1:crQthT7TnDNKEtZLcOZ2eHsiLqlzoETD8cwAuHKgUsg=
 namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e/go.mod h1:J+Sd+ngeffnCsaO/M7zgs2bR8Klq/ZBhS0+bbnDEH2M=
 nhooyr.io/websocket v1.8.7/go.mod h1:B70DZP8IakI65RVQ51MsWP/8jndNma26DVA/nFSCgW0=

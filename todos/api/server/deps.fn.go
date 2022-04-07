@@ -7,10 +7,10 @@ import (
 	"namespacelabs.dev/examples/todos/api/todos"
 	"namespacelabs.dev/examples/todos/api/trends"
 	"namespacelabs.dev/foundation/std/go/core"
-	"namespacelabs.dev/foundation/std/go/grpc"
 	"namespacelabs.dev/foundation/std/go/grpc/interceptors"
 	"namespacelabs.dev/foundation/std/go/grpc/metrics"
 	"namespacelabs.dev/foundation/std/go/grpc/server"
+	"namespacelabs.dev/foundation/std/grpc"
 	"namespacelabs.dev/foundation/std/grpc/deadlines"
 	"namespacelabs.dev/foundation/std/grpc/logging"
 	"namespacelabs.dev/foundation/std/monitoring/tracing"
@@ -147,13 +147,12 @@ func PrepareDeps(ctx context.Context) (*ServerDeps, error) {
 	})
 
 	di.Register(core.Initializer{
-		PackageName: "namespacelabs.dev/foundation/std/go/grpc",
+		PackageName: "namespacelabs.dev/foundation/std/grpc",
 		Instance:    "server.todos",
 		Do: func(ctx context.Context) (err error) {
 			// package_name: "namespacelabs.dev/examples/todos/api/trends"
-			// proto_typename: "TrendsService"
-			p := &grpc.Conn{}
-			core.MustUnwrapProto("CituYW1lc3BhY2VsYWJzLmRldi9leGFtcGxlcy90b2Rvcy9hcGkvdHJlbmRzEg1UcmVuZHNTZXJ2aWNl", p)
+			p := &grpc.Backend{}
+			core.MustUnwrapProto("CituYW1lc3BhY2VsYWJzLmRldi9leGFtcGxlcy90b2Rvcy9hcGkvdHJlbmRz", p)
 
 			if server.todos.TrendsConn, err = grpc.ProvideConn(ctx, "namespacelabs.dev/examples/todos/api/todos", p); err != nil {
 				return err

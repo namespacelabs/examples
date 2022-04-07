@@ -10,15 +10,13 @@ $proto: inputs.#Proto & {
 	source: "service.proto"
 }
 
-$backend: grpc.#Backend & {
-	packageName: "namespacelabs.dev/examples/todos/api/trends"
-}
-
 service: fn.#Service & {
 	framework: "GO_GRPC"
 
 	instantiate: {
-		$backend.instances
+		trends: grpc.#Exports.Backend & {
+			packageName: "namespacelabs.dev/examples/todos/api/trends"
+		}
 
 		db: incluster.#Exports.Database & {
 			name:       "todos"
