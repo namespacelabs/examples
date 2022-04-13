@@ -192,9 +192,18 @@ func PrepareDeps(ctx context.Context) (server *ServerDeps, err error) {
 		},
 	})
 
+	di.Add(core.Provider{
+		Package: "namespacelabs.dev/examples/todos/api/trends",
+		Do: func(ctx context.Context) (interface{}, error) {
+			var deps trends.ServiceDeps
+			var err error
+			return deps, err
+		},
+	})
+
 	server = &ServerDeps{}
 	di.AddInitializer(core.Initializer{
-		PackageName: "",
+		PackageName: "namespacelabs.dev/examples/todos/api/server",
 		Do: func(ctx context.Context) error {
 
 			err = di.Instantiate(ctx, core.Reference{Package: "namespacelabs.dev/examples/todos/api/todos"},
