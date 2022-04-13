@@ -11,6 +11,7 @@ import (
 	"namespacelabs.dev/foundation/std/grpc/deadlines"
 )
 
+// Dependencies that are instantiated once for the lifetime of the service.
 type ServiceDeps struct {
 	Db         *pgxpool.Pool
 	Dl         *deadlines.DeadlineRegistration
