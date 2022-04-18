@@ -7,7 +7,7 @@ require (
 	github.com/jackc/pgx/v4 v4.15.0
 	google.golang.org/grpc v1.45.0
 	google.golang.org/protobuf v1.27.1
-	namespacelabs.dev/foundation v0.0.29-0.20220413084826-faa0b0be6d44
+	namespacelabs.dev/foundation v0.0.30-0.20220418093952-2dd0f47c4de8
 	namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e
 )
 
@@ -51,7 +51,7 @@ require (
 	go.uber.org/automaxprocs v1.5.1 // indirect
 	golang.org/x/crypto v0.0.0-20211215165025-cf75a172585e // indirect
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
-	golang.org/x/sys v0.0.0-20220310020820-b874c991c1a5 // indirect
+	golang.org/x/sys v0.0.0-20220408201424-a24fb2fb8a0f // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/genproto v0.0.0-20220302033224-9aa15565e42a // indirect

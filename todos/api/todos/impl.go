@@ -7,7 +7,7 @@ import (
 
 	"github.com/jackc/pgx/v4/pgxpool"
 	"namespacelabs.dev/examples/todos/api/trends"
-	"namespacelabs.dev/foundation/std/go/grpc/server"
+	"namespacelabs.dev/foundation/std/go/server"
 	"namespacelabs.dev/go-ids"
 )
 
@@ -123,6 +123,6 @@ func computePopularity(ctx context.Context, name string, client trends.TrendsSer
 	return resp.Popularity, nil
 }
 
-func WireService(ctx context.Context, srv *server.Grpc, deps ServiceDeps) {
+func WireService(ctx context.Context, srv server.Registrar, deps ServiceDeps) {
 	RegisterTodosServiceServer(srv, &Service{DB: deps.Db, Trends: deps.Trends})
 }

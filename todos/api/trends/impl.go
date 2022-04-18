@@ -4,7 +4,7 @@ import (
 	"context"
 	"hash/fnv"
 
-	"namespacelabs.dev/foundation/std/go/grpc/server"
+	"namespacelabs.dev/foundation/std/go/server"
 )
 
 type Service struct {
@@ -25,6 +25,6 @@ func (svc *Service) GetTrends(ctx context.Context, req *GetTrendsRequest) (*GetT
 	return res, nil
 }
 
-func WireService(ctx context.Context, srv *server.Grpc, deps ServiceDeps) {
+func WireService(ctx context.Context, srv server.Registrar, deps ServiceDeps) {
 	RegisterTrendsServiceServer(srv, &Service{})
 }
