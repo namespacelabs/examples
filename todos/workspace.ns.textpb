@@ -2,5 +2,5 @@ module_name: "namespacelabs.dev/examples/todos"
 
 dep: {
   module_name: "namespacelabs.dev/foundation"
-  version: "6d834daca3301a5b662989a532b5a30daf3d5cc9"
+  version: "97dae87f53a21a9fe265046785f737ef5d7b0353"
 }

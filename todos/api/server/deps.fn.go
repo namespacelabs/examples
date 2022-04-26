@@ -12,14 +12,14 @@ import (
 	"namespacelabs.dev/foundation/std/go/server"
 	"namespacelabs.dev/foundation/std/grpc/deadlines"
 	"namespacelabs.dev/foundation/std/grpc/logging"
-	"namespacelabs.dev/foundation/std/monitoring/tracing"
+	"namespacelabs.dev/foundation/std/monitoring/tracing/jaeger"
 )
 
 func RegisterInitializers(di *core.DependencyGraph) {
 	di.AddInitializers(metrics.Initializers__so2f3v...)
-	di.AddInitializers(tracing.Initializers__70o2mm...)
 	di.AddInitializers(deadlines.Initializers__vbko45...)
 	di.AddInitializers(logging.Initializers__16bc0q...)
+	di.AddInitializers(jaeger.Initializers__33brri...)
 }
 
 func WireServices(ctx context.Context, srv server.Server, depgraph core.Dependencies) []error {
