@@ -29,7 +29,7 @@ var (
 	}
 )
 
-func makeDeps__021jd8(ctx context.Context, di core.Dependencies) (interface{}, error) {
+func makeDeps__021jd8(ctx context.Context, di core.Dependencies) (_ interface{}, err error) {
 	var deps ServiceDeps
 
 	return deps, nil

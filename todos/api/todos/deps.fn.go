@@ -39,24 +39,21 @@ var (
 	}
 )
 
-func makeDeps__i7grcp(ctx context.Context, di core.Dependencies) (interface{}, error) {
+func makeDeps__i7grcp(ctx context.Context, di core.Dependencies) (_ interface{}, err error) {
 	var deps ServiceDeps
-	var err error
 
-	err = di.Instantiate(ctx, incluster.Provider__udoubi, func(ctx context.Context, v interface{}) (err error) { // name: "todos"
-		p := &incluster.Database{}
-		core.MustUnwrapProto("CgV0b2Rvcw==", p)
-
-		if deps.Db, err = incluster.ProvideDatabase(ctx, p, v.(incluster.ExtensionDeps)); err != nil {
+	if err := di.Instantiate(ctx, incluster.Provider__udoubi, func(ctx context.Context, v interface{}) (err error) {
+		// name: "todos"
+		if deps.Db, err = incluster.ProvideDatabase(ctx, core.MustUnwrapProto("CgV0b2Rvcw==", &incluster.Database{}).(*incluster.Database), v.(incluster.ExtensionDeps)); err != nil {
 			return err
 		}
 		return nil
-	})
-	if err != nil {
+	}); err != nil {
 		return nil, err
 	}
 
-	err = di.Instantiate(ctx, deadlines.Provider__vbko45, func(ctx context.Context, v interface{}) (err error) { // configuration: {
+	if err := di.Instantiate(ctx, deadlines.Provider__vbko45, func(ctx context.Context, v interface{}) (err error) {
+		// configuration: {
 		//   service_name: "api.todos.TodosService"
 		//   method_name: "List"
 		//   maximum_deadline: 2
@@ -66,29 +63,20 @@ func makeDeps__i7grcp(ctx context.Context, di core.Dependencies) (interface{}, e
 		//   method_name: "GetRelatedData"
 		//   maximum_deadline: 2
 		// }
-		p := &deadlines.Deadline{}
-		core.MustUnwrapProto("CiMKFmFwaS50b2Rvcy5Ub2Rvc1NlcnZpY2USBExpc3QdAAAAQAotChZhcGkudG9kb3MuVG9kb3NTZXJ2aWNlEg5HZXRSZWxhdGVkRGF0YR0AAABA", p)
-
-		if deps.Dl, err = deadlines.ProvideDeadlines(ctx, p, v.(deadlines.ExtensionDeps)); err != nil {
+		if deps.Dl, err = deadlines.ProvideDeadlines(ctx, core.MustUnwrapProto("CiMKFmFwaS50b2Rvcy5Ub2Rvc1NlcnZpY2USBExpc3QdAAAAQAotChZhcGkudG9kb3MuVG9kb3NTZXJ2aWNlEg5HZXRSZWxhdGVkRGF0YR0AAABA", &deadlines.Deadline{}).(*deadlines.Deadline), v.(deadlines.ExtensionDeps)); err != nil {
 			return err
 		}
 		return nil
-	})
-	if err != nil {
+	}); err != nil {
 		return nil, err
 	}
 
-	{ // package_name: "namespacelabs.dev/examples/todos/api/trends"
-		p := &fngrpc.Backend{}
-		core.MustUnwrapProto("CituYW1lc3BhY2VsYWJzLmRldi9leGFtcGxlcy90b2Rvcy9hcGkvdHJlbmRz", p)
-
-		if deps.TrendsConn, err = fngrpc.ProvideConn(ctx, p); err != nil {
-			return nil, err
-		}
-
-		deps.Trends = trends.NewTrendsServiceClient(deps.TrendsConn)
-
+	// package_name: "namespacelabs.dev/examples/todos/api/trends"
+	if deps.TrendsConn, err = fngrpc.ProvideConn(ctx, core.MustUnwrapProto("CituYW1lc3BhY2VsYWJzLmRldi9leGFtcGxlcy90b2Rvcy9hcGkvdHJlbmRz", &fngrpc.Backend{}).(*fngrpc.Backend)); err != nil {
+		return nil, err
 	}
+
+	deps.Trends = trends.NewTrendsServiceClient(deps.TrendsConn)
 
 	return deps, nil
 }
