@@ -4,10 +4,9 @@ go 1.17
 
 require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.8.0
-	github.com/jackc/pgx/v4 v4.15.0
 	google.golang.org/grpc v1.45.0
 	google.golang.org/protobuf v1.27.1
-	namespacelabs.dev/foundation v0.0.38-0.20220427085620-f1016bc7230d
+	namespacelabs.dev/foundation v0.0.39-0.20220427141653-7095516ed93b
 	namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e
 )
 
@@ -30,6 +29,7 @@ require (
 	github.com/jackc/pgproto3/v2 v2.2.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
 	github.com/jackc/pgtype v1.10.0 // indirect
+	github.com/jackc/pgx/v4 v4.15.0 // indirect
 	github.com/jackc/puddle v1.2.1 // indirect
 	github.com/jxskiss/base62 v1.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
@@ -58,7 +58,6 @@ require (
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
 	golang.org/x/sys v0.0.0-20220422013727-9388b58f7150 // indirect
 	golang.org/x/text v0.3.7 // indirect
-	golang.org/x/xerrors v0.0.0-20220411194840-2f41105eb62f // indirect
 	google.golang.org/genproto v0.0.0-20220302033224-9aa15565e42a // indirect
 	tailscale.com v1.22.2 // indirect
 )

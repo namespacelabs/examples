@@ -5,19 +5,19 @@ package todos
 
 import (
 	"context"
-	"github.com/jackc/pgx/v4/pgxpool"
 	"google.golang.org/grpc"
 	"namespacelabs.dev/examples/todos/api/trends"
 	"namespacelabs.dev/foundation/std/go/core"
 	"namespacelabs.dev/foundation/std/go/server"
 	fngrpc "namespacelabs.dev/foundation/std/grpc"
 	"namespacelabs.dev/foundation/std/grpc/deadlines"
+	"namespacelabs.dev/foundation/universe/db/postgres"
 	"namespacelabs.dev/foundation/universe/db/postgres/incluster"
 )
 
 // Dependencies that are instantiated once for the lifetime of the service.
 type ServiceDeps struct {
-	Db         *pgxpool.Pool
+	Db         *postgres.DB
 	Dl         *deadlines.DeadlineRegistration
 	Trends     trends.TrendsServiceClient
 	TrendsConn *grpc.ClientConn

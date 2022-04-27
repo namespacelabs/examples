@@ -18,9 +18,9 @@ import (
 
 func RegisterInitializers(di *core.DependencyGraph) {
 	di.AddInitializers(metrics.Initializers__so2f3v...)
+	di.AddInitializers(tracing.Initializers__70o2mm...)
 	di.AddInitializers(deadlines.Initializers__vbko45...)
 	di.AddInitializers(logging.Initializers__16bc0q...)
-	di.AddInitializers(tracing.Initializers__70o2mm...)
 	di.AddInitializers(jaeger.Initializers__33brri...)
 }
 

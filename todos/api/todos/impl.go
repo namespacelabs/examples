@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/jackc/pgx/v4/pgxpool"
 	"namespacelabs.dev/examples/todos/api/trends"
 	"namespacelabs.dev/foundation/std/go/server"
+	"namespacelabs.dev/foundation/universe/db/postgres"
 	"namespacelabs.dev/go-ids"
 )
 
 type Service struct {
-	DB     *pgxpool.Pool
+	DB     *postgres.DB
 	Trends trends.TrendsServiceClient
 }
 
@@ -60,7 +60,7 @@ func (svc *Service) GetRelatedData(ctx context.Context, req *GetRelatedDataReque
 	return &GetRelatedDataResponse{Popularity: pop}, nil
 }
 
-func addTodo(ctx context.Context, req *AddRequest, db *pgxpool.Pool) error {
+func addTodo(ctx context.Context, req *AddRequest, db *postgres.DB) error {
 	id := ids.NewSortableID()
 
 	if _, err := db.Exec(ctx, "INSERT INTO todos_table (ID, Name) VALUES ($1, $2);", id, req.Name); err != nil {
@@ -70,7 +70,7 @@ func addTodo(ctx context.Context, req *AddRequest, db *pgxpool.Pool) error {
 	return nil
 }
 
-func removeTodo(ctx context.Context, req *RemoveRequest, db *pgxpool.Pool) error {
+func removeTodo(ctx context.Context, req *RemoveRequest, db *postgres.DB) error {
 	// "Development" User Journey:
 	// Uncomment next 3 lines.
 
@@ -81,7 +81,7 @@ func removeTodo(ctx context.Context, req *RemoveRequest, db *pgxpool.Pool) error
 	return nil
 }
 
-func fetchTodosList(ctx context.Context, db *pgxpool.Pool) ([]*TodoItem, error) {
+func fetchTodosList(ctx context.Context, db *postgres.DB) ([]*TodoItem, error) {
 	rows, err := db.Query(ctx, "SELECT ID, Name FROM todos_table;")
 	if err != nil {
 		return nil, fmt.Errorf("failed list todos: %w", err)
@@ -101,7 +101,7 @@ func fetchTodosList(ctx context.Context, db *pgxpool.Pool) ([]*TodoItem, error) 
 	return res, nil
 }
 
-func fetchName(ctx context.Context, id string, db *pgxpool.Pool) (string, error) {
+func fetchName(ctx context.Context, id string, db *postgres.DB) (string, error) {
 	var name string
 	if err := db.QueryRow(ctx, "SELECT Name FROM todos_table WHERE ID = $1;", id).Scan(&name); err != nil {
 		log.Printf("failed to read todos: %v", err)
