@@ -44,5 +44,7 @@ service TodosService {
 
   rpc List(ListRequest) returns (ListResponse);
 
+  rpc StreamList(ListRequest) returns (stream ListResponse);
+
   rpc GetRelatedData(GetRelatedDataRequest) returns (GetRelatedDataResponse);
 }

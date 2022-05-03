@@ -25,6 +25,7 @@ type TodosServiceClient interface {
 	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error)
 	Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*RemoveResponse, error)
 	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
+	StreamList(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (TodosService_StreamListClient, error)
 	GetRelatedData(ctx context.Context, in *GetRelatedDataRequest, opts ...grpc.CallOption) (*GetRelatedDataResponse, error)
 }
 
@@ -63,6 +64,38 @@ func (c *todosServiceClient) List(ctx context.Context, in *ListRequest, opts ...
 	return out, nil
 }
 
+func (c *todosServiceClient) StreamList(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (TodosService_StreamListClient, error) {
+	stream, err := c.cc.NewStream(ctx, &TodosService_ServiceDesc.Streams[0], "/api.todos.TodosService/StreamList", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &todosServiceStreamListClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type TodosService_StreamListClient interface {
+	Recv() (*ListResponse, error)
+	grpc.ClientStream
+}
+
+type todosServiceStreamListClient struct {
+	grpc.ClientStream
+}
+
+func (x *todosServiceStreamListClient) Recv() (*ListResponse, error) {
+	m := new(ListResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *todosServiceClient) GetRelatedData(ctx context.Context, in *GetRelatedDataRequest, opts ...grpc.CallOption) (*GetRelatedDataResponse, error) {
 	out := new(GetRelatedDataResponse)
 	err := c.cc.Invoke(ctx, "/api.todos.TodosService/GetRelatedData", in, out, opts...)
@@ -79,6 +112,7 @@ type TodosServiceServer interface {
 	Add(context.Context, *AddRequest) (*AddResponse, error)
 	Remove(context.Context, *RemoveRequest) (*RemoveResponse, error)
 	List(context.Context, *ListRequest) (*ListResponse, error)
+	StreamList(*ListRequest, TodosService_StreamListServer) error
 	GetRelatedData(context.Context, *GetRelatedDataRequest) (*GetRelatedDataResponse, error)
 }
 
@@ -94,6 +128,9 @@ func (UnimplementedTodosServiceServer) Remove(context.Context, *RemoveRequest) (
 }
 func (UnimplementedTodosServiceServer) List(context.Context, *ListRequest) (*ListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedTodosServiceServer) StreamList(*ListRequest, TodosService_StreamListServer) error {
+	return status.Errorf(codes.Unimplemented, "method StreamList not implemented")
 }
 func (UnimplementedTodosServiceServer) GetRelatedData(context.Context, *GetRelatedDataRequest) (*GetRelatedDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRelatedData not implemented")
@@ -164,6 +201,27 @@ func _TodosService_List_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TodosService_StreamList_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ListRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(TodosServiceServer).StreamList(m, &todosServiceStreamListServer{stream})
+}
+
+type TodosService_StreamListServer interface {
+	Send(*ListResponse) error
+	grpc.ServerStream
+}
+
+type todosServiceStreamListServer struct {
+	grpc.ServerStream
+}
+
+func (x *todosServiceStreamListServer) Send(m *ListResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 func _TodosService_GetRelatedData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetRelatedDataRequest)
 	if err := dec(in); err != nil {
@@ -206,6 +264,12 @@ var TodosService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _TodosService_GetRelatedData_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "StreamList",
+			Handler:       _TodosService_StreamList_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "api/todos/service.proto",
 }

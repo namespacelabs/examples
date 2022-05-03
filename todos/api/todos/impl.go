@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
+	"google.golang.org/protobuf/proto"
 	"namespacelabs.dev/examples/todos/api/trends"
 	"namespacelabs.dev/foundation/std/go/server"
 	"namespacelabs.dev/foundation/universe/db/postgres"
@@ -44,6 +46,42 @@ func (svc *Service) List(ctx context.Context, req *ListRequest) (*ListResponse, 
 		Items: todos,
 	}
 	return res, nil
+}
+
+func (svc *Service) StreamList(req *ListRequest, server TodosService_StreamListServer) error {
+	// Poll the database for changes.
+	t := time.NewTicker(250 * time.Millisecond)
+	defer t.Stop()
+
+	var previous *ListResponse
+
+	for {
+		select {
+		case <-server.Context().Done():
+			return nil
+
+		case <-t.C:
+			todos, err := fetchTodosList(server.Context(), svc.DB)
+			if err != nil {
+				return err
+			}
+
+			res := &ListResponse{
+				Items: todos,
+			}
+
+			// Don't push data to the client, if it didn't change from the previous response.
+			if previous != nil && proto.Equal(previous, res) {
+				continue
+			}
+
+			if err := server.Send(res); err != nil {
+				return err
+			}
+
+			previous = res
+		}
+	}
 }
 
 func (svc *Service) GetRelatedData(ctx context.Context, req *GetRelatedDataRequest) (*GetRelatedDataResponse, error) {

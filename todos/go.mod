@@ -6,7 +6,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.8.0
 	google.golang.org/grpc v1.45.0
 	google.golang.org/protobuf v1.27.1
-	namespacelabs.dev/foundation v0.0.41-0.20220429094347-3c41760a34a3
+	namespacelabs.dev/foundation v0.0.41-0.20220502230343-d6c4b07c221c
 	namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e
 )
 
