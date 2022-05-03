@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ListGroup } from "react-bootstrap";
 import { useInterval } from "usehooks-ts";
 import { TodoItem, todosService } from "../services/todos";
@@ -9,16 +9,13 @@ export function TodoList(props: {
 	setSelectedItem: (id: TodoItem | undefined) => void;
 }) {
 	const [todoList, setTodoList] = useState<TodoItem[] | undefined>();
-	const { selectedItem, setSelectedItem } = props;
+	useEffect(() => {
+		return todosService.streamList((items) => {
+			setTodoList(items);
+		});
+	}, []);
 
-	// Periodically poll the list of items.
-	useInterval(async () => {
-		const list = await todosService.list();
-		setTodoList(list);
-		if (!list.find((i) => i.id === selectedItem?.id)) {
-			setSelectedItem(undefined);
-		}
-	}, 200 /* ms */);
+	const { selectedItem, setSelectedItem } = props;
 
 	return todoList ? (
 		<div>
