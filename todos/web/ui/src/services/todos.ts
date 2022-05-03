@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Backends } from "../config/backends.fn.js";
+import { Backends } from "../../config/backends.fn.js";
 
 export interface TodoItem {
 	id: string;

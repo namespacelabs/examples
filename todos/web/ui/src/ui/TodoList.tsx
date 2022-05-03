@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { ListGroup } from "react-bootstrap";
 import { useInterval } from "usehooks-ts";
-import { TodoItem, todosService } from "./todos_service";
-import classes from "./todo_list.module.css";
+import { TodoItem, todosService } from "../services/todos";
+import classes from "./TodoList.module.css";
 
 export function TodoList(props: { onSelectedChanged?: (id: TodoItem | undefined) => void }) {
 	const [todoList, setTodoList] = useState<TodoItem[] | undefined>();

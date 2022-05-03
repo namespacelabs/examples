@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import classes from "./add_todo_form.module.css";
-import { todosService } from "./todos_service";
+import classes from "./AddTodoForm.module.css";
+import { todosService } from "../services/todos";
 
 export function AddTodoForm() {
 	const { register, handleSubmit, reset } = useForm();

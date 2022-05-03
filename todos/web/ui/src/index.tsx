@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import { TodoList } from "./TodoList";
+import { TodoList } from "./ui/TodoList";
 import classes from "./index.module.css";
-import { AddTodoForm } from "./AddTodoForm";
+import { AddTodoForm } from "./ui/AddTodoForm";
 import { Card } from "react-bootstrap";
-import { ItemInfo } from "./ItemInfo";
-import { TodoItem } from "./todos_service";
+import { ItemInfo } from "./ui/ItemInfo";
+import { TodoItem } from "./services/todos";
 
 ReactDOM.render(
 	<React.StrictMode>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { TodoItem, TodoRelatedData, todosService } from "./todos_service";
-import classes from "./item_info.module.css";
+import { TodoItem, TodoRelatedData, todosService } from "../services/todos";
+import classes from "./ItemInfo.module.css";
 
 export function ItemInfo(props: { item: TodoItem }) {
 	const [todoRelatedData, setTodoRelatedData] = useState<TodoRelatedData | undefined>();
