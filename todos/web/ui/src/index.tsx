@@ -21,7 +21,7 @@ function App() {
 		<div className={classes.root}>
 			<Card className={classes.card}>
 				<AddTodoForm></AddTodoForm>
-				<TodoList onSelectedChanged={setSelectedItem}></TodoList>
+				<TodoList selectedItem={selectedItem} setSelectedItem={setSelectedItem}></TodoList>
 			</Card>
 			{selectedItem ? (
 				<Card className={classes.card}>

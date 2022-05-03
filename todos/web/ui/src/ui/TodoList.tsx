@@ -4,9 +4,12 @@ import { useInterval } from "usehooks-ts";
 import { TodoItem, todosService } from "../services/todos";
 import classes from "./TodoList.module.css";
 
-export function TodoList(props: { onSelectedChanged?: (id: TodoItem | undefined) => void }) {
+export function TodoList(props: {
+	selectedItem?: TodoItem;
+	setSelectedItem: (id: TodoItem | undefined) => void;
+}) {
 	const [todoList, setTodoList] = useState<TodoItem[] | undefined>();
-	const [selectedItem, setSelectedItem] = useState<TodoItem | undefined>();
+	const { selectedItem, setSelectedItem } = props;
 
 	// Periodically poll the list of items.
 	useInterval(async () => {
@@ -14,7 +17,6 @@ export function TodoList(props: { onSelectedChanged?: (id: TodoItem | undefined)
 		setTodoList(list);
 		if (!list.find((i) => i.id === selectedItem?.id)) {
 			setSelectedItem(undefined);
-			props.onSelectedChanged?.(undefined);
 		}
 	}, 200 /* ms */);
 
@@ -32,7 +34,6 @@ export function TodoList(props: { onSelectedChanged?: (id: TodoItem | undefined)
 								onClick={() => {
 									const newSelectedItem = todoItem.id === selectedItem?.id ? undefined : todoItem;
 									setSelectedItem(newSelectedItem);
-									props.onSelectedChanged?.(newSelectedItem);
 								}}></TodoItem>
 						))}
 					</ListGroup>
