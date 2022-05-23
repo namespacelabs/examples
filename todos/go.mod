@@ -4,9 +4,9 @@ go 1.17
 
 require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.8.0
-	google.golang.org/grpc v1.45.0
-	google.golang.org/protobuf v1.27.1
-	namespacelabs.dev/foundation v0.0.41-0.20220502230343-d6c4b07c221c
+	google.golang.org/grpc v1.46.0
+	google.golang.org/protobuf v1.28.0
+	namespacelabs.dev/foundation v0.0.42-0.20220523224307-d6c8795db8fb
 	namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e
 )
 
@@ -23,10 +23,10 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
-	github.com/jackc/pgconn v1.11.0 // indirect
+	github.com/jackc/pgconn v1.12.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
-	github.com/jackc/pgproto3/v2 v2.2.0 // indirect
+	github.com/jackc/pgproto3/v2 v2.3.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
 	github.com/jackc/pgtype v1.10.0 // indirect
 	github.com/jackc/pgx/v4 v4.15.0 // indirect
@@ -44,20 +44,20 @@ require (
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/segmentio/ksuid v1.0.4 // indirect
 	github.com/soheilhy/cmux v0.1.5 // indirect
-	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.29.0 // indirect
+	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.32.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.29.0 // indirect
-	go.opentelemetry.io/otel v1.6.1 // indirect
-	go.opentelemetry.io/otel/exporters/jaeger v1.4.1 // indirect
+	go.opentelemetry.io/otel v1.7.0 // indirect
+	go.opentelemetry.io/otel/exporters/jaeger v1.7.0 // indirect
 	go.opentelemetry.io/otel/internal/metric v0.27.0 // indirect
 	go.opentelemetry.io/otel/metric v0.27.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.4.1 // indirect
-	go.opentelemetry.io/otel/trace v1.6.1 // indirect
+	go.opentelemetry.io/otel/sdk v1.7.0 // indirect
+	go.opentelemetry.io/otel/trace v1.7.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/automaxprocs v1.5.1 // indirect
-	golang.org/x/crypto v0.0.0-20211215165025-cf75a172585e // indirect
-	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
-	golang.org/x/sys v0.0.0-20220422013727-9388b58f7150 // indirect
+	golang.org/x/crypto v0.0.0-20220427172511-eb4f295cb31f // indirect
+	golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4 // indirect
+	golang.org/x/sys v0.0.0-20220513210249-45d2b4557a2a // indirect
 	golang.org/x/text v0.3.7 // indirect
-	google.golang.org/genproto v0.0.0-20220302033224-9aa15565e42a // indirect
-	tailscale.com v1.22.2 // indirect
+	google.golang.org/genproto v0.0.0-20220505152158-f39f71e6c8f3 // indirect
+	tailscale.com v1.24.2 // indirect
 )

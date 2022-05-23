@@ -2,7 +2,7 @@ import (
 	"namespacelabs.dev/foundation/std/fn"
 	"namespacelabs.dev/foundation/std/fn:inputs"
 	"namespacelabs.dev/foundation/std/grpc"
-	"namespacelabs.dev/foundation/universe/db/postgres/incluster"
+	postgres "namespacelabs.dev/foundation/universe/db/postgres/incluster"
 	"namespacelabs.dev/foundation/std/grpc/deadlines"
 )
 
@@ -18,7 +18,7 @@ service: fn.#Service & {
 			packageName: "namespacelabs.dev/examples/todos/api/trends"
 		}
 
-		db: incluster.#Exports.Database & {
+		db: postgres.#Exports.Database & {
 			name:       "todos"
 			schemaFile: inputs.#FromFile & {
 				path: "schema.sql"
