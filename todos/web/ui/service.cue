@@ -10,7 +10,7 @@ service: fn.#Service & {
 	instantiate: {
 		apiBackend: http.#Exports.Backend & {
 			endpointOwner: "namespacelabs.dev/examples/todos/api/server"
-			serviceName:   "grpc-gateway"
+			manager:       "namespacelabs.dev/foundation/std/grpc/httptranscoding"
 		}
 	}
 }

@@ -34,8 +34,6 @@ func WireServices(ctx context.Context, srv server.Server, depgraph core.Dependen
 		errs = append(errs, err)
 	}
 
-	srv.InternalRegisterGrpcGateway(todos.RegisterTodosServiceHandler)
-
 	if err := depgraph.Instantiate(ctx, trends.Provider__021jd8, func(ctx context.Context, v interface{}) error {
 		trends.WireService(ctx, srv.Scope(trends.Package__021jd8), v.(trends.ServiceDeps))
 		return nil

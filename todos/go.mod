@@ -6,13 +6,11 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.8.0
 	google.golang.org/grpc v1.46.2
 	google.golang.org/protobuf v1.28.0
-	namespacelabs.dev/foundation v0.0.43-0.20220602125003-74e734820264
+	namespacelabs.dev/foundation v0.0.43-0.20220613120042-c907246da289
 	namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e
 )
 
 require (
-	cloud.google.com/go v0.102.0 // indirect
-	cloud.google.com/go/compute v1.6.1 // indirect
 	cuelang.org/go v0.4.3 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
@@ -62,3 +60,5 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/genproto v0.0.0-20220523171625-347a074981d8 // indirect
 )
+
+replace sigs.k8s.io/aws-iam-authenticator => namespacelabs.dev/aws-iam-authenticator v0.5.8-0.20220603141112-71d1e80cc0c1
