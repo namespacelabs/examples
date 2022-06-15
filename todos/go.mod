@@ -3,10 +3,9 @@ module namespacelabs.dev/examples/todos
 go 1.17
 
 require (
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.8.0
 	google.golang.org/grpc v1.46.2
 	google.golang.org/protobuf v1.28.0
-	namespacelabs.dev/foundation v0.0.43-0.20220613120042-c907246da289
+	namespacelabs.dev/foundation v0.0.43-0.20220615002914-ed1a2e2b377f
 	namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e
 )
 
@@ -22,6 +21,7 @@ require (
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.8.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.12.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect

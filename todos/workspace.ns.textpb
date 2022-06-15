@@ -1,10 +1,9 @@
 module_name: "namespacelabs.dev/examples/todos"
-
 foundation: {
-	minimum_api: 35
+  minimum_api: 35
 }
 
 dep: {
   module_name: "namespacelabs.dev/foundation"
-  version: "c907246da2891bcec970d1b963a7a28116ef747e"
+  version: "ed1a2e2b377f2c1fe641097558352ac33f35b723"
 }
