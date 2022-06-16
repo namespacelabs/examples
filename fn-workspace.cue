@@ -1,10 +1,10 @@
-module: "namespacelabs.dev/examples/todos"
+module: "namespacelabs.dev/examples"
 requirements: {
 	api: 35
 }
 dependency: {
 	"namespacelabs.dev/foundation": {
-		version: "ce1b880b5907de5db299625b9ace1822b29e11e6"
+		version: "6515a8626f5bd47f37db1c0d81dd198ac7443915"
 	}
 }
 environment: {

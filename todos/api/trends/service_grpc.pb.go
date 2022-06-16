@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             (unknown)
-// source: api/trends/service.proto
+// source: todos/api/trends/service.proto
 
 package trends
 
@@ -99,5 +99,5 @@ var TrendsService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/trends/service.proto",
+	Metadata: "todos/api/trends/service.proto",
 }

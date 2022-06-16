@@ -1,11 +1,11 @@
-module namespacelabs.dev/examples/todos
+module namespacelabs.dev/examples
 
 go 1.17
 
 require (
 	google.golang.org/grpc v1.46.2
 	google.golang.org/protobuf v1.28.0
-	namespacelabs.dev/foundation v0.0.43-0.20220615215826-e6e6beab42ac
+	namespacelabs.dev/foundation v0.0.43-0.20220616150513-6515a8626f5b
 	namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e
 )
 

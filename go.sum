@@ -2589,6 +2589,8 @@ namespacelabs.dev/foundation v0.0.43-0.20220615002914-ed1a2e2b377f h1:CcmylhEWXW
 namespacelabs.dev/foundation v0.0.43-0.20220615002914-ed1a2e2b377f/go.mod h1:ekRXTa9TjW5GzyIT0Hrmi3gsbC60EHtnNVeheEKIIX8=
 namespacelabs.dev/foundation v0.0.43-0.20220615215826-e6e6beab42ac h1:joiGwfo1iFz5+1c+/O3ng1oAEFmhjQqfWee18RIXzm8=
 namespacelabs.dev/foundation v0.0.43-0.20220615215826-e6e6beab42ac/go.mod h1:ekRXTa9TjW5GzyIT0Hrmi3gsbC60EHtnNVeheEKIIX8=
+namespacelabs.dev/foundation v0.0.43-0.20220616150513-6515a8626f5b h1:mx3x+tCk+mkNQApOp54HzYTtpO5j4/L7L4Jy6XWUJCI=
+namespacelabs.dev/foundation v0.0.43-0.20220616150513-6515a8626f5b/go.mod h1:ekRXTa9TjW5GzyIT0Hrmi3gsbC60EHtnNVeheEKIIX8=
 namespacelabs.dev/go-filenotify v0.0.0-20220511192020-53ea11be7eaa/go.mod h1:e8NJRaInXRRm1+KPA6EkGEzdLJAgEvVSIKiLzpP97nI=
 namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e h1:crQthT7TnDNKEtZLcOZ2eHsiLqlzoETD8cwAuHKgUsg=
 namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e/go.mod h1:J+Sd+ngeffnCsaO/M7zgs2bR8Klq/ZBhS0+bbnDEH2M=
