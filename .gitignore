@@ -28,3 +28,10 @@ web/ui/dist
 # !api/server/secrets/contents.tar.*
 
 .history
+
+**/.yarn/*
+!**/.yarn/patches
+!**/.yarn/plugins
+!**/.yarn/releases
+!**/.yarn/sdks
+!**/.yarn/versions
