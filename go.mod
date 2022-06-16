@@ -1,4 +1,4 @@
-module namespacelabs.dev/examples/todos
+module namespacelabs.dev/examples
 
 go 1.17
 

@@ -1,4 +1,4 @@
-module: "namespacelabs.dev/examples/todos"
+module: "namespacelabs.dev/examples"
 requirements: {
 	api: 35
 }

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             (unknown)
-// source: api/todos/service.proto
+// source: todos/api/todos/service.proto
 
 package todos
 
@@ -271,5 +271,5 @@ var TodosService_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "api/todos/service.proto",
+	Metadata: "todos/api/todos/service.proto",
 }
