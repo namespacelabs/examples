@@ -5,7 +5,7 @@ go 1.17
 require (
 	google.golang.org/grpc v1.46.2
 	google.golang.org/protobuf v1.28.0
-	namespacelabs.dev/foundation v0.0.43-0.20220616150258-ce1b880b5907
+	namespacelabs.dev/foundation v0.0.43-0.20220617131250-0e1f6784e25d
 	namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e
 )
 
@@ -17,7 +17,7 @@ require (
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/gorilla/handlers v0.0.0-20150720190736-60c7bfde3e33 // indirect
+	github.com/gorilla/handlers v1.5.1 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
@@ -33,7 +33,6 @@ require (
 	github.com/jackc/puddle v1.2.1 // indirect
 	github.com/jxskiss/base62 v1.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/lib/pq v1.10.4 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
 	github.com/mpvl/unique v0.0.0-20150818121801-cbe035fff7de // indirect

@@ -4,7 +4,7 @@ requirements: {
 }
 dependency: {
 	"namespacelabs.dev/foundation": {
-		version: "ce1b880b5907de5db299625b9ace1822b29e11e6"
+		version: "0e1f6784e25d9d8b5454f7a10ff1a18329edee2b"
 	}
 }
 environment: {
