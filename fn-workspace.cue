@@ -2,11 +2,6 @@ module: "namespacelabs.dev/examples"
 requirements: {
 	api: 35
 }
-dependency: {
-	"namespacelabs.dev/foundation": {
-		version: "f014472068d807bd8780bd4d44f4fa538c792349"
-	}
-}
 environment: {
 	dev: {
 		runtime: "kubernetes"
@@ -19,5 +14,10 @@ environment: {
 	prod: {
 		runtime: "kubernetes"
 		purpose: "PRODUCTION"
+	}
+}
+dependency: {
+	"namespacelabs.dev/foundation": {
+		version: "ceaaada8d80b4b25f3ae8deac90b996daf9db5c9"
 	}
 }
