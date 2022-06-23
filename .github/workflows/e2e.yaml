@@ -58,7 +58,7 @@ jobs:
         run: cd ./foundation/ && go install ./cmd/ns
 
       - name: Prepare development environment
-        run: cd ./main && ns prepare
+        run: cd ./main && ns prepare local
 
       - name: Print kubectl cluster-info
         run: kubectl cluster-info
