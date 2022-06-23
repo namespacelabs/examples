@@ -52,20 +52,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-fnrun-
 
-      - name: Build fn
+      - name: Build ns
         env:
           CGO_ENABLED: 0
-        run: cd ./foundation/ && go install ./cmd/fn
+        run: cd ./foundation/ && go install ./cmd/ns
 
       - name: Prepare development environment
-        run: cd ./main && fn prepare
+        run: cd ./main && ns prepare
 
       - name: Print kubectl cluster-info
         run: kubectl cluster-info
 
       - name: Run all tests
         run: |
-          cd ./main && fn test \
+          cd ./main && ns test \
             --buildkit_import_cache=type=gha \
             --buildkit_export_cache=type=gha,mode=max \
             --use_prebuilts=true \
