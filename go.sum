@@ -2749,8 +2749,8 @@ mvdan.cc/interfacer v0.0.0-20180901003855-c20040233aed/go.mod h1:Xkxe497xwlCKkIa
 mvdan.cc/lint v0.0.0-20170908181259-adc824a0674b/go.mod h1:2odslEg/xrtNQqCYg2/jCoyKnw3vv5biOc3JnIcYfL4=
 mvdan.cc/unparam v0.0.0-20190720180237-d51796306d8f/go.mod h1:4G1h5nDURzA3bwVMZIVpwbkw+04kSxk3rAtzlimaUJw=
 mvdan.cc/unparam v0.0.0-20200501210554-b37ab49443f7/go.mod h1:HGC5lll35J70Y5v7vCGb9oLhHoScFwkHDJm/05RdSTc=
-namespacelabs.dev/foundation v0.0.44-0.20220623150641-8330d2633b09 h1:6t3XCF7yyA8ffhfGbBC7uAdzC6B7AOb8OPsA7rkFTjU=
-namespacelabs.dev/foundation v0.0.44-0.20220623150641-8330d2633b09/go.mod h1:9c5VgyYwc0tgxIfoMiO5KAEK6Zpvl5fJG5kR5XIKpJA=
+namespacelabs.dev/foundation v0.0.44-0.20220623152357-c08091abb53a h1:j5uWz+ndwpvRtePjtYhbdI9L1CtT91EatCho+vELhpM=
+namespacelabs.dev/foundation v0.0.44-0.20220623152357-c08091abb53a/go.mod h1:9c5VgyYwc0tgxIfoMiO5KAEK6Zpvl5fJG5kR5XIKpJA=
 namespacelabs.dev/go-filenotify v0.0.0-20220511192020-53ea11be7eaa/go.mod h1:e8NJRaInXRRm1+KPA6EkGEzdLJAgEvVSIKiLzpP97nI=
 namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e h1:crQthT7TnDNKEtZLcOZ2eHsiLqlzoETD8cwAuHKgUsg=
 namespacelabs.dev/go-ids v0.0.0-20220216144417-79021816502e/go.mod h1:J+Sd+ngeffnCsaO/M7zgs2bR8Klq/ZBhS0+bbnDEH2M=
