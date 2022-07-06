@@ -6,6 +6,10 @@ export interface TodoItem {
 	name: string;
 }
 
+interface StreamResponse {
+	items: TodoItem[];
+}
+
 export interface TodoRelatedData {
 	popularity: number;
 }
@@ -33,32 +37,30 @@ export class HttpTodosServiceImpl implements TodosService {
 
 	// TODO: handle reconnects.
 	public streamList(onItems: (items: TodoItem[]) => void): () => void {
-		const xhr = new XMLHttpRequest();
-		xhr.open("POST", `${this.#baseUrl}/api.todos.TodosService/StreamList`, true);
+		const controller = new AbortController();
 
-		let previousPtr = 0;
-		xhr.onprogress = () => {
-			while (true) {
-				const newPtr = xhr.responseText.substring(previousPtr).indexOf("\n");
-				if (newPtr < 0) {
-					return;
+		fetch(`${this.#baseUrl}/api.todos.TodosService/StreamList`, {
+			method: "POST",
+			signal: controller.signal,
+			keepalive: true,
+		}).then(async (w) => {
+			const reader = w.body?.getReader();
+			if (reader) {
+				const p = new ArrayParser<StreamResponse>((value) => {
+					onItems(value.items);
+				});
+				while (true) {
+					const { done, value } = await reader.read();
+					if (done) break;
+					if (value) p.write(value);
 				}
-				const newLine = xhr.responseText.substring(previousPtr, previousPtr + newPtr);
-				previousPtr += newPtr + "\n".length;
-
-				console.log(`StreamList: server response: ${newLine}`);
-
-				const parsed = JSON.parse(newLine);
-				onItems(parsed.result?.items as TodoItem[]);
+				p.close();
 			}
-		};
-
-		xhr.send(null);
-		console.log(`Started StreamList`);
+		});
 
 		return () => {
 			console.log("Stopping StreamList");
-			xhr.abort();
+			controller.abort();
 		};
 	}
 
@@ -84,3 +86,96 @@ export class HttpTodosServiceImpl implements TodosService {
 console.log(`Backends: ${JSON.stringify(Backends)}`);
 
 export const todosService: TodosService = new HttpTodosServiceImpl(Backends.apiBackend.managed);
+
+// Parser that is specific to our current Envoy behavior.
+class ArrayParser<T> {
+	readonly onValue: (value: T) => void;
+	arraydepth: number;
+	objectdepth: number;
+	arrayBuffer: ArrayBuffer;
+	cursor: number;
+	instring: boolean;
+
+	constructor(onValue: (value: T) => void) {
+		this.onValue = onValue;
+		this.arraydepth = 0;
+		this.objectdepth = 0;
+		this.arrayBuffer = new ArrayBuffer(1024 * 1024);
+		this.cursor = 0;
+		this.instring = false;
+	}
+
+	write(data: Uint8Array) {
+		const x = new Uint8Array(this.arrayBuffer);
+
+		for (let i = 0; i < data.length; i++) {
+			if (this.arraydepth === 0) {
+				if (data[i] == 91) {
+					// '['
+					this.arraydepth++;
+				} else {
+					throw new Error(`unexpected byte: ${data[i]}`);
+				}
+			} else {
+				x[this.cursor++] = data[i];
+
+				if (this.instring) {
+					if (data[i] == 34 && this.cursor > 1 && x[this.cursor - 2] != 92) {
+						// `"`, `\`
+						this.instring = false;
+					}
+				} else {
+					switch (data[i]) {
+						case 123: // {
+							this.objectdepth++;
+							break;
+
+						case 125: // }
+							this.objectdepth--;
+
+							if (this.objectdepth == 0) {
+								const raw = new TextDecoder().decode(
+									new Uint8Array(this.arrayBuffer, 0, this.cursor)
+								);
+								console.log({ raw }, JSON.parse(raw));
+								this.cursor = 0;
+								this.onValue(JSON.parse(raw));
+							}
+							break;
+
+						case 91: // [
+							this.arraydepth++;
+							break;
+
+						case 93: // ]
+							this.arraydepth--;
+							if (this.arraydepth === 0) {
+								this.cursor--; // Ignore the closing array byte.
+							}
+							break;
+
+						case 44: // ,
+							if (this.arraydepth === 1) {
+								this.cursor--; // Ignore the separating comma.
+							}
+							break;
+
+						case 34: // "
+							this.instring = true;
+							break;
+					}
+				}
+			}
+		}
+	}
+
+	close() {
+		if (this.cursor > 0) {
+			throw new Error(
+				`unconsumed data: ${new TextDecoder().decode(
+					new Uint8Array(this.arrayBuffer, 0, this.cursor)
+				)}`
+			);
+		}
+	}
+}
