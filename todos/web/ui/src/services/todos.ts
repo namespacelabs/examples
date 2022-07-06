@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Backends } from "../../config/backends.fn.js";
 
 export interface TodoItem {
@@ -30,9 +29,8 @@ export class HttpTodosServiceImpl implements TodosService {
 	}
 
 	public async list(): Promise<TodoItem[]> {
-		const response = await axios.post(`${this.#baseUrl}/api.todos.TodosService/List`);
-		console.log(`Server response: ${JSON.stringify(response.data)}`);
-		return response.data["items"] as TodoItem[];
+		const value = await postJson(`${this.#baseUrl}/api.todos.TodosService/List`, null);
+		return (value as StreamResponse).items;
 	}
 
 	// TODO: handle reconnects.
@@ -46,15 +44,15 @@ export class HttpTodosServiceImpl implements TodosService {
 		}).then(async (w) => {
 			const reader = w.body?.getReader();
 			if (reader) {
-				const p = new ArrayParser<StreamResponse>((value) => {
+				const parser = new ArrayParser<StreamResponse>((value) => {
 					onItems(value.items);
 				});
 				while (true) {
 					const { done, value } = await reader.read();
 					if (done) break;
-					if (value) p.write(value);
+					if (value) parser.write(value);
 				}
-				p.close();
+				parser.close();
 			}
 		});
 
@@ -65,22 +63,26 @@ export class HttpTodosServiceImpl implements TodosService {
 	}
 
 	public async add(todoItem: { name: string }) {
-		const response = await axios.post(`${this.#baseUrl}/api.todos.TodosService/Add`, todoItem);
-		console.log(`Server response: ${JSON.stringify(response.data)}`);
+		await postJson(`${this.#baseUrl}/api.todos.TodosService/Add`, todoItem);
 	}
 
 	public async remove(id: string) {
-		const response = await axios.post(`${this.#baseUrl}/api.todos.TodosService/Remove`, { id: id });
-		console.log(`Server response: ${JSON.stringify(response.data)}`);
+		await postJson(`${this.#baseUrl}/api.todos.TodosService/Remove`, { id: id });
 	}
 
 	public async getRelatedData(id: string): Promise<TodoRelatedData> {
-		const response = await axios.post(`${this.#baseUrl}/api.todos.TodosService/GetRelatedData`, {
+		const response = await postJson(`${this.#baseUrl}/api.todos.TodosService/GetRelatedData`, {
 			id: id,
 		});
-		console.log(`Server response: ${JSON.stringify(response.data)}`);
-		return response.data;
+		return response;
 	}
+}
+
+async function postJson(url: string, body: any) {
+	const response = await fetch(url, { method: "POST", body: body ? JSON.stringify(body) : null });
+	const value = await response.json();
+	console.log("Server response:", value);
+	return value;
 }
 
 console.log(`Backends: ${JSON.stringify(Backends)}`);
@@ -137,7 +139,6 @@ class ArrayParser<T> {
 								const raw = new TextDecoder().decode(
 									new Uint8Array(this.arrayBuffer, 0, this.cursor)
 								);
-								console.log({ raw }, JSON.parse(raw));
 								this.cursor = 0;
 								this.onValue(JSON.parse(raw));
 							}

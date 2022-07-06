@@ -112,9 +112,9 @@ func removeTodo(ctx context.Context, req *RemoveRequest, db *postgres.DB) error 
 	// "Development" User Journey:
 	// Uncomment next 3 lines.
 
-	// if _, err := db.Exec(ctx, "DELETE FROM todos_table WHERE ID = $1;", req.Id); err != nil {
-	// 	return fmt.Errorf("failed to remove todo: %w", err)
-	// }
+	if _, err := db.Exec(ctx, "DELETE FROM todos_table WHERE ID = $1;", req.Id); err != nil {
+		return fmt.Errorf("failed to remove todo: %w", err)
+	}
 
 	return nil
 }
