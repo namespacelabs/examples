@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ListGroup } from "react-bootstrap";
-import { useInterval } from "usehooks-ts";
 import { TodoItem, todosService } from "../services/todos";
 import classes from "./TodoList.module.css";
 
@@ -24,14 +23,14 @@ export function TodoList(props: {
 					<div className={classes.itemsTitle}>Items:</div>
 					<ListGroup>
 						{todoList.map((todoItem) => (
-							<TodoItem
+							<TodoItemView
 								item={todoItem}
 								key={todoItem.id}
 								isSelected={todoItem.id === selectedItem?.id}
 								onClick={() => {
 									const newSelectedItem = todoItem.id === selectedItem?.id ? undefined : todoItem;
 									setSelectedItem(newSelectedItem);
-								}}></TodoItem>
+								}}></TodoItemView>
 						))}
 					</ListGroup>
 				</>
@@ -44,7 +43,7 @@ export function TodoList(props: {
 	);
 }
 
-function TodoItem(props: { item: TodoItem; isSelected: boolean; onClick?: () => void }) {
+function TodoItemView(props: { item: TodoItem; isSelected: boolean; onClick?: () => void }) {
 	return (
 		<ListGroup.Item className={classes.todoItem} active={props.isSelected} action>
 			<div onClick={props.onClick}>{props.item.name}</div>
