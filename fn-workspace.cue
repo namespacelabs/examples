@@ -1,6 +1,6 @@
 module: "namespacelabs.dev/examples"
 requirements: {
-	api: 35
+	api: 41
 }
 environment: {
 	dev: {
@@ -18,6 +18,6 @@ environment: {
 }
 dependency: {
 	"namespacelabs.dev/foundation": {
-		version: "262f7cf1df5c24b50ffbae30ec6edbd071d724b2"
+		version: "11c6b56935b0f529751eb8f4611b878358f55a3a"
 	}
 }
