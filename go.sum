@@ -3092,8 +3092,8 @@ mvdan.cc/lint v0.0.0-20170908181259-adc824a0674b/go.mod h1:2odslEg/xrtNQqCYg2/jC
 mvdan.cc/unparam v0.0.0-20190720180237-d51796306d8f/go.mod h1:4G1h5nDURzA3bwVMZIVpwbkw+04kSxk3rAtzlimaUJw=
 mvdan.cc/unparam v0.0.0-20200501210554-b37ab49443f7/go.mod h1:HGC5lll35J70Y5v7vCGb9oLhHoScFwkHDJm/05RdSTc=
 mvdan.cc/unparam v0.0.0-20210104141923-aac4ce9116a7/go.mod h1:hBpJkZE8H/sb+VRFvw2+rBpHNsTBcvSpk61hr8mzXZE=
-namespacelabs.dev/foundation v0.0.54-0.20220901092903-11c6b56935b0 h1:9Mv9rC2Rt3QTNzvUGyRSr5QBbw+KSrxg9O2nOoJrXPA=
-namespacelabs.dev/foundation v0.0.54-0.20220901092903-11c6b56935b0/go.mod h1:GM0WzbbeEIjnRJAo38yHpnMSXWnfRgebAOIo46M+M38=
+namespacelabs.dev/foundation v0.0.54-0.20220902131509-b778d8a588dc h1:7OrG3Fxaae/tPmPMfPUNgoJ1ClFrIPagCQJhNY4RSSs=
+namespacelabs.dev/foundation v0.0.54-0.20220902131509-b778d8a588dc/go.mod h1:KAGN5Yi9AJgheMTpvVIXZfSnVdbStISoaEmz7y1zH3s=
 namespacelabs.dev/go-filenotify v0.0.0-20220511192020-53ea11be7eaa/go.mod h1:e8NJRaInXRRm1+KPA6EkGEzdLJAgEvVSIKiLzpP97nI=
 namespacelabs.dev/go-ids v0.0.0-20220708072700-49c0a87d068b h1:0ZvpjjzGHwD/PHczPmZ/HsIX77f0/SyM8Y1lLVBStgw=
 namespacelabs.dev/go-ids v0.0.0-20220708072700-49c0a87d068b/go.mod h1:J+Sd+ngeffnCsaO/M7zgs2bR8Klq/ZBhS0+bbnDEH2M=
