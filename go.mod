@@ -5,7 +5,7 @@ go 1.18
 require (
 	google.golang.org/grpc v1.47.0
 	google.golang.org/protobuf v1.28.0
-	namespacelabs.dev/foundation v0.0.54-0.20220909110834-418d29ae0b0d
+	namespacelabs.dev/foundation v0.0.54-0.20220914171111-54fdfb78b0e1
 	namespacelabs.dev/go-ids v0.0.0-20220708072700-49c0a87d068b
 )
 
