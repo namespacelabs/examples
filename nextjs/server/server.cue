@@ -3,13 +3,9 @@ server: {
 
 	integration: "nodejs"
 
-	env: {
-		"PORT": "4000"
-	}
-
 	services: {
 		webapi: {
-			port: 4000
+			port: 3000
 			kind: "http"
 
 			ingress: {
