@@ -3,6 +3,8 @@ module namespacelabs.dev/examples
 go 1.18
 
 require (
+	github.com/cenkalti/backoff/v4 v4.1.3
+	github.com/jackc/pgx/v4 v4.16.1
 	google.golang.org/grpc v1.47.0
 	google.golang.org/protobuf v1.28.0
 	namespacelabs.dev/foundation v0.0.54-0.20220930111100-dade7cf5817d
@@ -30,7 +32,6 @@ require (
 	github.com/jackc/pgproto3/v2 v2.3.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
 	github.com/jackc/pgtype v1.11.0 // indirect
-	github.com/jackc/pgx/v4 v4.16.1 // indirect
 	github.com/jackc/puddle v1.2.1 // indirect
 	github.com/jxskiss/base62 v1.1.0 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369 // indirect

@@ -10,3 +10,7 @@ server: {
 		ingress: internetFacing: true
 	}
 }
+
+requires: [
+	"namespacelabs.dev/examples/nextjs/api",
+]
