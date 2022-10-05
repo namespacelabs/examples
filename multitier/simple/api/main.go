@@ -21,6 +21,8 @@ import (
 	"namespacelabs.dev/foundation/std/runtime"
 )
 
+const dbPackage = "namespacelabs.dev/examples/multitier/simple/db"
+
 var (
 	//go:embed schema.sql
 	lib embed.FS
@@ -61,7 +63,7 @@ func connectPG(ctx context.Context, config *runtime.RuntimeConfig) (conn *pgx.Co
 
 	var endpoint string
 	for _, e := range config.StackEntry {
-		if e.PackageName != "namespacelabs.dev/examples/nextjs/db/postgres/server" {
+		if e.PackageName != dbPackage {
 			continue
 		}
 
