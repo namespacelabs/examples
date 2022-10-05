@@ -4,6 +4,7 @@ server: {
 	integration: "go"
 
 	env: {
+		POSTGRES_DB:       "todos"
 		POSTGRES_PASSWORD: "DemoPasswordValue"
 	}
 

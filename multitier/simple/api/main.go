@@ -59,6 +59,7 @@ func main() {
 }
 
 func connectPG(ctx context.Context, config *runtime.RuntimeConfig) (conn *pgx.Conn, err error) {
+	db := os.Getenv("POSTGRES_DB")
 	password := os.Getenv("POSTGRES_PASSWORD")
 
 	var endpoint string
@@ -77,7 +78,7 @@ func connectPG(ctx context.Context, config *runtime.RuntimeConfig) (conn *pgx.Co
 
 	// Retry until backend is ready.
 	err = backoff.Retry(func() error {
-		conn, err = pgx.Connect(ctx, fmt.Sprintf("postgres://postgres:%s@%s/postgres", password, endpoint))
+		conn, err = pgx.Connect(ctx, fmt.Sprintf("postgres://postgres:%s@%s/%s", password, endpoint, db))
 		return err
 	}, backoff.WithContext(backoff.NewConstantBackOff(time.Second), ctx))
 

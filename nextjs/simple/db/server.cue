@@ -8,6 +8,7 @@ server: {
 	env: {
 		// PGDATA may not be a mount point but only a subdirectory.
 		PGDATA:            "/postgres/data/pgdata"
+		POSTGRES_DB:       "nextjs"
 		POSTGRES_PASSWORD: "DemoPasswordValue"
 	}
 
