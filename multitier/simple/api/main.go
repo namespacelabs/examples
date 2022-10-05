@@ -6,8 +6,9 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	"embed"
 	"fmt"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -20,11 +21,10 @@ import (
 	"namespacelabs.dev/foundation/std/runtime"
 )
 
-const schema = `CREATE TABLE IF NOT EXISTS list (
-    Id INT GENERATED ALWAYS AS IDENTITY,
-    Item varchar(255) NOT NULL,
-    PRIMARY KEY(Id)
-);`
+var (
+	//go:embed schema.sql
+	lib embed.FS
+)
 
 func main() {
 	ctx := context.Background()
@@ -38,12 +38,18 @@ func main() {
 		panic(err)
 	}
 
-	if _, err := conn.Exec(ctx, schema); err != nil {
+	schema, err := fs.ReadFile(lib, "schema.sql")
+	if err != nil {
+		panic(err)
+	}
+	if _, err := conn.Exec(ctx, string(schema)); err != nil {
 		panic(err)
 	}
 
-	http.HandleFunc("/post", post(ctx, conn))
+	http.HandleFunc("/add", add(ctx, conn))
+	http.HandleFunc("/remove", remove(ctx, conn))
 	http.HandleFunc("/list", list(ctx, conn))
+	http.HandleFunc("/stream", stream(ctx, conn))
 
 	port := config.Current.Port[0].Port
 	log.Printf("Listening on port: %d\n", port)
@@ -74,53 +80,4 @@ func connectPG(ctx context.Context, config *runtime.RuntimeConfig) (conn *pgx.Co
 	}, backoff.WithContext(backoff.NewConstantBackOff(time.Second), ctx))
 
 	return conn, err
-}
-
-type request struct {
-	Item string `json:"item"`
-}
-
-func post(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http.Request) {
-	return func(rw http.ResponseWriter, req *http.Request) {
-		var parsed request
-		if err := json.NewDecoder(req.Body).Decode(&parsed); err != nil {
-			rw.WriteHeader(400)
-			fmt.Fprintf(rw, "invalid request: %v\n", err)
-			return
-		}
-
-		if _, err := conn.Exec(ctx, "INSERT INTO list (Item) VALUES ($1);", parsed.Item); err != nil {
-			rw.WriteHeader(500)
-			fmt.Fprintf(rw, "failed to insert into db: %v\n", err)
-			return
-		}
-	}
-}
-
-func list(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http.Request) {
-	return func(rw http.ResponseWriter, _ *http.Request) {
-		rows, err := conn.Query(ctx, "SELECT Item FROM list;")
-		if err != nil {
-			rw.WriteHeader(500)
-			fmt.Fprintf(rw, "failed to connect to db: %v\n", err)
-			return
-		}
-		defer rows.Close()
-
-		var items []string
-		for rows.Next() {
-			var item string
-			err = rows.Scan(&item)
-			if err != nil {
-				rw.WriteHeader(500)
-				fmt.Fprintf(rw, "failed to process db response: %v\n", err)
-				return
-			}
-			items = append(items, item)
-		}
-
-		for _, item := range items {
-			fmt.Fprintln(rw, item)
-		}
-	}
 }

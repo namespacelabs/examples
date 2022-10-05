@@ -18,5 +18,5 @@ server: {
 }
 
 requires: [
-	"namespacelabs.dev/examples/nextjs/db/postgres/server",
+	"namespacelabs.dev/examples/multitier/simple/db",
 ]

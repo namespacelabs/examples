@@ -12,5 +12,5 @@ server: {
 }
 
 requires: [
-	"namespacelabs.dev/examples/nextjs/api",
+	"namespacelabs.dev/examples/nextjs/simple/db",
 ]
