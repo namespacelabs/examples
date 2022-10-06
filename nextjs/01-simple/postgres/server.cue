@@ -2,7 +2,7 @@ server: {
 	name: "nextjs-simple-postgres-server"
 
 	image: "postgres:14.0@sha256:db927beee892dd02fbe963559f29a7867708747934812a80f83bff406a0d54fd"
-	
+
 	// Postgres mounts a persistent volume which requires a stateful deployment (more conservative update strategy). 
 	class: "stateful"
 
