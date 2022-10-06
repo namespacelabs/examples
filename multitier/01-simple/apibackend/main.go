@@ -21,7 +21,7 @@ import (
 	"namespacelabs.dev/foundation/std/runtime"
 )
 
-const dbPackage = "namespacelabs.dev/examples/multitier/simple/db"
+const dbPackage = "namespacelabs.dev/examples/multitier/01-simple/postgres"
 
 var (
 	//go:embed schema.sql
