@@ -91,9 +91,13 @@ func list(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http.R
 			return
 		}
 
-		for _, todo := range todos {
-			fmt.Fprintln(rw, todo)
+		serialized, err := json.Marshal(todos)
+		if err != nil {
+			rw.WriteHeader(500)
+			fmt.Fprintf(rw, "internal error: %v\n", err)
+			return
 		}
+		fmt.Fprintln(rw, string(serialized))
 	}
 }
 
@@ -123,9 +127,13 @@ func stream(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http
 					continue
 				}
 
-				for _, item := range todos {
-					fmt.Fprintln(rw, item)
+				serialized, err := json.Marshal(todos)
+				if err != nil {
+					rw.WriteHeader(500)
+					fmt.Fprintf(rw, "internal error: %v\n", err)
+					return
 				}
+				fmt.Fprintln(rw, string(serialized))
 
 				previous = todos
 			}

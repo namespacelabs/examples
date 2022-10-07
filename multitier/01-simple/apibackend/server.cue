@@ -14,6 +14,8 @@ server: {
 			kind: "http"
 
 			ingress: internetFacing: true
+
+			probe: http: "/readyz"
 		}
 	}
 }
@@ -26,3 +28,11 @@ server: {
 requires: [
 	"namespacelabs.dev/examples/multitier/01-simple/postgres",
 ]
+
+tests: {
+	shell: {
+		// TODO replace with shell integration when it exists
+		// https://github.com/namespacelabs/foundation/issues/915
+		build: docker: dockerfile: "test/Dockerfile"
+	}
+}

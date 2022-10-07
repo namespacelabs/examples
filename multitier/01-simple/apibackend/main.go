@@ -21,7 +21,10 @@ import (
 	"namespacelabs.dev/foundation/std/runtime"
 )
 
-const dbPackage = "namespacelabs.dev/examples/multitier/01-simple/postgres"
+const (
+	dbPackage   = "namespacelabs.dev/examples/multitier/01-simple/postgres"
+	connBackoff = 500 * time.Millisecond
+)
 
 var (
 	//go:embed schema.sql
@@ -53,6 +56,11 @@ func main() {
 	http.HandleFunc("/list", list(ctx, conn))
 	http.HandleFunc("/stream", stream(ctx, conn))
 
+	http.HandleFunc("/readyz", func(rw http.ResponseWriter, r *http.Request) {
+		rw.WriteHeader(200)
+		fmt.Fprintf(rw, "All OK\n\n")
+	})
+
 	port := config.Current.Port[0].Port
 	log.Printf("Listening on port: %d\n", port)
 	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
@@ -76,11 +84,17 @@ func connectPG(ctx context.Context, config *runtime.RuntimeConfig) (conn *pgx.Co
 		}
 	}
 
+	cfg, err := pgx.ParseConfig(fmt.Sprintf("postgres://postgres:%s@%s/%s", password, endpoint, db))
+	if err != nil {
+		return nil, err
+	}
+	cfg.ConnectTimeout = connBackoff
+
 	// Retry until backend is ready.
 	err = backoff.Retry(func() error {
-		conn, err = pgx.Connect(ctx, fmt.Sprintf("postgres://postgres:%s@%s/%s", password, endpoint, db))
+		conn, err = pgx.ConnectConfig(ctx, cfg)
 		return err
-	}, backoff.WithContext(backoff.NewConstantBackOff(time.Second), ctx))
+	}, backoff.WithContext(backoff.NewConstantBackOff(connBackoff), ctx))
 
 	return conn, err
 }
