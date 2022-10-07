@@ -17,8 +17,8 @@ import (
 	"github.com/cenkalti/backoff/v4"
 	"github.com/jackc/pgx/v4"
 
+	"namespacelabs.dev/foundation/schema/runtime"
 	"namespacelabs.dev/foundation/std/go/core"
-	"namespacelabs.dev/foundation/std/runtime"
 )
 
 const (

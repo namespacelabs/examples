@@ -14,8 +14,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"namespacelabs.dev/foundation/schema/runtime"
 	"namespacelabs.dev/foundation/std/go/core"
-	"namespacelabs.dev/foundation/std/runtime"
 )
 
 const (
