@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.27.11
 	github.com/cenkalti/backoff/v4 v4.1.3
 	github.com/jackc/pgx/v4 v4.16.1
-	namespacelabs.dev/foundation v0.0.58
+	namespacelabs.dev/foundation v0.0.59-0.20221007144751-163d75d0125d
 	namespacelabs.dev/go-ids v0.0.0-20220708072700-49c0a87d068b
 )
 
