@@ -30,7 +30,7 @@ requires: [
 ]
 
 tests: {
-	shell: {
+	addAndList: {
 		// TODO replace with shell integration when it exists
 		// https://github.com/namespacelabs/foundation/issues/915
 		build: docker: dockerfile: "test/Dockerfile"
