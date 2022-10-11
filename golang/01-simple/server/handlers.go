@@ -9,20 +9,17 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"namespacelabs.dev/examples/golang/01-simple/server/api"
 )
-
-type putRequest struct {
-	Key  string `json:"key"`
-	Body []byte `json:"body"`
-}
 
 func put(ctx context.Context, cli *s3.Client) func(http.ResponseWriter, *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		var parsed putRequest
+		var parsed api.PutRequest
 		if err := json.NewDecoder(req.Body).Decode(&parsed); err != nil {
 			rw.WriteHeader(400)
 			fmt.Fprintf(rw, "invalid request: %v\n", err)
@@ -41,26 +38,43 @@ func put(ctx context.Context, cli *s3.Client) func(http.ResponseWriter, *http.Re
 	}
 }
 
-type getRequest struct {
-	Key string `json:"key"`
-}
-
 func get(ctx context.Context, cli *s3.Client) func(http.ResponseWriter, *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		var parsed getRequest
+		var parsed api.GetRequest
 		if err := json.NewDecoder(req.Body).Decode(&parsed); err != nil {
 			rw.WriteHeader(400)
 			fmt.Fprintf(rw, "invalid request: %v\n", err)
 			return
 		}
 
-		if _, err := cli.GetObject(ctx, &s3.GetObjectInput{
+		out, err := cli.GetObject(ctx, &s3.GetObjectInput{
 			Bucket: aws.String(bucketName),
 			Key:    aws.String(parsed.Key),
-		}); err != nil {
+		})
+		if err != nil {
 			rw.WriteHeader(500)
 			fmt.Fprintf(rw, "failed to get object: %v\n", err)
 			return
 		}
+
+		content, err := io.ReadAll(out.Body)
+		if err != nil {
+			rw.WriteHeader(500)
+			fmt.Fprintf(rw, "failed to read object: %v\n", err)
+			return
+		}
+
+		resp := api.GetResponse{
+			Body: content,
+		}
+
+		serialized, err := json.Marshal(resp)
+		if err != nil {
+			rw.WriteHeader(500)
+			fmt.Fprintf(rw, "internal error: %v\n", err)
+			return
+		}
+
+		fmt.Fprintln(rw, string(serialized))
 	}
 }

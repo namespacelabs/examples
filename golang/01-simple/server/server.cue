@@ -15,6 +15,8 @@ server: {
 			kind: "http"
 
 			ingress: internetFacing: true
+
+			probe: http: "/readyz"
 		}
 	}
 
@@ -24,4 +26,10 @@ server: {
 	requires: [
 		"namespacelabs.dev/examples/golang/01-simple/s3",
 	]
+}
+
+tests: {
+	putAndGet: {
+		build: go: pkg: "./test"
+	}
 }

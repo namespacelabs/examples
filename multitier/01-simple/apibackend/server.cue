@@ -29,8 +29,9 @@ server: {
 
 tests: {
 	addAndList: {
-		// TODO replace with shell integration when it exists
-		// https://github.com/namespacelabs/foundation/issues/915
-		build: docker: dockerfile: "test/Dockerfile"
+		build: shell: {
+			script: "test/test.sh"
+			install: ["jq"]
+		}
 	}
 }

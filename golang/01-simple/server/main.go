@@ -20,7 +20,7 @@ import (
 
 const (
 	s3Package  = "namespacelabs.dev/examples/golang/01-simple/s3"
-	bucketName = "testBucket"
+	bucketName = "test-bucket"
 )
 
 func main() {
@@ -35,8 +35,20 @@ func main() {
 		panic(err)
 	}
 
+	log.Printf("Creating bucket %s\n", bucketName)
+	if _, err := cli.CreateBucket(ctx, &s3.CreateBucketInput{
+		Bucket: aws.String(bucketName),
+	}); err != nil {
+		panic(err)
+	}
+	log.Printf("Bucket %s created\n", bucketName)
+
 	http.HandleFunc("/put", put(ctx, cli))
 	http.HandleFunc("/get", get(ctx, cli))
+	http.HandleFunc("/readyz", func(rw http.ResponseWriter, r *http.Request) {
+		rw.WriteHeader(200)
+		fmt.Fprintf(rw, "All OK\n\n")
+	})
 
 	port := config.Current.Port[0].Port
 	log.Printf("Listening on port: %d\n", port)
