@@ -6,21 +6,26 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go-v2/service/s3/types"
+	"github.com/cenkalti/backoff/v4"
 	"namespacelabs.dev/foundation/schema/runtime"
 	"namespacelabs.dev/foundation/std/go/core"
 )
 
 const (
-	s3Package  = "namespacelabs.dev/examples/golang/01-simple/s3"
-	bucketName = "test-bucket"
+	s3Package   = "namespacelabs.dev/examples/golang/01-simple/s3"
+	bucketName  = "test-bucket"
+	connBackoff = 500 * time.Millisecond
 )
 
 func main() {
@@ -35,10 +40,21 @@ func main() {
 		panic(err)
 	}
 
-	log.Printf("Creating bucket %s\n", bucketName)
-	if _, err := cli.CreateBucket(ctx, &s3.CreateBucketInput{
-		Bucket: aws.String(bucketName),
-	}); err != nil {
+	// Retry until bucket is ready.
+	log.Printf("Creating bucket %s.\n", bucketName)
+	if err = backoff.Retry(func() error {
+		_, err := cli.CreateBucket(ctx, &s3.CreateBucketInput{
+			Bucket: aws.String(bucketName),
+		})
+		var alreadyExists *types.BucketAlreadyExists
+		var alreadyOwned *types.BucketAlreadyOwnedByYou
+		if err == nil || errors.As(err, &alreadyExists) || errors.As(err, &alreadyOwned) {
+			return nil
+		}
+
+		log.Printf("failed to create bucket: %v\n", err)
+		return err
+	}, backoff.WithContext(backoff.NewConstantBackOff(connBackoff), ctx)); err != nil {
 		panic(err)
 	}
 	log.Printf("Bucket %s created\n", bucketName)
