@@ -3,34 +3,23 @@
 # "-r" removes quotes from the output.
 ENDPOINT=`cat /namespace/config/runtime.json | jq -r ".stack_entry[0].service[0].endpoint"`
 
-RESPONSE=`curl -s -X POST --data '{"name": "item1"}' $ENDPOINT/add`
-if [[ ! -z "$RESPONSE" ]]; then
-    echo "failed to add item1: $RESPONSE"
-    exit 1
-fi
-
-RESPONSE=`curl -s -X POST --data '{"name": "item2"}' $ENDPOINT/add`
-if [[ ! -z "$RESPONSE" ]]; then
-    echo "failed to add item2: $RESPONSE"
-    exit 1
-fi
+for NAME in item1 item2
+do
+    RESPONSE=`curl -s -X POST --data '{"name": "'$NAME'"}' $ENDPOINT/add`
+    if [[ ! -z "$RESPONSE" ]]; then
+        echo "failed to add $NAME: $RESPONSE"
+        exit 1
+    fi
+done
 
 RESPONSE=`curl -s $ENDPOINT/list`
+echo "Got list response:\n$RESPONSE"
 
-LEN=`echo $RESPONSE | jq length`
-if [[ "$LEN" != "2" ]]; then
-    echo "Expected two list items, got: $LEN\n$RESPONSE"
+# "-c" compacts the results to a single line.
+LIST=`echo $RESPONSE | jq -c 'map(.name)'`
+EXPECTED="[\"item1\",\"item2\"]"
+if [[ "$LIST" != "$EXPECTED" ]]; then
+    echo "Unexpected result: $LIST"
     exit 1
 fi
 
-NAME=`echo $RESPONSE | jq -r .[0].name`
-if [[ "$NAME" != "item1" ]]; then
-    echo "Unexpexted item: $NAME"
-    exit 1
-fi
-
-NAME=`echo $RESPONSE | jq -r .[1].name`
-if [[ "$NAME" != "item2" ]]; then
-    echo "Unexpexted item: $NAME"
-    exit 1
-fi
