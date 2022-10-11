@@ -6,7 +6,7 @@ syntax = "proto3";
 
 package examples.golang.withresources.s3;
 
-option go_package = "namespacelabs.dev/examples/golang/02-withresources";
+option go_package = "namespacelabs.dev/examples/golang/02-withresources/s3";
 
 message S3Intent {
   string region = 1;
