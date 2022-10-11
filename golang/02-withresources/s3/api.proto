@@ -1,0 +1,18 @@
+// Copyright 2022 Namespace Labs Inc; All rights reserved.
+// Licensed under the EARLY ACCESS SOFTWARE LICENSE AGREEMENT
+// available at http://github.com/namespacelabs/foundation
+
+syntax = "proto3";
+
+package examples.golang.withresources.s3;
+
+option go_package = "namespacelabs.dev/examples/golang/02-withresources";
+
+message S3Intent {
+  string region = 1;
+}
+message S3Instance {
+  string region = 1;
+  string access_key = 2;
+  string secret_access_key = 3;
+}
