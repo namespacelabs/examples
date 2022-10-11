@@ -13,10 +13,12 @@ import (
 	"namespacelabs.dev/examples/golang/02-withresources/s3"
 )
 
-var intent = flag.String("intent", "", "The serialized JSON intent.")
+var (
+	intent    = flag.String("intent", "", "The serialized JSON intent.")
+	resources = flag.String("resources", "", "The serialized JSON resources.")
+)
 
 func main() {
-	_ = flag.String("resources", "", "The serialized JSON resources.")
 	flag.Parse()
 
 	if *intent == "" {
@@ -28,14 +30,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// TODO generate keys
+	// TODO consume resources
+	log.Fatalf("Resources: %s\n", *resources)
 	out := &s3.S3Instance{
 		Region:          i.Region,
 		AccessKey:       "TestOnlyUser",
 		SecretAccessKey: "TestOnlyPassword",
 	}
-
-	// TODO add minio to stack
 
 	serialized, err := json.Marshal(out)
 	if err != nil {
