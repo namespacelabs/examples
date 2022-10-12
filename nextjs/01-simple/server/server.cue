@@ -3,6 +3,11 @@ server: {
 
 	integration: "nodejs"
 
+	env: {
+		POSTGRES_DB:       "nextjs"
+		POSTGRES_PASSWORD: "DemoPasswordValue"
+	}
+
 	services: webapi: {
 		port: 3000
 		kind: "http"
