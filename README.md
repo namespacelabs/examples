@@ -1,2 +1,1 @@
-Examples of apps and servers, built with Foundation.
-
+Examples of apps and servers, built with Namespace.
