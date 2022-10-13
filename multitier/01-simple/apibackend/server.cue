@@ -29,9 +29,9 @@ server: {
 
 tests: {
 	addAndList: {
-		build: shell: {
-			script: "test/test.sh"
-			install: ["jq"]
+		builder: shellscript: {
+			entrypoint: "test/test.sh"
+			requiredPackages: ["jq"]
 		}
 	}
 }

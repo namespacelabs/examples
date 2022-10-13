@@ -30,6 +30,6 @@ server: {
 
 tests: {
 	putAndGet: {
-		build: go: pkg: "./test"
+		builder: go: pkg: "./test"
 	}
 }
