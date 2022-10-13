@@ -30,8 +30,14 @@ func main() {
 		log.Fatal(err)
 	}
 
+	var r map[string]map[string]any
+	if err := json.Unmarshal([]byte(*resources), &r); err != nil {
+		log.Fatal(err)
+	}
+
+	log.Fatalf("%s\n", *resources)
+
 	// TODO consume resources
-	log.Fatalf("Resources: %s\n", *resources)
 	out := &s3.S3Instance{
 		Region:          i.Region,
 		AccessKey:       "TestOnlyUser",
