@@ -8,7 +8,9 @@ server: {
 
 	env: {
 		// Disable update checking as self-update will never be used.
-		MINIO_UPDATE: "off"
+		MINIO_UPDATE:        "off"
+		MINIO_ROOT_USER:     "TestOnlyUser"
+		MINIO_ROOT_PASSWORD: "TestOnlyPassword"
 	}
 
 	args: [
