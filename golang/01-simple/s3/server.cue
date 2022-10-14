@@ -32,14 +32,10 @@ server: {
 	}
 
 	mounts: {
-		"/minio": "data"
-	}
-}
-
-volumes: {
-	"data": persistent: {
-		// Unique volume identifier
-		id:   "golang-simple-minio-server-data"
-		size: "10GiB"
+		"/minio": persistent: {
+			// Unique volume identifier
+			id:   "golang-simple-minio-server-data"
+			size: "10GiB"
+		}
 	}
 }

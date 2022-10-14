@@ -19,14 +19,10 @@ server: {
 	}
 
 	mounts: {
-		"/postgres/data": "data"
-	}
-}
-
-volumes: {
-	"data": persistent: {
-		// Unique volume identifier
-		id:   "nextjs-simple-postgres-server-data"
-		size: "10GiB"
+		"/postgres/data": persistent: {
+			// Unique volume identifier
+			id:   "nextjs-simple-postgres-server-data"
+			size: "10GiB"
+		}
 	}
 }

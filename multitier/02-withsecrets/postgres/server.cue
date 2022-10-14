@@ -19,8 +19,12 @@ server: {
 	}
 
 	mounts: {
-		"/postgres/data":    "data"
-		"/postgres/secrets": "secrets"
+		"/postgres/data": "data"
+		"/postgres/secrets": configurable: {
+			contents: {
+				"password": fromSecret: "password"
+			}
+		}
 	}
 }
 
@@ -29,11 +33,6 @@ volumes: {
 		// Unique volume identifier
 		id:   "multitier-secrets-postgres-server-data"
 		size: "10GiB"
-	}
-	"secrets": configurable: {
-		contents: {
-			"password": fromSecret: "password"
-		}
 	}
 }
 
