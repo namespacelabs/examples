@@ -51,10 +51,10 @@ func main() {
 		panic(err)
 	}
 
-	http.HandleFunc("/add", add(ctx, conn))
-	http.HandleFunc("/remove", remove(ctx, conn))
-	http.HandleFunc("/list", list(ctx, conn))
-	http.HandleFunc("/stream", stream(ctx, conn))
+	http.HandleFunc("/add", corsHandler(add(ctx, conn)))
+	http.HandleFunc("/remove", corsHandler(remove(ctx, conn)))
+	http.HandleFunc("/list", corsHandler(list(ctx, conn)))
+	http.HandleFunc("/stream", corsHandler(stream(ctx, conn)))
 
 	http.HandleFunc("/readyz", func(rw http.ResponseWriter, r *http.Request) {
 		rw.WriteHeader(200)
@@ -97,4 +97,16 @@ func connectPG(ctx context.Context, config *runtime.RuntimeConfig) (conn *pgx.Co
 	}, backoff.WithContext(backoff.NewConstantBackOff(connBackoff), ctx))
 
 	return conn, err
+}
+
+func corsHandler(h http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(200)
+		} else {
+			h.ServeHTTP(w, r)
+		}
+	}
 }
