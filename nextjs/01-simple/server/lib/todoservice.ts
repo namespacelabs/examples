@@ -11,7 +11,7 @@ export interface TodosService {
 	add: (todoItem: { name: string }) => Promise<void>;
 }
 
-export class HttpTodosServiceImpl implements TodosService {
+export class SqlTodosServiceImpl implements TodosService {
 	public async list(): Promise<TodoItem[]> {
 		const query = "SELECT Id, Name FROM todos_table;";
 		const result = await (await dbConn).query(query);
@@ -25,4 +25,4 @@ export class HttpTodosServiceImpl implements TodosService {
 	}
 }
 
-export const todosService: TodosService = new HttpTodosServiceImpl();
+export const todosService: TodosService = new SqlTodosServiceImpl();
