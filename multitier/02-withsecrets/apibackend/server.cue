@@ -20,7 +20,11 @@ server: {
 	}
 
 	mounts: {
-		"/postgres/secrets": "secrets"
+		"/postgres/secrets": configurable: {
+			contents: {
+				"password": fromSecret: "namespacelabs.dev/examples/multitier/02-withsecrets/postgres:password"
+			}
+		}
 	}
 
 	// When adding a reference to Postgres server to the `requires` block, Namespace will
@@ -36,14 +40,6 @@ tests: {
 		builder: shellscript: {
 			entrypoint: "test/test.sh"
 			requiredPackages: ["jq"]
-		}
-	}
-}
-
-volumes: {
-	"secrets": configurable: {
-		contents: {
-			"password": fromSecret: "namespacelabs.dev/examples/multitier/02-withsecrets/postgres:password"
 		}
 	}
 }
