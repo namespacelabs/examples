@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	dbPackage   = "namespacelabs.dev/examples/multitier/01-simple/postgres"
+	dbPackage   = "namespacelabs.dev/examples/multitier/02-withsecrets/postgres"
 	connBackoff = 500 * time.Millisecond
 )
 
