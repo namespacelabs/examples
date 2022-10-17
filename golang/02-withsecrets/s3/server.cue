@@ -10,9 +10,8 @@ server: {
 		// Disable update checking as self-update will never be used.
 		MINIO_UPDATE: "off"
 
-		// TODO - not supported yet.
-		MINIO_ROOT_USER: fromSecret:     "user"
-		MINIO_ROOT_PASSWORD: fromSecret: "password"
+		MINIO_ROOT_USER: fromSecret:     "namespacelabs.dev/examples/multitier/02-withsecrets/postgres:user"
+		MINIO_ROOT_PASSWORD: fromSecret: "namespacelabs.dev/examples/multitier/02-withsecrets/postgres:password"
 	}
 
 	args: [
