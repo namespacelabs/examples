@@ -15,9 +15,4 @@ server: {
 
 		ingress: internetFacing: true
 	}
-
-	// TODO: should be automatic via "backends"
-	requires: [
-		"namespacelabs.dev/examples/multitier/01-simple/apibackend",
-	]
 }
