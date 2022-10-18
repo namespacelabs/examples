@@ -39,5 +39,10 @@ volumes: {
 secrets: {
 	"password": {
 		description: "Postgres server password"
+		generate: {
+			uniqueId:        "multitier-secrets-postgres-password"
+			randomByteCount: 32
+			format:          "FORMAT_BASE32"
+		}
 	}
 }
