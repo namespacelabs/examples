@@ -10,9 +10,11 @@ option go_package = "namespacelabs.dev/examples/golang/03-withresources/s3";
 
 message S3Intent {
   string region = 1;
+  string bucket_name = 2;
 }
 message S3Instance {
   string region = 1;
   string access_key = 2;
   string secret_access_key = 3;
+  string bucket_name = 4;
 }

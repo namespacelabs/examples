@@ -48,8 +48,18 @@ volumes: {
 secrets: {
 	"user": {
 		description: "Minio root user"
+		generate: {
+			uniqueId:        "golang-withresources-minio-user"
+			randomByteCount: 32
+			format:          "FORMAT_BASE32"
+		}
 	}
 	"password": {
 		description: "Minio root password"
+		generate: {
+			uniqueId:        "golang-withresources-minio-password"
+			randomByteCount: 32
+			format:          "FORMAT_BASE32"
+		}
 	}
 }

@@ -17,7 +17,7 @@ import (
 	"namespacelabs.dev/examples/golang/01-simple/server/api"
 )
 
-func put(ctx context.Context, cli *s3.Client) func(http.ResponseWriter, *http.Request) {
+func put(ctx context.Context, cli *s3.Client, bucketName string) func(http.ResponseWriter, *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		var parsed api.PutRequest
 		if err := json.NewDecoder(req.Body).Decode(&parsed); err != nil {
@@ -38,7 +38,7 @@ func put(ctx context.Context, cli *s3.Client) func(http.ResponseWriter, *http.Re
 	}
 }
 
-func get(ctx context.Context, cli *s3.Client) func(http.ResponseWriter, *http.Request) {
+func get(ctx context.Context, cli *s3.Client, bucketName string) func(http.ResponseWriter, *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		var parsed api.GetRequest
 		if err := json.NewDecoder(req.Body).Decode(&parsed); err != nil {

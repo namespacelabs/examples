@@ -4,7 +4,8 @@ resources: {
 		on:   "namespacelabs.dev/examples/golang/03-withresources/minio"
 
 		input: {
-			region: "us-east-1"
+			region:     "us-east-1"
+			bucketName: "testbucket"
 		}
 	}
 }
