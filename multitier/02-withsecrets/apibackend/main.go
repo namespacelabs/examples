@@ -105,6 +105,11 @@ func connectPG(ctx context.Context, config *runtime.RuntimeConfig) (conn *pgx.Co
 	// Retry until backend is ready.
 	err = backoff.Retry(func() error {
 		conn, err = pgx.ConnectConfig(ctx, cfg)
+		if err == nil {
+			return nil
+		}
+
+		log.Printf("failed to connect to postgres: %v\n", err)
 		return err
 	}, backoff.WithContext(backoff.NewConstantBackOff(connBackoff), ctx))
 
