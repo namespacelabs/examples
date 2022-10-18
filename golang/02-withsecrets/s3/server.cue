@@ -33,7 +33,7 @@ server: {
 	}
 
 	mounts: {
-		"/minio": "data"
+		"/minio": ":data"
 	}
 }
 
