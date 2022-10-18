@@ -26,7 +26,7 @@ server: {
 		}
 		"/postgres/secrets": configurable: {
 			contents: {
-				"password": fromSecret: "password"
+				"password": fromSecret: ":password"
 			}
 		}
 	}

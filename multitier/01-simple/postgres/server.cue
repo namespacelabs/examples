@@ -19,7 +19,7 @@ server: {
 	}
 
 	mounts: {
-		"/postgres/data": "data"
+		"/postgres/data": ":data"
 	}
 }
 

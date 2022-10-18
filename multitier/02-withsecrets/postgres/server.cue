@@ -19,10 +19,10 @@ server: {
 	}
 
 	mounts: {
-		"/postgres/data": "data"
+		"/postgres/data": ":data"
 		"/postgres/secrets": configurable: {
 			contents: {
-				"password": fromSecret: "password"
+				"password": fromSecret: ":password"
 			}
 		}
 	}
