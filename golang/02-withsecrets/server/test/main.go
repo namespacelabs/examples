@@ -23,7 +23,7 @@ const (
 
 func main() {
 	testing.Do(func(ctx context.Context, t testing.Test) error {
-		e := t.MustEndpoint("namespacelabs.dev/examples/golang/02-withsecrets/s3", "webapi")
+		e := t.MustEndpoint("namespacelabs.dev/examples/golang/02-withsecrets/server", "webapi")
 
 		if err := t.WaitForEndpoint(ctx, e); err != nil {
 			return err
