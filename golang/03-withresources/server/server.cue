@@ -22,7 +22,7 @@ server: {
 
 	// TODO describe what this does
 	resources: [
-		"namespacelabs.dev/examples/golang/02-withresources/server/resources:minio",
+		"namespacelabs.dev/examples/golang/03-withresources/server/resources:minio",
 	]
 }
 

@@ -8,9 +8,10 @@ server: {
 
 	env: {
 		// Disable update checking as self-update will never be used.
-		MINIO_UPDATE:        "off"
-		MINIO_ROOT_USER:     "TestOnlyUser"
-		MINIO_ROOT_PASSWORD: "TestOnlyPassword"
+		MINIO_UPDATE: "off"
+
+		MINIO_ROOT_USER: fromSecret:     ":user"
+		MINIO_ROOT_PASSWORD: fromSecret: ":password"
 	}
 
 	args: [
@@ -32,7 +33,7 @@ server: {
 	}
 
 	mounts: {
-		"/minio": "data"
+		"/minio": ":data"
 	}
 }
 
@@ -41,5 +42,14 @@ volumes: {
 		// Unique volume identifier
 		id:   "golang-withresources-minio-server-data"
 		size: "10GiB"
+	}
+}
+
+secrets: {
+	"user": {
+		description: "Minio root user"
+	}
+	"password": {
+		description: "Minio root password"
 	}
 }

@@ -43,6 +43,10 @@ func main() {
 	// Retry until bucket is ready.
 	log.Printf("Creating bucket %s.\n", bucketName)
 	if err = backoff.Retry(func() error {
+		// Speed up bucket creation through faster retries.
+		ctx, cancel := context.WithTimeout(ctx, connBackoff)
+		defer cancel()
+
 		_, err := cli.CreateBucket(ctx, &s3.CreateBucketInput{
 			Bucket: aws.String(bucketName),
 		})

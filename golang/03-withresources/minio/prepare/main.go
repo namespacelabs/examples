@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"log"
 
-	"namespacelabs.dev/examples/golang/02-withresources/s3"
+	"namespacelabs.dev/examples/golang/03-withresources/s3"
 )
 
 var (
