@@ -35,3 +35,6 @@ web/ui/dist
 !**/.yarn/releases
 !**/.yarn/sdks
 !**/.yarn/versions
+
+# Next.js cache
+**/.next/*
