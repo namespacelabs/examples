@@ -1,3 +1,1 @@
-# TODO
-
-Implement simple frontend (Vite TS)
+A simple Vite+React frontend. Pure static files in non-dev environments.
