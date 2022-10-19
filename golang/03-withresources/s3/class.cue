@@ -1,11 +1,11 @@
 resourceClasses: {
-	"S3": {
+	"Bucket": {
 		intent: {
-			type:   "examples.golang.withresources.s3.S3Intent"
+			type:   "examples.golang.withresources.s3.BucketIntent"
 			source: "./api.proto"
 		}
 		produces: {
-			type:   "examples.golang.withresources.s3.S3Instance"
+			type:   "examples.golang.withresources.s3.BucketInstance"
 			source: "./api.proto"
 		}
 	}

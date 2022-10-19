@@ -1,6 +1,6 @@
 resources: {
 	minio: {
-		kind: "namespacelabs.dev/examples/golang/03-withresources/s3:S3"
+		kind: "namespacelabs.dev/examples/golang/03-withresources/s3:Bucket"
 		on:   "namespacelabs.dev/examples/golang/03-withresources/minio"
 
 		input: {

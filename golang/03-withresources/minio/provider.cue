@@ -1,5 +1,5 @@
 providers: {
-	"namespacelabs.dev/examples/golang/03-withresources/s3:S3": {
+	"namespacelabs.dev/examples/golang/03-withresources/s3:Bucket": {
 		initializedWith: {
 			binary: "namespacelabs.dev/examples/golang/03-withresources/minio/prepare"
 		}

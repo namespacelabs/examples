@@ -42,7 +42,7 @@ func main() {
 		log.Fatal("--intent is missing")
 	}
 
-	i := &s3.S3Intent{}
+	i := &s3.BucketIntent{}
 	if err := json.Unmarshal([]byte(*intent), i); err != nil {
 		log.Fatal(err)
 	}
@@ -101,7 +101,7 @@ func main() {
 	log.Printf("Bucket %s created\n", i.BucketName)
 
 	// TODO consume resources
-	out := &s3.S3Instance{
+	out := &s3.BucketInstance{
 		Region:          i.Region,
 		AccessKey:       accessKeyID,
 		SecretAccessKey: secretAccessKey,
