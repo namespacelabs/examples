@@ -8,7 +8,7 @@ echo "Extracted endpoint $ENDPOINT"
 
 for NAME in item1 item2
 do
-    STATUS=`curl -s -X POST -w '%{http_code}' -o response.txt --data '{"name": "'$NAME'"}' $ENDPOINT/add`
+    STATUS=`curl -X POST -w '%{http_code}' -o response.txt --data '{"name": "'$NAME'"}' $ENDPOINT/add`
     if [[ $STATUS -ne 200 ]]; then
         echo "failed to add $NAME (status $STATUS)"
         cat response.txt
@@ -18,7 +18,7 @@ do
     echo "Added $NAME"
 done
 
-STATUS=`curl -s -w '%{http_code}' -o response.txt $ENDPOINT/list`
+STATUS=`curl -w '%{http_code}' -o response.txt $ENDPOINT/list`
 if [[ $STATUS -ne 200 ]]; then
     echo "failed to list items (status $STATUS)"
     cat response.txt
