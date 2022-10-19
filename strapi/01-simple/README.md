@@ -1,8 +1,10 @@
 This example demonstrates how to package an existing complex server stack: a Strapi backend + a
 Next.js frontend.
 
-The code skeleton is generated using `yarn create strapi-starter my-project next-blog`. The default
-Strapi config is used: committed media and sqllite as the database.
+The code skeleton is generated using `yarn create strapi-starter my-project next-blog`.
+
+Using the default Strapi configuration from the starter project: committed media and sqllite as the
+database.
 
 To make it work with Namespace, the following changes were made:
 
