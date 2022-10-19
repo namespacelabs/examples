@@ -158,7 +158,7 @@ func getEndpoint() (string, error) {
 }
 
 func readSecret(name string) (string, error) {
-	key := fmt.Sprintf("%s:minioServer", name)
+	key := fmt.Sprintf("%s:%s", providerPkg, name)
 	secret := &stdruntime.SecretInstance{}
 	if err := fnresources.Decode([]byte(*resources), key, &secret); err != nil {
 		return "", err
