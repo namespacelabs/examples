@@ -22,10 +22,11 @@ import (
 	"namespacelabs.dev/examples/golang/03-withresources/s3"
 	fnresources "namespacelabs.dev/foundation/framework/resources"
 	"namespacelabs.dev/foundation/schema/runtime"
+	stdruntime "namespacelabs.dev/foundation/std/runtime"
 )
 
 const (
-	minioServer = "namespacelabs.dev/examples/golang/03-withresources/minio:minioServer"
+	providerPkg = "namespacelabs.dev/examples/golang/03-withresources/minio"
 	connBackoff = 500 * time.Millisecond
 )
 
@@ -61,9 +62,14 @@ func main() {
 		}, nil
 	})
 
-	// TODO!!
-	accessKeyID := os.Getenv("S3_ACCESS_KEY_ID")
-	secretAccessKey := os.Getenv("S3_SECRET_ACCESS_KEY")
+	accessKeyID, err := readSecret("minioUser")
+	if err != nil {
+		log.Fatal(err)
+	}
+	secretAccessKey, err := readSecret("minioPassword")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	cfg, err := config.LoadDefaultConfig(ctx,
 		config.WithRegion(i.Region),
@@ -136,8 +142,9 @@ func (cf credProvider) Retrieve(ctx context.Context) (aws.Credentials, error) {
 }
 
 func getEndpoint() (string, error) {
+	key := fmt.Sprintf("%s:minioServer", providerPkg)
 	cfg := &runtime.Server{}
-	if err := fnresources.Decode([]byte(*resources), minioServer, &cfg); err != nil {
+	if err := fnresources.Decode([]byte(*resources), key, &cfg); err != nil {
 		return "", err
 	}
 
@@ -148,4 +155,19 @@ func getEndpoint() (string, error) {
 	}
 
 	return "", fmt.Errorf("api endpoint not found")
+}
+
+func readSecret(name string) (string, error) {
+	key := fmt.Sprintf("%s:minioServer", name)
+	secret := &stdruntime.SecretInstance{}
+	if err := fnresources.Decode([]byte(*resources), key, &secret); err != nil {
+		return "", err
+	}
+
+	data, err := os.ReadFile(secret.FilePath)
+	if err != nil {
+		return "", err
+	}
+
+	return string(data), nil
 }
