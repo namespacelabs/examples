@@ -12,9 +12,9 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials"
 	awss3 "github.com/aws/aws-sdk-go-v2/service/s3"
 	"namespacelabs.dev/examples/golang/03-withresources/s3"
-	fnresources "namespacelabs.dev/foundation/framework/resources"
 	"namespacelabs.dev/foundation/std/go/core"
 )
 
@@ -32,15 +32,18 @@ func main() {
 		panic(err)
 	}
 
-	cli, err := connectS3(ctx, resources)
+	bucket := &s3.BucketInstance{}
+	if err := resources.Decode(minioResource, bucket); err != nil {
+		panic(err)
+	}
+
+	cli, err := connectS3(ctx, bucket)
 	if err != nil {
 		panic(err)
 	}
 
-	bucketname := "TODO from resource"
-
-	http.HandleFunc("/put", put(ctx, cli, bucketname))
-	http.HandleFunc("/get", get(ctx, cli, bucketname))
+	http.HandleFunc("/put", put(ctx, cli, bucket.BucketName))
+	http.HandleFunc("/get", get(ctx, cli, bucket.BucketName))
 	http.HandleFunc("/readyz", func(rw http.ResponseWriter, r *http.Request) {
 		rw.WriteHeader(200)
 		fmt.Fprintf(rw, "All OK\n\n")
@@ -51,12 +54,7 @@ func main() {
 	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 }
 
-func connectS3(ctx context.Context, resources *fnresources.Parser) (*awss3.Client, error) {
-	var bucket s3.BucketInstance
-
-	if err := resources.Decode(minioResource, &bucket); err != nil {
-		return nil, err
-	}
+func connectS3(ctx context.Context, bucket *s3.BucketInstance) (*awss3.Client, error) {
 
 	resolver := aws.EndpointResolverWithOptionsFunc(func(service, region string, options ...interface{}) (aws.Endpoint, error) {
 		return aws.Endpoint{PartitionID: "aws", URL: bucket.Url, SigningRegion: region}, nil
@@ -66,7 +64,7 @@ func connectS3(ctx context.Context, resources *fnresources.Parser) (*awss3.Clien
 		config.WithRegion(bucket.Region),
 		config.WithEndpointResolverWithOptions(resolver),
 		config.WithCredentialsProvider(
-			credProvider{accessKeyID: bucket.AccessKey, secretAccessKey: bucket.SecretAccessKey}))
+			credentials.NewStaticCredentialsProvider(bucket.AccessKey, bucket.SecretAccessKey, "" /* session */)))
 	if err != nil {
 		return nil, err
 	}
@@ -74,18 +72,4 @@ func connectS3(ctx context.Context, resources *fnresources.Parser) (*awss3.Clien
 	return awss3.NewFromConfig(cfg, func(o *awss3.Options) {
 		o.UsePathStyle = true
 	}), nil
-}
-
-type credProvider struct {
-	accessKeyID     string
-	secretAccessKey string
-}
-
-var _ aws.CredentialsProvider = credProvider{}
-
-func (cf credProvider) Retrieve(ctx context.Context) (aws.Credentials, error) {
-	return aws.Credentials{
-		AccessKeyID:     cf.accessKeyID,
-		SecretAccessKey: cf.secretAccessKey,
-	}, nil
 }
