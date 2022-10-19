@@ -18,7 +18,7 @@ import (
 	"namespacelabs.dev/foundation/std/go/core"
 )
 
-const minioResource = "namespacelabs.dev/examples/golang/03-withresources/server/resources:minio"
+const minioResource = "namespacelabs.dev/examples/golang/03-withresources/server:minio"
 
 func main() {
 	ctx := context.Background()
