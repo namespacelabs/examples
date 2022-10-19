@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	s3Package   = "namespacelabs.dev/examples/golang/01-simple/s3"
+	minioServer = "namespacelabs.dev/examples/golang/01-simple/minio"
 	bucketName  = "test-bucket"
 	connBackoff = 500 * time.Millisecond
 )
@@ -78,7 +78,7 @@ func main() {
 func connectS3(ctx context.Context, rtcfg *runtime.RuntimeConfig) (*s3.Client, error) {
 	var endpoint string
 	for _, e := range rtcfg.StackEntry {
-		if e.PackageName != s3Package {
+		if e.PackageName != minioServer {
 			continue
 		}
 

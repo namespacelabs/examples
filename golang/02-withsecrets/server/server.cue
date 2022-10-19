@@ -5,8 +5,8 @@ server: {
 
 	env: {
 		S3_REGION: "us-east-1"
-		S3_ACCESS_KEY_ID: fromSecret:     "namespacelabs.dev/examples/golang/02-withsecrets/s3:user"
-		S3_SECRET_ACCESS_KEY: fromSecret: "namespacelabs.dev/examples/golang/02-withsecrets/s3:password"
+		S3_ACCESS_KEY_ID: fromSecret:     "namespacelabs.dev/examples/golang/02-withsecrets/minio:user"
+		S3_SECRET_ACCESS_KEY: fromSecret: "namespacelabs.dev/examples/golang/02-withsecrets/minio:password"
 	}
 
 	services: {
@@ -20,11 +20,11 @@ server: {
 		}
 	}
 
-	// When adding a reference to S3 server to the `requires` block, Namespace will
-	// 1) add S3 server to the deployed stack
-	// 2) inject the configuration of S3 server (e.g. endpoint) into the runtime config of our Go server
+	// When adding a reference to Minio server to the `requires` block, Namespace will
+	// 1) add Minio server to the deployed stack
+	// 2) inject the configuration of Minio server (e.g. endpoint) into the runtime config of our Go server
 	requires: [
-		"namespacelabs.dev/examples/golang/02-withsecrets/s3",
+		"namespacelabs.dev/examples/golang/02-withsecrets/minio",
 	]
 }
 
