@@ -4,7 +4,9 @@ server: {
 	integration: "nodejs"
 
 	env: {
-		DATABASE_NAME:     "bank"
+		DATABASE_NAME: "bank"
+		// Using a hard-coded password to simplify this example.
+		// See multitier/02-withsecrets/postgres example for how to use a generated secret as the password.
 		DATABASE_PASSWORD: "DemoPasswordValue"
 	}
 
