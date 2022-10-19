@@ -2,9 +2,10 @@
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
-  images: {
-    loader: "default",
-    domains: ["localhost"],
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false, path: false }
+
+    return config
   },
 }
 

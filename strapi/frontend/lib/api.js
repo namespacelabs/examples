@@ -1,4 +1,6 @@
 import qs from "qs"
+import * as fs from "fs"
+import { Backends } from "../src/config/backends.ns"
 
 /**
  * Get full Strapi URL from path
@@ -6,9 +8,11 @@ import qs from "qs"
  * @returns {string} Full Strapi URL
  */
 export function getStrapiURL(path = "") {
-  return `${
-    process.env.NEXT_PUBLIC_STRAPI_API_URL || "http://localhost:1337"
-  }${path}`
+  if (!backendUrl) {
+    backendUrl = backendUrlFromNsConfig()
+  }
+
+  return `${backendUrl}${path}`
 }
 
 /**
@@ -43,4 +47,24 @@ export async function fetchAPI(path, urlParamsObject = {}, options = {}) {
   }
   const data = await response.json()
   return data
+}
+
+let backendUrl
+
+function backendUrlFromNsConfig() {
+  if (typeof window !== "undefined") {
+    // Browser: using a public/localhost address
+    return Backends.strapibackend.managed
+  } else {
+    // Server: using an in-cluster address
+    const nsConfigRaw = fs.readFileSync("/namespace/config/runtime.json")
+    const nsConfig = JSON.parse(nsConfigRaw.toString())
+
+    const backendService = nsConfig.stack_entry
+      .map((e) => e.service)
+      .flat()
+      .find((s) => s.name === "backendapi")
+
+    return `http://${backendService.endpoint}`
+  }
 }
