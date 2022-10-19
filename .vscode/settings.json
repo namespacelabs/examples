@@ -1,7 +1,7 @@
 {
 	"typescript.tsdk": "todos/web/ui/node_modules/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
-	"clang-format.style": "google",
+	"clang-format.style": "{ BasedOnStyle: Google, AlignConsecutiveDeclarations: true, AlignConsecutiveAssignments: true, ColumnLimit: 0, IndentWidth: 4 }",
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"prettier.trailingComma": "es5",
 	"prettier.printWidth": 100,
