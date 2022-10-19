@@ -1,32 +1,40 @@
 const fs = require("fs");
 
+const runtimeConfigFn = "/namespace/config/runtime.json";
+
 module.exports = ({ env }) => {
-  const nsConfigRaw = fs.readFileSync("/namespace/config/runtime.json");
-  const nsConfig = JSON.parse(nsConfigRaw.toString());
+  if (fs.existsSync(runtimeConfigFn)) {
+    const nsConfigRaw = fs.readFileSync(runtimeConfigFn);
+    const nsConfig = JSON.parse(nsConfigRaw.toString());
 
-  const postgresService = nsConfig.stack_entry
-    .map((e) => e.service)
-    .flat()
-    .find((s) => s.name === "postgres");
+    const postgresService = nsConfig.stack_entry
+      .map((e) => e.service)
+      .flat()
+      .find((s) => s.name === "postgres");
 
-  console.log(`Postgres endpoint: ${postgresService.endpoint}`);
+    console.log(`Postgres endpoint: ${postgresService.endpoint}`);
 
-  const [host, port] = postgresService.endpoint.split(":");
+    const [host, port] = postgresService.endpoint.split(":");
 
-  return {
-    connection: {
-      client: "postgres",
+    return {
       connection: {
-        host: host,
-        port: port,
-        user: env("DATABASE_USERNAME", "postgres"),
-        // Configured in server.cue
-        database: env("DATABASE_NAME", ""),
-        // Configured in server.cue
-        password: env("DATABASE_PASSWORD", ""),
-        ssl: env("DATABASE_SSL", false),
+        client: "postgres",
+        connection: {
+          host: host,
+          port: port,
+          user: env("DATABASE_USERNAME", "postgres"),
+          // Configured in server.cue
+          database: env("DATABASE_NAME", ""),
+          // Configured in server.cue
+          password: env("DATABASE_PASSWORD", ""),
+          ssl: env("DATABASE_SSL", false),
+        },
+        debug: false,
       },
-      debug: false,
-    },
-  };
+    };
+  } else {
+    // This happens during the build phase in `strapi build`, that shouldn't actualy
+    // require a DB connection.
+    return {};
+  }
 };
