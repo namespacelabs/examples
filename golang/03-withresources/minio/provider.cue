@@ -13,18 +13,12 @@ providers: {
 			// Mounts the minio user as a secret
 			minioUser: {
 				kind: "namespacelabs.dev/foundation/std/runtime:Secret"
-				input: ref: {
-					package_name: "namespacelabs.dev/examples/golang/03-withresources/minio/server"
-					name:         "user"
-				}
+				input: ref: "namespacelabs.dev/examples/golang/03-withresources/minio/server:user"
 			}
 			// Mounts the minio password as a secret
 			minioPassword: {
 				kind: "namespacelabs.dev/foundation/std/runtime:Secret"
-				input: ref: {
-					package_name: "namespacelabs.dev/examples/golang/03-withresources/minio/server"
-					name:         "password"
-				}
+				input: ref: "namespacelabs.dev/examples/golang/03-withresources/minio/server:password"
 			}
 		}
 	}
