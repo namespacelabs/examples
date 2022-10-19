@@ -93,6 +93,11 @@ func main() {
 			return nil
 		}
 
+		// TODO remove when we set the right secrets!
+		if err != nil {
+			panic(err)
+		}
+
 		log.Printf("failed to create bucket: %v\n", err)
 		return err
 	}, backoff.WithContext(backoff.NewConstantBackOff(connBackoff), ctx)); err != nil {
@@ -100,7 +105,6 @@ func main() {
 	}
 	log.Printf("Bucket %s created\n", i.BucketName)
 
-	// TODO consume resources
 	out := &s3.BucketInstance{
 		Region:          i.Region,
 		AccessKey:       accessKeyID,

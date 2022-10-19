@@ -4,8 +4,8 @@ providers: {
 			binary: "namespacelabs.dev/examples/golang/03-withresources/minio/prepare"
 		}
 
-		// Adds the server to the stack
 		resources: {
+			// Adds the server to the stack
 			minioServer: {
 				kind: "namespacelabs.dev/foundation/std/runtime:Server"
 				input: package_name: "namespacelabs.dev/examples/golang/03-withresources/minio/server"
