@@ -18,7 +18,7 @@ import (
 	"namespacelabs.dev/foundation/std/go/core"
 )
 
-const minioResource = "namespacelabs.dev/examples/golang/03-withresources/server:minio"
+const dataBucketRef = "namespacelabs.dev/examples/golang/03-withresources/server:dataBucket"
 
 func main() {
 	ctx := context.Background()
@@ -33,7 +33,7 @@ func main() {
 	}
 
 	bucket := &s3.BucketInstance{}
-	if err := resources.Decode(minioResource, bucket); err != nil {
+	if err := resources.Decode(dataBucketRef, bucket); err != nil {
 		panic(err)
 	}
 
