@@ -9,13 +9,14 @@ package examples.golang.withresources.s3;
 option go_package = "namespacelabs.dev/examples/golang/03-withresources/s3";
 
 message BucketIntent {
-  string region = 1;
-  string bucket_name = 2;
+    string region      = 1;
+    string bucket_name = 2;
 }
 
 message BucketInstance {
-  string region = 1;
-  string access_key = 2;
-  string secret_access_key = 3;
-  string bucket_name = 4;
+    string region            = 1;
+    string bucket_name       = 2;
+    string url               = 3;
+    string access_key        = 4;
+    string secret_access_key = 5;
 }

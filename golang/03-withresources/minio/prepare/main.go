@@ -49,24 +49,26 @@ func main() {
 		log.Fatal(err)
 	}
 
-	endpoint, err := getEndpoint()
+	if *resources == "" {
+		log.Fatal("--resources is missing")
+	}
+	r := fnresources.NewParser([]byte(*resources))
+
+	endpoint, err := getEndpoint(r)
 	if err != nil {
 		log.Fatal(err)
 	}
+	url := fmt.Sprintf("http://%s", endpoint)
 
 	resolver := aws.EndpointResolverWithOptionsFunc(func(service, region string, options ...interface{}) (aws.Endpoint, error) {
-		return aws.Endpoint{
-			PartitionID:   "aws",
-			URL:           fmt.Sprintf("http://%s", endpoint),
-			SigningRegion: region,
-		}, nil
+		return aws.Endpoint{PartitionID: "aws", URL: url, SigningRegion: region}, nil
 	})
 
-	accessKeyID, err := readSecret("minioUser")
+	accessKeyID, err := readSecret(r, "minioUser")
 	if err != nil {
 		log.Fatal(err)
 	}
-	secretAccessKey, err := readSecret("minioPassword")
+	secretAccessKey, err := readSecret(r, "minioPassword")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -117,6 +119,7 @@ func main() {
 		AccessKey:       accessKeyID,
 		SecretAccessKey: secretAccessKey,
 		BucketName:      i.BucketName,
+		Url:             url,
 	}
 
 	serialized, err := json.Marshal(out)
@@ -141,10 +144,10 @@ func (cf credProvider) Retrieve(ctx context.Context) (aws.Credentials, error) {
 	}, nil
 }
 
-func getEndpoint() (string, error) {
+func getEndpoint(resources *fnresources.Parser) (string, error) {
 	key := fmt.Sprintf("%s:minioServer", providerPkg)
 	cfg := &runtime.Server{}
-	if err := fnresources.Decode([]byte(*resources), key, &cfg); err != nil {
+	if err := resources.Decode(key, &cfg); err != nil {
 		return "", err
 	}
 
@@ -157,10 +160,10 @@ func getEndpoint() (string, error) {
 	return "", fmt.Errorf("api endpoint not found")
 }
 
-func readSecret(name string) (string, error) {
+func readSecret(resources *fnresources.Parser, name string) (string, error) {
 	key := fmt.Sprintf("%s:%s", providerPkg, name)
 	secret := &stdruntime.SecretInstance{}
-	if err := fnresources.Decode([]byte(*resources), key, &secret); err != nil {
+	if err := resources.Decode(key, &secret); err != nil {
 		return "", err
 	}
 

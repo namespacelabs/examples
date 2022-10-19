@@ -9,20 +9,16 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"namespacelabs.dev/foundation/schema/runtime"
+	awss3 "github.com/aws/aws-sdk-go-v2/service/s3"
+	"namespacelabs.dev/examples/golang/03-withresources/s3"
+	fnresources "namespacelabs.dev/foundation/framework/resources"
 	"namespacelabs.dev/foundation/std/go/core"
 )
 
-const (
-	s3Package   = "namespacelabs.dev/examples/golang/01-simple/s3"
-	connBackoff = 500 * time.Millisecond
-)
+const minioResource = "namespacelabs.dev/examples/golang/03-withresources/server/resources:minio"
 
 func main() {
 	ctx := context.Background()
@@ -31,7 +27,12 @@ func main() {
 		panic(err)
 	}
 
-	cli, err := connectS3(ctx, config)
+	resources, err := core.LoadResources()
+	if err != nil {
+		panic(err)
+	}
+
+	cli, err := connectS3(ctx, resources)
 	if err != nil {
 		panic(err)
 	}
@@ -50,44 +51,27 @@ func main() {
 	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 }
 
-func connectS3(ctx context.Context, rtcfg *runtime.RuntimeConfig) (*s3.Client, error) {
-	var endpoint string
-	for _, e := range rtcfg.StackEntry {
-		if e.PackageName != s3Package {
-			continue
-		}
+func connectS3(ctx context.Context, resources *fnresources.Parser) (*awss3.Client, error) {
+	var bucket s3.BucketInstance
 
-		for _, s := range e.Service {
-			if s.Name == "api" {
-				endpoint = s.Endpoint
-				break
-			}
-		}
+	if err := resources.Decode(minioResource, &bucket); err != nil {
+		return nil, err
 	}
 
 	resolver := aws.EndpointResolverWithOptionsFunc(func(service, region string, options ...interface{}) (aws.Endpoint, error) {
-		return aws.Endpoint{
-			PartitionID:   "aws",
-			URL:           fmt.Sprintf("http://%s", endpoint),
-			SigningRegion: region,
-		}, nil
+		return aws.Endpoint{PartitionID: "aws", URL: bucket.Url, SigningRegion: region}, nil
 	})
 
-	// TODO consume resource
-	region := os.Getenv("S3_REGION")
-	accessKeyID := os.Getenv("S3_ACCESS_KEY_ID")
-	secretAccessKey := os.Getenv("S3_SECRET_ACCESS_KEY")
-
 	cfg, err := config.LoadDefaultConfig(ctx,
-		config.WithRegion(region),
+		config.WithRegion(bucket.Region),
 		config.WithEndpointResolverWithOptions(resolver),
 		config.WithCredentialsProvider(
-			credProvider{accessKeyID: accessKeyID, secretAccessKey: secretAccessKey}))
+			credProvider{accessKeyID: bucket.AccessKey, secretAccessKey: bucket.SecretAccessKey}))
 	if err != nil {
 		return nil, err
 	}
 
-	return s3.NewFromConfig(cfg, func(o *s3.Options) {
+	return awss3.NewFromConfig(cfg, func(o *awss3.Options) {
 		o.UsePathStyle = true
 	}), nil
 }
