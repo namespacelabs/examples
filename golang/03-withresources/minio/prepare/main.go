@@ -20,11 +20,12 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cenkalti/backoff/v4"
 	"namespacelabs.dev/examples/golang/03-withresources/s3"
+	fnresources "namespacelabs.dev/foundation/framework/resources"
 	"namespacelabs.dev/foundation/schema/runtime"
 )
 
 const (
-	server      = "namespacelabs.dev/examples/golang/03-withresources/minio:minioServer"
+	minioServer = "namespacelabs.dev/examples/golang/03-withresources/minio:minioServer"
 	connBackoff = 500 * time.Millisecond
 )
 
@@ -135,24 +136,8 @@ func (cf credProvider) Retrieve(ctx context.Context) (aws.Credentials, error) {
 }
 
 func getEndpoint() (string, error) {
-	r := make(map[string]any)
-	if err := json.Unmarshal([]byte(*resources), &r); err != nil {
-		return "", err
-	}
-
-	s, ok := r[server]
-	if !ok {
-		return "", fmt.Errorf("%s not found", server)
-	}
-
-	// TODO ahhhh
-	data, err := json.Marshal(s)
-	if err != nil {
-		return "", err
-	}
-
 	cfg := &runtime.Server{}
-	if err := json.Unmarshal(data, &cfg); err != nil {
+	if err := fnresources.Decode([]byte(*resources), minioServer, &cfg); err != nil {
 		return "", err
 	}
 

@@ -11,7 +11,7 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/jackc/pgx/v4 v4.16.1
 	google.golang.org/protobuf v1.28.0
-	namespacelabs.dev/foundation v0.0.59-0.20221007144751-163d75d0125d
+	namespacelabs.dev/foundation v0.0.68-0.20221019111346-0bb8a675afb3
 	namespacelabs.dev/go-ids v0.0.0-20220708072700-49c0a87d068b
 )
 
