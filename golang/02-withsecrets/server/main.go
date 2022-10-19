@@ -15,6 +15,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cenkalti/backoff/v4"
@@ -106,7 +107,7 @@ func connectS3(ctx context.Context, rtcfg *runtime.RuntimeConfig) (*s3.Client, e
 		config.WithRegion(region),
 		config.WithEndpointResolverWithOptions(resolver),
 		config.WithCredentialsProvider(
-			credProvider{accessKeyID: accessKeyID, secretAccessKey: secretAccessKey}))
+			credentials.NewStaticCredentialsProvider(accessKeyID, secretAccessKey, "" /* session */)))
 	if err != nil {
 		return nil, err
 	}
@@ -114,18 +115,4 @@ func connectS3(ctx context.Context, rtcfg *runtime.RuntimeConfig) (*s3.Client, e
 	return s3.NewFromConfig(cfg, func(o *s3.Options) {
 		o.UsePathStyle = true
 	}), nil
-}
-
-type credProvider struct {
-	accessKeyID     string
-	secretAccessKey string
-}
-
-var _ aws.CredentialsProvider = credProvider{}
-
-func (cf credProvider) Retrieve(ctx context.Context) (aws.Credentials, error) {
-	return aws.Credentials{
-		AccessKeyID:     cf.accessKeyID,
-		SecretAccessKey: cf.secretAccessKey,
-	}, nil
 }
