@@ -5,9 +5,12 @@ server: {
 
 	env: {
 		DATABASE_NAME: "bank"
-		// Using a hard-coded password to simplify this example.
+		// Using a hard-coded passwords to simplify this example.
 		// See multitier/02-withsecrets/postgres example for how to use a generated secret as the password.
-		DATABASE_PASSWORD: "DemoPasswordValue"
+		DATABASE_PASSWORD:    "DemoPasswordValue"
+		S3_BUCKET:            "strapi-media"
+		S3_ACCESS_KEY_ID:     "TestOnlyUser"
+		S3_SECRET_ACCESS_KEY: "TestOnlyPassword"
 	}
 
 	services: backendapi: {
@@ -18,10 +21,8 @@ server: {
 		ingress: internetFacing: true
 	}
 
-	// When adding a reference to Postgres server to the `requires` block, Namespace will
-	// 1) add Postgres server to the deployed stack
-	// 2) inject the configuration of Postgres server (e.g. endpoint) into the runtime config of Strapi server
 	requires: [
 		"namespacelabs.dev/examples/strapi/02-with-postgres-s3/postgres",
+		"namespacelabs.dev/examples/strapi/02-with-postgres-s3/minio",
 	]
 }
