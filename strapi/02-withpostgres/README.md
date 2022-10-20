@@ -5,5 +5,4 @@ The code skeleton is generated using `yarn create strapi-starter my-project next
 
 Differences from the `01-simple` example:
 
-- Using an in-cluster Postgres database insted of sqllite.
-- Using Minio as S3 storage for media, instead of the local filesystem.
+- Using an in-cluster Postgres database instead of sqllite.
