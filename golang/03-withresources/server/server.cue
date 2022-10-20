@@ -16,10 +16,10 @@ server: {
 
 	resources: {
 		dataBucket: {
-			kind: "namespacelabs.dev/examples/golang/03-withresources/s3:Bucket"
-			on:   "namespacelabs.dev/examples/golang/03-withresources/minio"
+			class:    "namespacelabs.dev/examples/golang/03-withresources/s3:Bucket"
+			provider: "namespacelabs.dev/examples/golang/03-withresources/minio"
 
-			input: {
+			intent: {
 				region:     "us-east-1"
 				bucketName: "testbucket"
 			}
