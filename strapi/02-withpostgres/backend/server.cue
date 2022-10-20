@@ -25,6 +25,6 @@ server: {
 	// 1) add Postgres server to the deployed stack
 	// 2) inject the configuration of Postgres server (e.g. endpoint) into the runtime config of Strapi server
 	requires: [
-		"namespacelabs.dev/examples/strapi/02-with-postgres-s3/postgres",
+		"namespacelabs.dev/examples/strapi/02-withpostgres/postgres",
 	]
 }

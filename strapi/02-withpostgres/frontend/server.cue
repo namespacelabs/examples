@@ -2,7 +2,7 @@ server: {
 	name: "strapi-frontend"
 
 	integration: nodejs: {
-		backends: strapibackend: "namespacelabs.dev/examples/strapi/02-with-postgres-s3/backend:backendapi"
+		backends: strapibackend: "namespacelabs.dev/examples/strapi/02-withpostgres/backend:backendapi"
 	}
 
 	services: webapi: {
