@@ -43,7 +43,11 @@ func main() {
 
 	instance, err := createInstance()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create instance: %v", err)
+	}
+
+	if data, err := json.Marshal(instance); err == nil {
+		log.Printf("%s\n", string(data))
 	}
 
 	resolver := aws.EndpointResolverWithOptionsFunc(func(service, region string, options ...interface{}) (aws.Endpoint, error) {
@@ -56,7 +60,7 @@ func main() {
 		config.WithCredentialsProvider(
 			credentials.NewStaticCredentialsProvider(instance.AccessKey, instance.SecretAccessKey, "" /* session */)))
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to load aws config: %v", err)
 	}
 
 	cli := awss3.NewFromConfig(cfg, func(o *awss3.Options) {
@@ -64,12 +68,12 @@ func main() {
 	})
 
 	if err := createBucket(ctx, cli, instance.BucketName); err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create bucket: %v", err)
 	}
 
 	serialized, err := json.Marshal(instance)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to marshal instance: %v", err)
 	}
 
 	fmt.Printf("namespace.provision.result: %s\n", serialized)
@@ -98,9 +102,9 @@ func readSecret(resources *fnresources.Parser, name string) (string, error) {
 		return "", err
 	}
 
-	data, err := os.ReadFile(secret.FilePath)
+	data, err := os.ReadFile(secret.Path)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to read %s: %w", secret.Path, err)
 	}
 
 	return string(data), nil
@@ -148,9 +152,9 @@ func createBucket(ctx context.Context, cli *awss3.Client, bucketName string) err
 	// Retry until bucket is ready.
 	log.Printf("Creating bucket %s.\n", bucketName)
 	if err := backoff.Retry(func() error {
-		// Speed up bucket creation through faster retries.
-		ctx, cancel := context.WithTimeout(ctx, connBackoff)
-		defer cancel()
+		// // Speed up bucket creation through faster retries.
+		// ctx, cancel := context.WithTimeout(ctx, connBackoff)
+		// defer cancel()
 
 		_, err := cli.CreateBucket(ctx, &awss3.CreateBucketInput{
 			Bucket: aws.String(bucketName),
