@@ -14,20 +14,21 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	awss3 "github.com/aws/aws-sdk-go-v2/service/s3"
+	"namespacelabs.dev/foundation/framework/resources"
+	"namespacelabs.dev/foundation/framework/runtime"
 	"namespacelabs.dev/foundation/library/storage/s3"
-	"namespacelabs.dev/foundation/std/go/core"
 )
 
 const dataBucketRef = "namespacelabs.dev/examples/golang/03-withresources/server:dataBucket"
 
 func main() {
 	ctx := context.Background()
-	config, err := core.LoadRuntimeConfig()
+	config, err := runtime.LoadRuntimeConfig()
 	if err != nil {
 		panic(err)
 	}
 
-	resources, err := core.LoadResources()
+	resources, err := resources.LoadResources()
 	if err != nil {
 		panic(err)
 	}

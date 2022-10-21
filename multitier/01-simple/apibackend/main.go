@@ -20,7 +20,6 @@ import (
 	"github.com/jackc/pgx/v4"
 	"namespacelabs.dev/foundation/framework/runtime"
 	runtimepb "namespacelabs.dev/foundation/schema/runtime"
-	"namespacelabs.dev/foundation/std/go/core"
 )
 
 const (
@@ -35,7 +34,7 @@ var (
 
 func main() {
 	ctx := context.Background()
-	config, err := core.LoadRuntimeConfig()
+	config, err := runtime.LoadRuntimeConfig()
 	if err != nil {
 		panic(err)
 	}
