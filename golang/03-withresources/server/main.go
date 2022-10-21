@@ -25,22 +25,22 @@ func main() {
 	ctx := context.Background()
 	config, err := runtime.LoadRuntimeConfig()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	resources, err := resources.LoadResources()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	bucket := &s3.BucketInstance{}
 	if err := resources.Unmarshal(dataBucketRef, bucket); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	cli, err := connectS3(ctx, bucket)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	http.HandleFunc("/put", put(ctx, cli, bucket.BucketName))

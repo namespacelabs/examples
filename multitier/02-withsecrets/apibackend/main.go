@@ -37,20 +37,20 @@ func main() {
 	ctx := context.Background()
 	config, err := runtime.LoadRuntimeConfig()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	conn, err := connectPG(ctx, config)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	schema, err := fs.ReadFile(lib, "schema.sql")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	if _, err := conn.Exec(ctx, string(schema)); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	r := mux.NewRouter()

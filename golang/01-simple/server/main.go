@@ -33,12 +33,12 @@ func main() {
 	ctx := context.Background()
 	config, err := runtime.LoadRuntimeConfig()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	cli, err := connectS3(ctx, config)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	// Retry until bucket is ready.
@@ -60,7 +60,7 @@ func main() {
 		log.Printf("failed to create bucket: %v\n", err)
 		return err
 	}, backoff.WithContext(backoff.NewConstantBackOff(connBackoff), ctx)); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	log.Printf("Bucket %s created\n", bucketName)
 
