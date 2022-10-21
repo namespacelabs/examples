@@ -12,7 +12,7 @@ import (
 	"io"
 	"net/http"
 
-	"namespacelabs.dev/examples/golang/01-simple/server/api"
+	"namespacelabs.dev/examples/golang/03-withresources/server/api"
 	"namespacelabs.dev/foundation/framework/testing"
 )
 

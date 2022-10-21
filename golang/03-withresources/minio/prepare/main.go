@@ -152,9 +152,9 @@ func createBucket(ctx context.Context, cli *awss3.Client, bucketName string) err
 	// Retry until bucket is ready.
 	log.Printf("Creating bucket %s.\n", bucketName)
 	if err := backoff.Retry(func() error {
-		// // Speed up bucket creation through faster retries.
-		// ctx, cancel := context.WithTimeout(ctx, connBackoff)
-		// defer cancel()
+		// Speed up bucket creation through faster retries.
+		ctx, cancel := context.WithTimeout(ctx, connBackoff)
+		defer cancel()
 
 		_, err := cli.CreateBucket(ctx, &awss3.CreateBucketInput{
 			Bucket: aws.String(bucketName),
