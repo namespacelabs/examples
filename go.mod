@@ -11,7 +11,6 @@ require (
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
 	github.com/jackc/pgx/v4 v4.16.1
-	google.golang.org/protobuf v1.28.0
 	namespacelabs.dev/foundation v0.0.70-0.20221021100604-56a73c08e863
 	namespacelabs.dev/go-ids v0.0.0-20220708072700-49c0a87d068b
 )
@@ -58,6 +57,7 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/genproto v0.0.0-20220627200112-0a929928cb33 // indirect
 	google.golang.org/grpc v1.47.0 // indirect
+	google.golang.org/protobuf v1.28.0 // indirect
 )
 
 replace sigs.k8s.io/aws-iam-authenticator => namespacelabs.dev/aws-iam-authenticator v0.5.8-0.20220603141112-71d1e80cc0c1
