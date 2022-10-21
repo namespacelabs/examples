@@ -19,7 +19,11 @@ server: {
 	}
 
 	mounts: {
+		// This mount point references a volume in the same package.
+		// For external volume references, use "example.com/pkg/path:volumeName".
 		"/postgres/data": ":data"
+
+		// Alternative syntax: inline volume definition.
 		"/postgres/secrets": configurable: {
 			contents: {
 				"password": fromSecret: ":password"

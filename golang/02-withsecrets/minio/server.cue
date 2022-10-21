@@ -33,15 +33,14 @@ server: {
 	}
 
 	mounts: {
-		"/minio": ":data"
-	}
-}
-
-volumes: {
-	"data": persistent: {
-		// Unique volume identifier
-		id:   "golang-secrets-minio-server-data"
-		size: "10GiB"
+		// Using an inline volume definition for brevity.
+		// Mount points can also reference volumes by there package reference.
+		// See multitier/02-withsecrets/postgres/server.cue for an example using a reference.
+		"/minio": persistent: {
+			// Unique volume identifier
+			id:   "golang-secrets-minio-server-data"
+			size: "10GiB"
+		}
 	}
 }
 

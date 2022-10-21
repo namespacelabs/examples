@@ -19,6 +19,9 @@ server: {
 	}
 
 	mounts: {
+		// Using inline volume definitions for brevity.
+		// Mount points can also reference volumes by there package reference.
+		// See multitier/02-withsecrets/postgres/server.cue for an example using a reference.
 		"/postgres/data": persistent: {
 			// Unique volume identifier
 			id:   "nextjs-secrets-postgres-server-data"
