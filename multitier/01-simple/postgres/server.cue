@@ -22,6 +22,9 @@ server: {
 	}
 
 	mounts: {
+		// This mount point references a volume in the same package.
+		// For external volume references, use "example.com/pkg/path:volumeName".
+		// See golang/01-simple/minio/server.cue for an example using an inline volume definition.
 		"/postgres/data": ":data"
 	}
 }
