@@ -33,7 +33,7 @@ func main() {
 	}
 
 	bucket := &s3.BucketInstance{}
-	if err := resources.Decode(dataBucketRef, bucket); err != nil {
+	if err := resources.Unmarshal(dataBucketRef, bucket); err != nil {
 		panic(err)
 	}
 

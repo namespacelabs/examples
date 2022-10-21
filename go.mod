@@ -11,7 +11,7 @@ require (
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
 	github.com/jackc/pgx/v4 v4.16.1
-	namespacelabs.dev/foundation v0.0.71-0.20221021145649-89eadb03a271
+	namespacelabs.dev/foundation v0.0.71-0.20221021224731-c1572b189a41
 	namespacelabs.dev/go-ids v0.0.0-20220708072700-49c0a87d068b
 )
 
