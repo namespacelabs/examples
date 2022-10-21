@@ -20,8 +20,13 @@ server: {
 	}
 
 	mounts: {
+		// Using an inline volume definition for brevity.
+		// Mount points can also reference volumes by there package reference.
+		// See multitier/02-withsecrets/postgres/server.cue for an example using a reference.
 		"/postgres/secrets": configurable: {
 			contents: {
+				// Instructs Namespace to inject the secrets as file in the mount.
+				// See golang/02-withsecrets/server/server.cue for an example injecting secrets as environment variables.
 				"password": fromSecret: "namespacelabs.dev/examples/multitier/02-withsecrets/postgres:password"
 			}
 		}

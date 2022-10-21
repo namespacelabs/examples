@@ -10,6 +10,10 @@ server: {
 		// Disable update checking as self-update will never be used.
 		MINIO_UPDATE: "off"
 
+		// Instructs Namespace to inject the secrets as environment variables to the container.
+		// See multitier/02-withsecrets/postgres/server.cue for an example injecting secrets into a mount.
+		// These references point to secrets in the same package.
+		// See golang/02-withsecrets/server/server.cue for an example using external secret references.
 		MINIO_ROOT_USER: fromSecret:     ":user"
 		MINIO_ROOT_PASSWORD: fromSecret: ":password"
 	}

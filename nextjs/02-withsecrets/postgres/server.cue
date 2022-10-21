@@ -29,6 +29,8 @@ server: {
 		}
 		"/postgres/secrets": configurable: {
 			contents: {
+				// Instructs Namespace to inject the secrets as file in the mount.
+				// See golang/02-withsecrets/minio/server.cue for an example injecting secrets as environment variables.
 				"password": fromSecret: ":password"
 			}
 		}
