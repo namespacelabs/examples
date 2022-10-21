@@ -12,9 +12,7 @@ Secret bundles can be created per server, or pinned for an entire workspace.
 For this example, we use workspace-pinning - the password is stored in `workspace.secrets`.
 You can reveal its value with `ns secrets reveal . --secret=namespacelabs.dev/examples/nextjs/02-withsecrets/postgres:password` (we use an unencrypted bundle for demonstration purposes).
 
-`03-withresources` models the database as a Namespace resource.
-This has the advantage that the resource can produce a typed instance object (e.g. provide a password along with the endpoint) for the Next.js server to consume.
+`03-withresources` consumes the database as a Namespace resource provided by a shared Postgres provider.
+The resource produces a typed instance object which provides a password along with the endpoint for the Next.js server to consume.
 Another advantage is that resources have their own lifetime modeling and initialization only happens once.
 In the case of a database, this means that the schema will be applied as part of the lifecycle and the Next.js server does not need to worry about it.
-
-`04-shared` is like `03-withresources` but uses a shared database definition from a separate directory (which is the typical usecase).

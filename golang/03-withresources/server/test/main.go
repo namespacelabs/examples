@@ -12,7 +12,7 @@ import (
 	"io"
 	"net/http"
 
-	"namespacelabs.dev/examples/golang/02-withsecrets/server/api"
+	"namespacelabs.dev/examples/golang/03-withresources/server/api"
 	"namespacelabs.dev/foundation/framework/testing"
 )
 
@@ -23,7 +23,7 @@ const (
 
 func main() {
 	testing.Do(func(ctx context.Context, t testing.Test) error {
-		e := t.MustEndpoint("namespacelabs.dev/examples/golang/02-withsecrets/server", "webapi")
+		e := t.MustEndpoint("namespacelabs.dev/examples/golang/03-withresources/server", "webapi")
 
 		if err := t.WaitForEndpoint(ctx, e); err != nil {
 			return err
