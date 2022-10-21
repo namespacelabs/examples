@@ -19,7 +19,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cenkalti/backoff/v4"
-	"namespacelabs.dev/foundation/schema/runtime"
+	"namespacelabs.dev/foundation/framework/runtime"
+	runtimepb "namespacelabs.dev/foundation/schema/runtime"
 	"namespacelabs.dev/foundation/std/go/core"
 )
 
@@ -76,19 +77,10 @@ func main() {
 	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 }
 
-func connectS3(ctx context.Context, rtcfg *runtime.RuntimeConfig) (*s3.Client, error) {
-	var endpoint string
-	for _, e := range rtcfg.StackEntry {
-		if e.PackageName != minioServer {
-			continue
-		}
-
-		for _, s := range e.Service {
-			if s.Name == "api" {
-				endpoint = s.Endpoint
-				break
-			}
-		}
+func connectS3(ctx context.Context, rtcfg *runtimepb.RuntimeConfig) (*s3.Client, error) {
+	endpoint, err := runtime.ServerEndpoint(rtcfg, minioServer, "api")
+	if err != nil {
+		return nil, err
 	}
 
 	resolver := aws.EndpointResolverWithOptionsFunc(func(service, region string, options ...interface{}) (aws.Endpoint, error) {

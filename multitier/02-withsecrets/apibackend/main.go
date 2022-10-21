@@ -19,7 +19,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v4"
 
-	"namespacelabs.dev/foundation/schema/runtime"
+	"namespacelabs.dev/foundation/framework/runtime"
+	runtimepb "namespacelabs.dev/foundation/schema/runtime"
 	"namespacelabs.dev/foundation/std/go/core"
 )
 
@@ -72,7 +73,7 @@ func main() {
 	)(r))
 }
 
-func connectPG(ctx context.Context, config *runtime.RuntimeConfig) (conn *pgx.Conn, err error) {
+func connectPG(ctx context.Context, config *runtimepb.RuntimeConfig) (conn *pgx.Conn, err error) {
 	db := os.Getenv("POSTGRES_DB")
 	passwordFile := os.Getenv("POSTGRES_PASSWORD_FILE")
 
@@ -82,18 +83,9 @@ func connectPG(ctx context.Context, config *runtime.RuntimeConfig) (conn *pgx.Co
 	}
 	password := string(data)
 
-	var endpoint string
-	for _, e := range config.StackEntry {
-		if e.PackageName != dbPackage {
-			continue
-		}
-
-		for _, s := range e.Service {
-			if s.Name == "postgres" {
-				endpoint = s.Endpoint
-				break
-			}
-		}
+	endpoint, err := runtime.ServerEndpoint(config, dbPackage, "postgres")
+	if err != nil {
+		return nil, err
 	}
 
 	cfg, err := pgx.ParseConfig(fmt.Sprintf("postgres://postgres:%s@%s/%s", password, endpoint, db))

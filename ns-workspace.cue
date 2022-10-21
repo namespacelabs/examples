@@ -18,6 +18,6 @@ environment: {
 }
 dependency: {
 	"namespacelabs.dev/foundation": {
-		version: "56a73c08e86396353425d818ec2c876d34262181"
+		version: "89eadb03a27121bace332a14371f9d9ce2e9bd91"
 	}
 }
