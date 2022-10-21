@@ -4,7 +4,10 @@ server: {
 	integration: "go"
 
 	env: {
-		S3_REGION:            "us-east-1"
+		S3_REGION: "us-east-1"
+
+		// Using hard-coded credentials to simplify this example.
+		// See golang/02-withsecrets/ for an example using managed secrets.
 		S3_ACCESS_KEY_ID:     "TestOnlyUser"
 		S3_SECRET_ACCESS_KEY: "TestOnlyPassword"
 	}

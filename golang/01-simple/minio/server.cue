@@ -8,7 +8,10 @@ server: {
 
 	env: {
 		// Disable update checking as self-update will never be used.
-		MINIO_UPDATE:        "off"
+		MINIO_UPDATE: "off"
+
+		// Using hard-coded credentials to simplify this example.
+		// See golang/02-withsecrets/ for an example using managed secrets.
 		MINIO_ROOT_USER:     "TestOnlyUser"
 		MINIO_ROOT_PASSWORD: "TestOnlyPassword"
 	}

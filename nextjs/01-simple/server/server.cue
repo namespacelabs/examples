@@ -4,7 +4,10 @@ server: {
 	integration: "nodejs"
 
 	env: {
-		POSTGRES_DB:       "nextjs"
+		POSTGRES_DB: "nextjs"
+
+		// Using a hard-coded password to simplify this example.
+		// See nextjs/02-withsecrets/ for an example using managed secrets.
 		POSTGRES_PASSWORD: "DemoPasswordValue"
 	}
 

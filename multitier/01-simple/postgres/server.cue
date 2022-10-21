@@ -8,8 +8,11 @@ server: {
 
 	env: {
 		// PGDATA may not be a mount point but only a subdirectory.
-		PGDATA:            "/postgres/data/pgdata"
-		POSTGRES_DB:       "todos"
+		PGDATA:      "/postgres/data/pgdata"
+		POSTGRES_DB: "todos"
+
+		// Using a hard-coded password to simplify this example.
+		// See multitier/02-withsecrets/ for an example using generated secrets.
 		POSTGRES_PASSWORD: "DemoPasswordValue"
 	}
 
