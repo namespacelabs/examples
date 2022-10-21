@@ -14,7 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	awss3 "github.com/aws/aws-sdk-go-v2/service/s3"
-	"namespacelabs.dev/examples/golang/03-withresources/s3"
+	"namespacelabs.dev/foundation/library/storage/s3"
 	"namespacelabs.dev/foundation/std/go/core"
 )
 
@@ -55,7 +55,6 @@ func main() {
 }
 
 func connectS3(ctx context.Context, bucket *s3.BucketInstance) (*awss3.Client, error) {
-
 	resolver := aws.EndpointResolverWithOptionsFunc(func(service, region string, options ...interface{}) (aws.Endpoint, error) {
 		return aws.Endpoint{PartitionID: "aws", URL: bucket.Url, SigningRegion: region}, nil
 	})

@@ -692,6 +692,8 @@ namespacelabs.dev/foundation v0.0.68-0.20221019132108-f4c2aa30f694 h1:RuT3AGcntS
 namespacelabs.dev/foundation v0.0.68-0.20221019132108-f4c2aa30f694/go.mod h1:InsoAwJkZfhiget++arI2A3cSEAJ7Bgu7uE2ZZGN1JY=
 namespacelabs.dev/foundation v0.0.68-0.20221020140200-5ddd49c190b9 h1:39g36Q4wWdZHp36635p8dD1JkEv8Prq+he8gVG8hDWs=
 namespacelabs.dev/foundation v0.0.68-0.20221020140200-5ddd49c190b9/go.mod h1:InsoAwJkZfhiget++arI2A3cSEAJ7Bgu7uE2ZZGN1JY=
+namespacelabs.dev/foundation v0.0.70-0.20221021100604-56a73c08e863 h1:ZL+TAtg+pIpk+88p4EDL/Uuy3OISSttn5BAUbHB5iec=
+namespacelabs.dev/foundation v0.0.70-0.20221021100604-56a73c08e863/go.mod h1:rOIrp68un89MyBNWtYmhTqRRHdHteg/cqaoykdmbHtg=
 namespacelabs.dev/go-ids v0.0.0-20220708072700-49c0a87d068b h1:0ZvpjjzGHwD/PHczPmZ/HsIX77f0/SyM8Y1lLVBStgw=
 namespacelabs.dev/go-ids v0.0.0-20220708072700-49c0a87d068b/go.mod h1:J+Sd+ngeffnCsaO/M7zgs2bR8Klq/ZBhS0+bbnDEH2M=
 rsc.io/binaryregexp v0.2.0/go.mod h1:qTv7/COck+e2FymRvadv62gMdZztPaShugOCi3I+8D8=

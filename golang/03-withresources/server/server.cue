@@ -16,8 +16,8 @@ server: {
 
 	resources: {
 		dataBucket: {
-			class:    "namespacelabs.dev/examples/golang/03-withresources/s3:Bucket"
-			provider: "namespacelabs.dev/examples/golang/03-withresources/minio"
+			class:    "namespacelabs.dev/foundation/library/storage/s3:Bucket"
+			provider: "namespacelabs.dev/foundation/library/oss/minio"
 
 			intent: {
 				region:     "us-east-1"
