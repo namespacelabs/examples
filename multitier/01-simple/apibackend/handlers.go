@@ -12,16 +12,13 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v4"
+	"namespacelabs.dev/examples/multitier/01-simple/apibackend/api"
 	"namespacelabs.dev/go-ids"
 )
 
-type addRequest struct {
-	Name string `json:"name"`
-}
-
 func add(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		var parsed addRequest
+		var parsed api.AddRequest
 		if err := json.NewDecoder(req.Body).Decode(&parsed); err != nil {
 			rw.WriteHeader(400)
 			fmt.Fprintf(rw, "invalid request: %v\n", err)
@@ -37,13 +34,9 @@ func add(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http.Re
 	}
 }
 
-type removeRequest struct {
-	Id string `json:"id"`
-}
-
 func remove(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		var parsed removeRequest
+		var parsed api.RemoveRequest
 		if err := json.NewDecoder(req.Body).Decode(&parsed); err != nil {
 			rw.WriteHeader(400)
 			fmt.Fprintf(rw, "invalid request: %v\n", err)
@@ -58,21 +51,16 @@ func remove(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http
 	}
 }
 
-type todoItem struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
-}
-
-func fetchTodosList(ctx context.Context, conn *pgx.Conn) ([]todoItem, error) {
+func fetchTodosList(ctx context.Context, conn *pgx.Conn) ([]api.TodoItem, error) {
 	rows, err := conn.Query(ctx, "SELECT Id, Name FROM todos_table;")
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to db: %w", err)
 	}
 	defer rows.Close()
 
-	var todos []todoItem
+	var todos []api.TodoItem
 	for rows.Next() {
-		var todo todoItem
+		var todo api.TodoItem
 		err = rows.Scan(&todo.Id, &todo.Name)
 		if err != nil {
 			return nil, fmt.Errorf("failed to process db entry: %w", err)
@@ -107,7 +95,7 @@ func stream(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http
 		t := time.NewTicker(250 * time.Millisecond)
 		defer t.Stop()
 
-		var previous []todoItem
+		var previous []api.TodoItem
 
 		for {
 			select {
@@ -141,7 +129,7 @@ func stream(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http
 	}
 }
 
-func equals(a, b []todoItem) bool {
+func equals(a, b []api.TodoItem) bool {
 	if len(a) != len(b) {
 		return false
 	}

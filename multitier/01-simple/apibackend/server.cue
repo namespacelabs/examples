@@ -31,10 +31,13 @@ server: {
 }
 
 tests: {
-	addAndList: {
+	simpleCurl: {
 		imageFrom: shellscript: {
-			entrypoint: "test/test.sh"
+			entrypoint: "tests/curl.sh"
 			requiredPackages: ["jq"]
 		}
+	}
+	api: {
+		imageFrom: go: pkg: "tests"
 	}
 }

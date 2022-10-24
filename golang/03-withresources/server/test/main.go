@@ -9,7 +9,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 
 	"namespacelabs.dev/examples/golang/03-withresources/server/api"
@@ -29,32 +28,18 @@ func main() {
 			return err
 		}
 
-		resp, err := send(fmt.Sprintf("http://%s/put", e.Address()), &api.PutRequest{
+		if _, err := send(fmt.Sprintf("http://%s/put", e.Address()), &api.PutRequest{
 			Key:  fakeKey,
 			Body: []byte(fakeContent),
-		})
-		if err != nil {
+		}); err != nil {
 			return err
 		}
 
-		if resp.StatusCode != 200 {
-			x, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return err
-			}
-
-			return fmt.Errorf("put failed with status code: %s\n%s", resp.Status, string(x))
-		}
-
-		resp, err = send(fmt.Sprintf("http://%s/get", e.Address()), &api.GetRequest{
+		resp, err := send(fmt.Sprintf("http://%s/get", e.Address()), &api.GetRequest{
 			Key: fakeKey,
 		})
 		if err != nil {
 			return err
-		}
-
-		if resp.StatusCode != 200 {
-			return fmt.Errorf("get failed with status code: %s", resp.Status)
 		}
 
 		var getResp api.GetResponse
@@ -76,5 +61,14 @@ func send(url string, v any) (*http.Response, error) {
 		return nil, err
 	}
 
-	return http.Post(url, "application/json", bytes.NewReader(serialized))
+	resp, err := http.Post(url, "application/json", bytes.NewReader(serialized))
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("%s returned status code: %s", url, resp.Status)
+	}
+
+	return resp, nil
 }
