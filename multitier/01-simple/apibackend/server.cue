@@ -32,7 +32,7 @@ server: {
 
 tests: {
 	addAndList: {
-		builder: shellscript: {
+		imageFrom: shellscript: {
 			entrypoint: "test/test.sh"
 			requiredPackages: ["jq"]
 		}

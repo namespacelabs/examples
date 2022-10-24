@@ -29,6 +29,6 @@ server: {
 
 tests: {
 	putAndGet: {
-		builder: go: pkg: "./test"
+		imageFrom: go: pkg: "./test"
 	}
 }
