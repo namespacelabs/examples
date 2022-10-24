@@ -14,6 +14,9 @@ server: {
 		}
 	}
 
+	// Through adding a resource here, Namespace will
+	// 1) instatiate an S3 Bucket using MinIO
+	// 2) inject the configuration of the bucket (e.g. endpoint, access keys) into the resource config of our Go server
 	resources: {
 		dataBucket: {
 			class:    "namespacelabs.dev/foundation/library/storage/s3:Bucket"
