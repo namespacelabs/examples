@@ -4,7 +4,7 @@ server: {
 	integration: "go"
 
 	env: {
-		POSTGRES_DB:       "todos"
+		POSTGRES_DB: "todos"
 
 		// Using a hard-coded password to simplify this example.
 		// See multitier/02-withsecrets/ for an example using generated secrets.

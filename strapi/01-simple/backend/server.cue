@@ -6,9 +6,9 @@ server: {
 	env: {
 		// Using a hard-coded passwords/keys to simplify this example.
 		// See multitier/02-withsecrets/postgres example for how to use generated secrets.
-    APP_KEYS: "testKey1,testKey2"
-    API_TOKEN_SALT: "testSalt"
-    ADMIN_JWT_SECRET: "testSecret"
+		APP_KEYS:         "testKey1,testKey2"
+		API_TOKEN_SALT:   "testSalt"
+		ADMIN_JWT_SECRET: "testSecret"
 	}
 
 	services: backendapi: {
