@@ -6,6 +6,8 @@ features (e.g. secret and resource management).
 
 `golang` contains an Go application that uses Minio to store S3 buckets.
 
+`fastify` contains a simple Node.js web server with tests.
+
 `multitier` contains an multi-tier stack with a Vite frontend, a Go api backend, and Postgres as a
 persistence layer.
 
