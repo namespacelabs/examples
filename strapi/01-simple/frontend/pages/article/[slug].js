@@ -58,20 +58,7 @@ const Article = ({ article, categories }) => {
   )
 }
 
-export async function getStaticPaths() {
-  const articlesRes = await fetchAPI("/articles", { fields: ["slug"] })
-
-  return {
-    paths: articlesRes.data.map((article) => ({
-      params: {
-        slug: article.attributes.slug,
-      },
-    })),
-    fallback: false,
-  }
-}
-
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   const articlesRes = await fetchAPI("/articles", {
     filters: {
       slug: params.slug,
@@ -82,7 +69,6 @@ export async function getStaticProps({ params }) {
 
   return {
     props: { article: articlesRes.data[0], categories: categoriesRes },
-    revalidate: 1,
   }
 }
 

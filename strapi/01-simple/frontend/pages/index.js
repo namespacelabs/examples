@@ -18,7 +18,7 @@ const Home = ({ articles, categories, homepage }) => {
   )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   // Run API calls in parallel
   const [articlesRes, categoriesRes, homepageRes] = await Promise.all([
     fetchAPI("/articles", { populate: "*" }),
@@ -37,7 +37,6 @@ export async function getStaticProps() {
       categories: categoriesRes.data,
       homepage: homepageRes.data,
     },
-    revalidate: 1,
   }
 }
 
