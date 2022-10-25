@@ -3,7 +3,11 @@
 server: {
 	name: "nextjsserver"
 
-	integration: "nodejs"
+	integration: nodejs: {
+		// As an optimization, you can specify a directory to copy files from in prod/test.
+		// If not set, the whole app directory is copied.
+		build: outDir: ".next"
+	}
 
 	env: {
 		POSTGRES_DB:            "nextjs"
