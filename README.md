@@ -1,7 +1,7 @@
 # Namespace examples
 
 This repository contains multiple example applications using Namespace. You can find our reference
-documentation at [https://docs.namespace.so](docs.namespace.so). Each example includes multiple versions to demonstrate various Namespace
+documentation at [docs.namespace.so](https://docs.namespace.so). Each example includes multiple versions to demonstrate various Namespace
 features (e.g. secret and resource management).
 
 `golang` contains an Go application that uses Minio to store S3 buckets.
