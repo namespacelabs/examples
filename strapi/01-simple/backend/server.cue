@@ -11,6 +11,7 @@ server: {
 		APP_KEYS:         "testKey1,testKey2"
 		API_TOKEN_SALT:   "testSalt"
 		ADMIN_JWT_SECRET: "testSecret"
+		JWT_SECRET:       "testSecret"
 	}
 
 	services: backendapi: {
