@@ -36,7 +36,7 @@ server: {
 
 	mounts: {
 		// Using an inline volume definition for brevity.
-		// Mount points can also reference volumes by there package reference.
+		// Mount points can also reference volumes by their package reference.
 		// See multitier/01-simple/postgres/server.cue for an example using a reference.
 		"/minio": persistent: {
 			// Unique volume identifier
