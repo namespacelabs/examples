@@ -34,12 +34,12 @@ server: {
 
 tests: {
 	simpleCurl: {
-		imageFrom: shellscript: {
+		integration: shellscript: {
 			entrypoint: "tests/curl.sh"
 			requiredPackages: ["jq"]
 		}
 	}
 	api: {
-		imageFrom: go: pkg: "tests"
+		integration: go: pkg: "tests"
 	}
 }

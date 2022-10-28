@@ -35,6 +35,6 @@ server: {
 
 tests: {
 	putAndGet: {
-		imageFrom: go: pkg: "./test"
+		integration: go: pkg: "./test"
 	}
 }
