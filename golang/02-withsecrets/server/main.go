@@ -19,6 +19,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cenkalti/backoff/v4"
+	"github.com/gorilla/mux"
+	"namespacelabs.dev/examples/shared"
 	"namespacelabs.dev/foundation/framework/runtime"
 	runtimepb "namespacelabs.dev/foundation/schema/runtime"
 )
@@ -64,16 +66,14 @@ func main() {
 	}
 	log.Printf("Bucket %s created\n", bucketName)
 
-	http.HandleFunc("/put", put(ctx, cli))
-	http.HandleFunc("/get", get(ctx, cli))
-	http.HandleFunc("/readyz", func(rw http.ResponseWriter, r *http.Request) {
-		rw.WriteHeader(200)
-		fmt.Fprintf(rw, "All OK\n\n")
-	})
+	r := mux.NewRouter()
+	r.HandleFunc("/put", put(ctx, cli))
+	r.HandleFunc("/get", get(ctx, cli))
+	r.PathPrefix("/").HandlerFunc(shared.WelcomePage(config.Current))
 
 	port := config.Current.Port[0].Port
 	log.Printf("Listening on port: %d\n", port)
-	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	http.ListenAndServe(fmt.Sprintf(":%d", port), r)
 }
 
 func connectS3(ctx context.Context, rtcfg *runtimepb.RuntimeConfig) (*s3.Client, error) {

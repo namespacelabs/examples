@@ -14,6 +14,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	awss3 "github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/gorilla/mux"
+	"namespacelabs.dev/examples/shared"
 	"namespacelabs.dev/foundation/framework/resources"
 	"namespacelabs.dev/foundation/framework/runtime"
 	"namespacelabs.dev/foundation/library/storage/s3"
@@ -43,16 +45,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	http.HandleFunc("/put", put(ctx, cli, bucket.BucketName))
-	http.HandleFunc("/get", get(ctx, cli, bucket.BucketName))
-	http.HandleFunc("/readyz", func(rw http.ResponseWriter, r *http.Request) {
-		rw.WriteHeader(200)
-		fmt.Fprintf(rw, "All OK\n\n")
-	})
+	r := mux.NewRouter()
+	r.HandleFunc("/put", put(ctx, cli, bucket.BucketName))
+	r.HandleFunc("/get", get(ctx, cli, bucket.BucketName))
+	r.PathPrefix("/").HandlerFunc(shared.WelcomePage(config.Current))
 
 	port := config.Current.Port[0].Port
 	log.Printf("Listening on port: %d\n", port)
-	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	http.ListenAndServe(fmt.Sprintf(":%d", port), r)
 }
 
 func connectS3(ctx context.Context, bucket *s3.BucketInstance) (*awss3.Client, error) {
