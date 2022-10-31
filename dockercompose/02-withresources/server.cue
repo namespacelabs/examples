@@ -12,8 +12,6 @@ server: {
 		web: {
 			port: 5000
 			kind: "http"
-
-			ingress: internetFacing: true
 		}
 	}
 

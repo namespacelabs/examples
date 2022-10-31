@@ -6,15 +6,13 @@ server: {
 	env: {
 		FLASK_DEBUG: "True"
 		// Injects the endpoint of Redis server into an environment variable.
-		REDIS_SERVICE: fromServiceEndpoint: "namespacelabs.dev/foundation/library/oss/redis/server:redis"
+		REDIS_URL: fromServiceEndpoint: "namespacelabs.dev/foundation/library/oss/redis/server:redis"
 	}
 
 	services: {
 		web: {
 			port: 5000
 			kind: "http"
-
-			ingress: internetFacing: true
 		}
 	}
 
