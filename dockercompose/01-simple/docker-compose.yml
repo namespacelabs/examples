@@ -1,3 +1,4 @@
+# From https://docs.docker.com/compose/gettingstarted/
 version: "3.9"
 services:
   web:
@@ -8,5 +9,6 @@ services:
       - .:/code
     environment:
       FLASK_DEBUG: True
+      REDIS_SERVICE: redis
   redis:
     image: "redis:alpine"
