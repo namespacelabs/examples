@@ -26,10 +26,6 @@ server: {
 		cache: {
 			class:    "namespacelabs.dev/foundation/library/storage/redis:Database"
 			provider: "namespacelabs.dev/foundation/library/oss/redis"
-
-			intent: {
-				Database: 0
-			}
 		}
 	}
 }
