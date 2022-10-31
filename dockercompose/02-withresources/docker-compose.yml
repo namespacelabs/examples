@@ -9,6 +9,6 @@ services:
       - .:/code
     environment:
       FLASK_DEBUG: True
-      REDIS_SERVICE: redis
+      REDIS_URL: redis:6379
   redis:
     image: "redis:alpine"
