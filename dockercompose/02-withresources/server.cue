@@ -4,8 +4,10 @@ server: {
 	integration: "dockerfile"
 
 	env: {
-		FLASK_DEBUG: "True"
-		REDIS_URL:   "redis-h1ic17p47gr4df9i:6379" // TODO from resource
+		// TODO add when we have code sync
+		// FLASK_DEBUG: "True"
+
+		REDIS_URL: "redis-h1ic17p47gr4df9i:6379" // TODO from resource
 	}
 
 	services: {

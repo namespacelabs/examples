@@ -4,7 +4,9 @@ server: {
 	integration: "dockerfile"
 
 	env: {
-		FLASK_DEBUG: "True"
+		// TODO add when we have code sync
+		// FLASK_DEBUG: "True"
+
 		// Injects the endpoint of Redis server into an environment variable.
 		REDIS_URL: fromServiceEndpoint: "namespacelabs.dev/foundation/library/oss/redis/server:redis"
 	}
