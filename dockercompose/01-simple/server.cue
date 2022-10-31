@@ -4,8 +4,8 @@ server: {
 	integration: "dockerfile"
 
 	env: {
-		FLASK_DEBUG:   "True"
-		REDIS_SERVICE: "redis-h1ic17p47gr4df9i" // TODO inject
+		FLASK_DEBUG: "True"
+		REDIS_SERVICE: fromServiceEndpoint: "namespacelabs.dev/foundation/library/oss/redis/server:redis"
 	}
 
 	services: {
@@ -20,7 +20,6 @@ server: {
 	// TODO add sync mount
 
 	requires: [
-		// TODO use lib instead.
-		"namespacelabs.dev/foundation/universe/db/redis/server",
+		"namespacelabs.dev/foundation/library/oss/redis/server",
 	]
 }

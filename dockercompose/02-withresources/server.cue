@@ -4,8 +4,8 @@ server: {
 	integration: "dockerfile"
 
 	env: {
-		FLASK_DEBUG:   "True"
-		REDIS_SERVICE: "redis-h1ic17p47gr4df9i" // TODO inject
+		FLASK_DEBUG: "True"
+		REDIS_URL:   "redis-h1ic17p47gr4df9i:6379" // TODO from resource
 	}
 
 	services: {
@@ -24,9 +24,12 @@ server: {
 	// 2) inject the configuration of the cache (e.g. endpoint) into the resource config of our Python server
 	resources: {
 		cache: {
-			// TODO!
-			class:    "namespacelabs.dev/foundation/library/database:Database"
+			class:    "namespacelabs.dev/foundation/library/storage/redis:Database"
 			provider: "namespacelabs.dev/foundation/library/oss/redis"
+
+			intent: {
+				Database: 0
+			}
 		}
 	}
 }
