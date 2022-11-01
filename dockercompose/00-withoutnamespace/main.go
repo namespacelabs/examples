@@ -34,7 +34,7 @@ func main() {
 		httpPort = "8080"
 	}
 
-	log.Printf("Listening on port: %d\n", httpPort)
+	log.Printf("Listening on port: %s\n", httpPort)
 	http.ListenAndServe(fmt.Sprintf(":%s", httpPort), nil)
 }
 
