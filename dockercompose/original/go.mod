@@ -1,4 +1,4 @@
-module namespacelabs.dev/examples/dockercompose/withoutnamespace
+module namespacelabs.dev/examples/dockercompose/original
 
 go 1.19
 
