@@ -1,7 +1,7 @@
 tests: {
 	simpleCurl: {
 		integration: shellscript: {
-			entrypoint: "test.sh"
+			entrypoint: "./test.sh"
 			requiredPackages: ["jq"]
 		}
 		serversUnderTest: [
