@@ -38,7 +38,3 @@ web/ui/dist
 
 # Next.js cache
 **/.next/*
-
-# Python cache
-__pycache__/
-*.py[cod]
