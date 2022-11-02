@@ -20,7 +20,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/gorilla/mux"
-	"namespacelabs.dev/examples/shared"
+	"namespacelabs.dev/foundation/framework/pages"
 	"namespacelabs.dev/foundation/framework/runtime"
 	runtimepb "namespacelabs.dev/foundation/schema/runtime"
 )
@@ -69,7 +69,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/put", put(cli))
 	r.HandleFunc("/get", get(cli))
-	r.PathPrefix("/").HandlerFunc(shared.WelcomePage(config.Current))
+	r.PathPrefix("/").HandlerFunc(pages.WelcomePage(config.Current))
 
 	port := config.Current.Port[0].Port
 	log.Printf("Listening on port: %d\n", port)

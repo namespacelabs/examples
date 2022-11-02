@@ -15,7 +15,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	awss3 "github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/gorilla/mux"
-	"namespacelabs.dev/examples/shared"
+	"namespacelabs.dev/foundation/framework/pages"
 	"namespacelabs.dev/foundation/framework/resources"
 	"namespacelabs.dev/foundation/framework/runtime"
 	"namespacelabs.dev/foundation/library/storage/s3"
@@ -48,7 +48,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/put", put(cli, bucket.BucketName))
 	r.HandleFunc("/get", get(cli, bucket.BucketName))
-	r.PathPrefix("/").HandlerFunc(shared.WelcomePage(config.Current))
+	r.PathPrefix("/").HandlerFunc(pages.WelcomePage(config.Current))
 
 	port := config.Current.Port[0].Port
 	log.Printf("Listening on port: %d\n", port)

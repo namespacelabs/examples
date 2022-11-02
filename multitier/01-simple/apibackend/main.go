@@ -18,7 +18,7 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v4"
-	"namespacelabs.dev/examples/shared"
+	"namespacelabs.dev/foundation/framework/pages"
 	"namespacelabs.dev/foundation/framework/runtime"
 	runtimepb "namespacelabs.dev/foundation/schema/runtime"
 )
@@ -58,7 +58,7 @@ func main() {
 	r.HandleFunc("/remove", remove(ctx, conn))
 	r.HandleFunc("/list", list(ctx, conn))
 	r.HandleFunc("/stream", stream(ctx, conn))
-	r.PathPrefix("/").HandlerFunc(shared.WelcomePage(config.Current))
+	r.PathPrefix("/").HandlerFunc(pages.WelcomePage(config.Current))
 
 	port := config.Current.Port[0].Port
 	log.Printf("Listening on port: %d\n", port)
