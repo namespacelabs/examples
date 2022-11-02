@@ -67,8 +67,8 @@ func main() {
 	log.Printf("Bucket %s created\n", bucketName)
 
 	r := mux.NewRouter()
-	r.HandleFunc("/put", put(ctx, cli))
-	r.HandleFunc("/get", get(ctx, cli))
+	r.HandleFunc("/put", put(cli))
+	r.HandleFunc("/get", get(cli))
 	r.PathPrefix("/").HandlerFunc(shared.WelcomePage(config.Current))
 
 	port := config.Current.Port[0].Port

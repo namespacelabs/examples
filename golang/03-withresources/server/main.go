@@ -46,8 +46,8 @@ func main() {
 	}
 
 	r := mux.NewRouter()
-	r.HandleFunc("/put", put(ctx, cli, bucket.BucketName))
-	r.HandleFunc("/get", get(ctx, cli, bucket.BucketName))
+	r.HandleFunc("/put", put(cli, bucket.BucketName))
+	r.HandleFunc("/get", get(cli, bucket.BucketName))
 	r.PathPrefix("/").HandlerFunc(shared.WelcomePage(config.Current))
 
 	port := config.Current.Port[0].Port

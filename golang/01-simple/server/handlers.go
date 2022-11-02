@@ -6,7 +6,6 @@ package main
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -17,7 +16,7 @@ import (
 	"namespacelabs.dev/examples/golang/01-simple/server/api"
 )
 
-func put(ctx context.Context, cli *s3.Client) func(http.ResponseWriter, *http.Request) {
+func put(cli *s3.Client) func(http.ResponseWriter, *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		var parsed api.PutRequest
 		if err := json.NewDecoder(req.Body).Decode(&parsed); err != nil {
@@ -26,7 +25,7 @@ func put(ctx context.Context, cli *s3.Client) func(http.ResponseWriter, *http.Re
 			return
 		}
 
-		if _, err := cli.PutObject(ctx, &s3.PutObjectInput{
+		if _, err := cli.PutObject(req.Context(), &s3.PutObjectInput{
 			Bucket: aws.String(bucketName),
 			Key:    aws.String(parsed.Key),
 			Body:   bytes.NewReader(parsed.Body),
@@ -38,7 +37,7 @@ func put(ctx context.Context, cli *s3.Client) func(http.ResponseWriter, *http.Re
 	}
 }
 
-func get(ctx context.Context, cli *s3.Client) func(http.ResponseWriter, *http.Request) {
+func get(cli *s3.Client) func(http.ResponseWriter, *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		var parsed api.GetRequest
 		if err := json.NewDecoder(req.Body).Decode(&parsed); err != nil {
@@ -47,7 +46,7 @@ func get(ctx context.Context, cli *s3.Client) func(http.ResponseWriter, *http.Re
 			return
 		}
 
-		out, err := cli.GetObject(ctx, &s3.GetObjectInput{
+		out, err := cli.GetObject(req.Context(), &s3.GetObjectInput{
 			Bucket: aws.String(bucketName),
 			Key:    aws.String(parsed.Key),
 		})
