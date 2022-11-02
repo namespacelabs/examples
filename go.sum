@@ -266,5 +266,7 @@ gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
 honnef.co/go/tools v0.0.1-2019.2.3/go.mod h1:a3bituU0lyd329TUQxRnasdCoJDkEUEAqEt0JzvZhAg=
 namespacelabs.dev/foundation v0.0.78-0.20221102134627-bc3c4aa08b64 h1:zrwbkqFli36oL8Bgu/QANRCibkGn1i6zNnsN9D4DITg=
 namespacelabs.dev/foundation v0.0.78-0.20221102134627-bc3c4aa08b64/go.mod h1:7JyfS7wH582TIzIzeDCxTd/eKiS6YAzlHg1+26d/qSY=
+namespacelabs.dev/foundation v0.0.78-0.20221102141845-235cc327f855 h1:9Jkm1hYUe3mriL27WxwdHYDNotMOr3Ht6RPNtUUx5x0=
+namespacelabs.dev/foundation v0.0.78-0.20221102141845-235cc327f855/go.mod h1:7JyfS7wH582TIzIzeDCxTd/eKiS6YAzlHg1+26d/qSY=
 namespacelabs.dev/go-ids v0.0.0-20220708072700-49c0a87d068b h1:0ZvpjjzGHwD/PHczPmZ/HsIX77f0/SyM8Y1lLVBStgw=
 namespacelabs.dev/go-ids v0.0.0-20220708072700-49c0a87d068b/go.mod h1:J+Sd+ngeffnCsaO/M7zgs2bR8Klq/ZBhS0+bbnDEH2M=
