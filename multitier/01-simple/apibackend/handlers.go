@@ -16,7 +16,7 @@ import (
 	"namespacelabs.dev/go-ids"
 )
 
-func add(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http.Request) {
+func add(conn *pgx.Conn) func(http.ResponseWriter, *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		var parsed api.AddRequest
 		if err := json.NewDecoder(req.Body).Decode(&parsed); err != nil {
@@ -26,7 +26,7 @@ func add(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http.Re
 		}
 
 		id := ids.NewSortableID()
-		if _, err := conn.Exec(ctx, "INSERT INTO todos_table (Id, Name) VALUES ($1, $2);", id, parsed.Name); err != nil {
+		if _, err := conn.Exec(req.Context(), "INSERT INTO todos_table (Id, Name) VALUES ($1, $2);", id, parsed.Name); err != nil {
 			rw.WriteHeader(500)
 			fmt.Fprintf(rw, "failed to insert into db: %v\n", err)
 			return
@@ -34,7 +34,7 @@ func add(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http.Re
 	}
 }
 
-func remove(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http.Request) {
+func remove(conn *pgx.Conn) func(http.ResponseWriter, *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		var parsed api.RemoveRequest
 		if err := json.NewDecoder(req.Body).Decode(&parsed); err != nil {
@@ -43,7 +43,7 @@ func remove(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http
 			return
 		}
 
-		if _, err := conn.Exec(ctx, "DELETE FROM todos_table WHERE ID = $1;", parsed.Id); err != nil {
+		if _, err := conn.Exec(req.Context(), "DELETE FROM todos_table WHERE ID = $1;", parsed.Id); err != nil {
 			rw.WriteHeader(500)
 			fmt.Fprintf(rw, "failed to insert into db: %v\n", err)
 			return
@@ -70,9 +70,9 @@ func fetchTodosList(ctx context.Context, conn *pgx.Conn) ([]api.TodoItem, error)
 	return todos, nil
 }
 
-func list(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http.Request) {
-	return func(rw http.ResponseWriter, _ *http.Request) {
-		todos, err := fetchTodosList(ctx, conn)
+func list(conn *pgx.Conn) func(http.ResponseWriter, *http.Request) {
+	return func(rw http.ResponseWriter, req *http.Request) {
+		todos, err := fetchTodosList(req.Context(), conn)
 		if err != nil {
 			rw.WriteHeader(500)
 			fmt.Fprintf(rw, "internal error: %v\n", err)
@@ -89,8 +89,10 @@ func list(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http.R
 	}
 }
 
-func stream(ctx context.Context, conn *pgx.Conn) func(http.ResponseWriter, *http.Request) {
-	return func(rw http.ResponseWriter, _ *http.Request) {
+func stream(conn *pgx.Conn) func(http.ResponseWriter, *http.Request) {
+	return func(rw http.ResponseWriter, req *http.Request) {
+		ctx := req.Context()
+
 		// Poll the database for changes.
 		t := time.NewTicker(250 * time.Millisecond)
 		defer t.Stop()

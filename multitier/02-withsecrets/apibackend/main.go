@@ -55,10 +55,10 @@ func main() {
 	}
 
 	r := mux.NewRouter()
-	r.HandleFunc("/add", add(ctx, conn))
-	r.HandleFunc("/remove", remove(ctx, conn))
-	r.HandleFunc("/list", list(ctx, conn))
-	r.HandleFunc("/stream", stream(ctx, conn))
+	r.HandleFunc("/add", add(conn))
+	r.HandleFunc("/remove", remove(conn))
+	r.HandleFunc("/list", list(conn))
+	r.HandleFunc("/stream", stream(conn))
 	r.PathPrefix("/").HandlerFunc(pages.WelcomePage(config.Current))
 
 	port := config.Current.Port[0].Port
