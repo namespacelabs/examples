@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v4"
-	"namespacelabs.dev/examples/multitier/01-simple/apibackend/api"
+	"namespacelabs.dev/examples/multitier/03-withresources/apibackend/api"
 	"namespacelabs.dev/go-ids"
 )
 
