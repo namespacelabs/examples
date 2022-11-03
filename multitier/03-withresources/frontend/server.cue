@@ -1,0 +1,24 @@
+// This is a Namespace definition file.
+// You can find a full syntax reference at https://docs.namespace.so/reference?utm_source=examples 
+server: {
+	name: "frontend"
+
+	integration: web: {
+		service: "myweb"
+
+		// When adding a reference to the API server to the `backends` block, Namespace will
+		// 1) add the API server to the deployed stack
+		// 2) inject the configuration of API server (e.g. endpoint) into a src/config/backends.ns.js file that is accessible to the browser
+		backends: {
+			"api": "namespacelabs.dev/examples/multitier/03-withresources/apibackend:webapi"
+		}
+	}
+
+	services: myweb: {
+		// Default Vite port
+		port: 5173
+		kind: "http"
+
+		ingress: internetFacing: true
+	}
+}
