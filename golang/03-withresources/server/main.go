@@ -47,7 +47,7 @@ func main() {
 }
 
 func connectS3(ctx context.Context) (*awss3.Client, error) {
-	url := os.Getenv("S3_URL")
+	url := os.Getenv("S3_ENDPOINT_URL")
 
 	resolver := aws.EndpointResolverWithOptionsFunc(func(service, region string, options ...interface{}) (aws.Endpoint, error) {
 		return aws.Endpoint{PartitionID: "aws", URL: url, SigningRegion: region}, nil
