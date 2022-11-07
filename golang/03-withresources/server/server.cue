@@ -14,7 +14,6 @@ server: {
 			provider: "namespacelabs.dev/foundation/library/oss/minio"
 
 			intent: {
-				region:     "us-east-1"
 				bucketName: "testbucket"
 			}
 		}
@@ -39,18 +38,10 @@ server: {
 			fieldRef: "bucketName"
 		}
 
-		S3_REGION: fromResourceField: {
-			resource: ":dataBucket"
-			fieldRef: "region"
-		}
-
 		S3_ENDPOINT_URL: fromResourceField: {
 			resource: ":dataBucket"
 			fieldRef: "url"
 		}
-
-		// Alternatively, could be read from /namespace/config/runtime.json.
-		HTTP_PORT: "4000"
 	}
 
 	services: {

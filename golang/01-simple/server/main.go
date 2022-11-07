@@ -27,6 +27,7 @@ import (
 const (
 	minioServer = "namespacelabs.dev/examples/golang/01-simple/minio"
 	connBackoff = 500 * time.Millisecond
+	httpPort    = 4000 // Alternatively, could be read from /namespace/config/runtime.json.
 )
 
 func main() {
@@ -71,9 +72,8 @@ func main() {
 	r.HandleFunc("/get", get(cli, bucketName))
 	r.PathPrefix("/").HandlerFunc(pages.WelcomePage(config.Current))
 
-	httpPort := os.Getenv("HTTP_PORT")
-	log.Printf("Listening on port: %s\n", httpPort)
-	http.ListenAndServe(fmt.Sprintf(":%s", httpPort), r)
+	log.Printf("Listening on port: %d\n", httpPort)
+	http.ListenAndServe(fmt.Sprintf(":%d", httpPort), r)
 }
 
 func connectS3(ctx context.Context) (*s3.Client, error) {
@@ -87,12 +87,10 @@ func connectS3(ctx context.Context) (*s3.Client, error) {
 		}, nil
 	})
 
-	region := os.Getenv("S3_REGION")
 	accessKeyID := os.Getenv("S3_ACCESS_KEY_ID")
 	secretAccessKey := os.Getenv("S3_SECRET_ACCESS_KEY")
 
 	cfg, err := config.LoadDefaultConfig(ctx,
-		config.WithRegion(region),
 		config.WithEndpointResolverWithOptions(resolver),
 		config.WithCredentialsProvider(
 			credentials.NewStaticCredentialsProvider(accessKeyID, secretAccessKey, "" /* session */)))

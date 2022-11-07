@@ -7,7 +7,6 @@ server: {
 
 	env: {
 		S3_BUCKET_NAME: "test-bucket"
-		S3_REGION:      "us-east-1"
 
 		// Instructs Namespace to inject the secrets as environment variables to the container.
 		// See multitier/02-withsecrets/postgres/server.cue for an example injecting secrets into a mount.
@@ -18,9 +17,6 @@ server: {
 		// Alternatively, could be read from /namespace/config/runtime.json.
 		// See also https://github.com/namespacelabs/foundation/blob/main/framework/runtime/parsing.go
 		S3_ENDPOINT: fromServiceEndpoint: "namespacelabs.dev/examples/golang/02-withsecrets/minio:api"
-
-		// Alternatively, could be read from /namespace/config/runtime.json.
-		HTTP_PORT: "4000"
 	}
 
 	services: {
