@@ -5,6 +5,39 @@ server: {
 
 	integration: "go"
 
+	env: {
+		// Injects the bucket instance fields into environment variables.
+		// Alternatively, could be read from /namespace/config/resources.json.
+		// See also https://github.com/namespacelabs/foundation/tree/main/framework/resources/parsing.go 
+		S3_BUCKET_NAME: fromResourceField: {
+			resource: ":dataBucket"
+			fieldRef: "bucketName"
+		}
+
+		S3_REGION: fromResourceField: {
+			resource: ":dataBucket"
+			fieldRef: "region"
+		}
+
+		S3_ACCESS_KEY_ID: fromResourceField: {
+			resource: ":dataBucket"
+			fieldRef: "accessKey"
+		}
+
+		S3_SECRET_ACCESS_KEY: fromResourceField: {
+			resource: ":dataBucket"
+			fieldRef: "secretAccessKey"
+		}
+
+		S3_URL: fromResourceField: {
+			resource: ":dataBucket"
+			fieldRef: "url"
+		}
+
+		// Alternatively, could be read from /namespace/config/runtime.json.
+		HTTP_PORT: "4000"
+	}
+
 	services: {
 		webapi: {
 			port: 4000

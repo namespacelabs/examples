@@ -13,10 +13,10 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"namespacelabs.dev/examples/golang/01-simple/server/api"
+	"namespacelabs.dev/examples/golang/02-withsecrets/server/api"
 )
 
-func put(cli *s3.Client) func(http.ResponseWriter, *http.Request) {
+func put(cli *s3.Client, bucketName string) func(http.ResponseWriter, *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		var parsed api.PutRequest
 		if err := json.NewDecoder(req.Body).Decode(&parsed); err != nil {
@@ -37,7 +37,7 @@ func put(cli *s3.Client) func(http.ResponseWriter, *http.Request) {
 	}
 }
 
-func get(cli *s3.Client) func(http.ResponseWriter, *http.Request) {
+func get(cli *s3.Client, bucketName string) func(http.ResponseWriter, *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		var parsed api.GetRequest
 		if err := json.NewDecoder(req.Body).Decode(&parsed); err != nil {

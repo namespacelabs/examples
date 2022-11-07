@@ -22,12 +22,10 @@ import (
 	"github.com/gorilla/mux"
 	"namespacelabs.dev/foundation/framework/pages"
 	"namespacelabs.dev/foundation/framework/runtime"
-	runtimepb "namespacelabs.dev/foundation/schema/runtime"
 )
 
 const (
 	minioServer = "namespacelabs.dev/examples/golang/01-simple/minio"
-	bucketName  = "test-bucket"
 	connBackoff = 500 * time.Millisecond
 )
 
@@ -38,10 +36,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	cli, err := connectS3(ctx, config)
+	cli, err := connectS3(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	bucketName := os.Getenv("S3_BUCKET_NAME")
 
 	// Retry until bucket is ready.
 	log.Printf("Creating bucket %s.\n", bucketName)
@@ -67,20 +67,17 @@ func main() {
 	log.Printf("Bucket %s created\n", bucketName)
 
 	r := mux.NewRouter()
-	r.HandleFunc("/put", put(cli))
-	r.HandleFunc("/get", get(cli))
+	r.HandleFunc("/put", put(cli, bucketName))
+	r.HandleFunc("/get", get(cli, bucketName))
 	r.PathPrefix("/").HandlerFunc(pages.WelcomePage(config.Current))
 
-	port := config.Current.Port[0].Port
-	log.Printf("Listening on port: %d\n", port)
-	http.ListenAndServe(fmt.Sprintf(":%d", port), r)
+	httpPort := os.Getenv("HTTP_PORT")
+	log.Printf("Listening on port: %s\n", httpPort)
+	http.ListenAndServe(fmt.Sprintf(":%s", httpPort), r)
 }
 
-func connectS3(ctx context.Context, rtcfg *runtimepb.RuntimeConfig) (*s3.Client, error) {
-	endpoint, err := runtime.ServerEndpoint(rtcfg, minioServer, "api")
-	if err != nil {
-		return nil, err
-	}
+func connectS3(ctx context.Context) (*s3.Client, error) {
+	endpoint := os.Getenv("S3_ENDPOINT")
 
 	resolver := aws.EndpointResolverWithOptionsFunc(func(service, region string, options ...interface{}) (aws.Endpoint, error) {
 		return aws.Endpoint{

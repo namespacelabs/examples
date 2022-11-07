@@ -6,12 +6,21 @@ server: {
 	integration: "go"
 
 	env: {
-		S3_REGION: "us-east-1"
+		S3_BUCKET_NAME: "test-bucket"
+		S3_REGION:      "us-east-1"
 
 		// Using hard-coded credentials to simplify this example.
 		// See golang/02-withsecrets/ for an example using managed secrets.
 		S3_ACCESS_KEY_ID:     "TestOnlyUser"
 		S3_SECRET_ACCESS_KEY: "TestOnlyPassword"
+
+		// Injects the endpoint of MinIO server into an environment variable.
+		// Alternatively, could be read from /namespace/config/runtime.json.
+		// See also https://github.com/namespacelabs/foundation/blob/main/framework/runtime/parsing.go
+		S3_ENDPOINT: fromServiceEndpoint: "namespacelabs.dev/examples/golang/01-simple/minio:api"
+
+		// Alternatively, could be read from /namespace/config/runtime.json.
+		HTTP_PORT: "4000"
 	}
 
 	services: {

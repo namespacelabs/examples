@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -16,12 +17,8 @@ import (
 	awss3 "github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/gorilla/mux"
 	"namespacelabs.dev/foundation/framework/pages"
-	"namespacelabs.dev/foundation/framework/resources"
 	"namespacelabs.dev/foundation/framework/runtime"
-	"namespacelabs.dev/foundation/library/storage/s3"
 )
-
-const dataBucketRef = "namespacelabs.dev/examples/golang/03-withresources/server:dataBucket"
 
 func main() {
 	ctx := context.Background()
@@ -30,41 +27,41 @@ func main() {
 		log.Fatal(err)
 	}
 
-	resources, err := resources.LoadResources()
+	cli, err := connectS3(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	bucket := &s3.BucketInstance{}
-	if err := resources.Unmarshal(dataBucketRef, bucket); err != nil {
-		log.Fatal(err)
-	}
+	bucketName := os.Getenv("S3_BUCKET_NAME")
 
-	cli, err := connectS3(ctx, bucket)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// No need to create bucket anymore.
 
 	r := mux.NewRouter()
-	r.HandleFunc("/put", put(cli, bucket.BucketName))
-	r.HandleFunc("/get", get(cli, bucket.BucketName))
+	r.HandleFunc("/put", put(cli, bucketName))
+	r.HandleFunc("/get", get(cli, bucketName))
 	r.PathPrefix("/").HandlerFunc(pages.WelcomePage(config.Current))
 
-	port := config.Current.Port[0].Port
-	log.Printf("Listening on port: %d\n", port)
-	http.ListenAndServe(fmt.Sprintf(":%d", port), r)
+	httpPort := os.Getenv("HTTP_PORT")
+	log.Printf("Listening on port: %s\n", httpPort)
+	http.ListenAndServe(fmt.Sprintf(":%s", httpPort), r)
 }
 
-func connectS3(ctx context.Context, bucket *s3.BucketInstance) (*awss3.Client, error) {
+func connectS3(ctx context.Context) (*awss3.Client, error) {
+	url := os.Getenv("S3_URL")
+
 	resolver := aws.EndpointResolverWithOptionsFunc(func(service, region string, options ...interface{}) (aws.Endpoint, error) {
-		return aws.Endpoint{PartitionID: "aws", URL: bucket.Url, SigningRegion: region}, nil
+		return aws.Endpoint{PartitionID: "aws", URL: url, SigningRegion: region}, nil
 	})
 
+	region := os.Getenv("S3_REGION")
+	accessKeyID := os.Getenv("S3_ACCESS_KEY_ID")
+	secretAccessKey := os.Getenv("S3_SECRET_ACCESS_KEY")
+
 	cfg, err := config.LoadDefaultConfig(ctx,
-		config.WithRegion(bucket.Region),
+		config.WithRegion(region),
 		config.WithEndpointResolverWithOptions(resolver),
 		config.WithCredentialsProvider(
-			credentials.NewStaticCredentialsProvider(bucket.AccessKey, bucket.SecretAccessKey, "" /* session */)))
+			credentials.NewStaticCredentialsProvider(accessKeyID, secretAccessKey, "" /* session */)))
 	if err != nil {
 		return nil, err
 	}
