@@ -41,11 +41,12 @@ server: {
 
 tests: {
 	simpleCurl: {
-		integration: shellscript: {
-			entrypoint: "tests/curl.sh"
-			requiredPackages: ["jq"]
+		integration: shellscript: "tests/curl.sh"
+		env: {
+			ENDPOINT: fromServiceEndpoint: ":webapi"
 		}
 	}
+
 	api: {
 		integration: go: pkg: "tests"
 	}
