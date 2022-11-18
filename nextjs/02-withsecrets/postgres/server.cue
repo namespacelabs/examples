@@ -1,5 +1,5 @@
 // This is a Namespace definition file.
-// You can find a full syntax reference at https://docs.namespace.so/reference?utm_source=examples 
+// You can find a full syntax reference at https://namespace.so/docs/syntax-reference?utm_source=examples 
 server: {
 	name: "nextjs-secrets-postgres-server"
 
