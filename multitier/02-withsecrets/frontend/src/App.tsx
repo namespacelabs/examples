@@ -25,7 +25,7 @@ function App() {
 						When you add an item, the api server will handle your request, and store the data in
 						Postgres.
 					</p>
-					<p className="py-5">
+					<p className="py-5 text-blue-300">
 						Difference from the previous example: the Postgres server password is modeled as a
 						Namespace secret. For this example, we use a generated secret, since we don't care about
 						the actual content, but only want to ensure that Postgres and our API backend use the
