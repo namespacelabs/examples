@@ -18,7 +18,7 @@ server: {
 		port: 3000
 		kind: "http"
 
-		ingress: internetFacing: true
+		ingress: true
 	}
 
 	mounts: {

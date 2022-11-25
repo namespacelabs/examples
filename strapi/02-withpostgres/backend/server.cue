@@ -21,7 +21,7 @@ server: {
 		kind: "http"
 
 		// The data API endpoint needs to be publicly available for client-side rendering
-		ingress: internetFacing: true
+		ingress: true
 	}
 
 	// When adding a reference to Postgres server to the `requires` block, Namespace will

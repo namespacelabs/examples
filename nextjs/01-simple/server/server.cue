@@ -17,7 +17,7 @@ server: {
 		port: 3000
 		kind: "http"
 
-		ingress: internetFacing: true
+		ingress: true
 	}
 
 	// When adding a reference to Postgres server to the `requires` block, Namespace will
