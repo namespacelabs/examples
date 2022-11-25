@@ -6,15 +6,8 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
-	"github.com/cenkalti/backoff/v4"
 	"github.com/go-redis/redis/v8"
-)
-
-const (
-	retries     = 5
-	connBackoff = 500 * time.Millisecond
 )
 
 func main() {
@@ -39,18 +32,12 @@ func main() {
 }
 
 func getHitCount(ctx context.Context, cache *redis.Client) int {
-	var count int
+	// No need to retry. Namespace ensures that Redis is ready.
+	res := cache.Incr(ctx, "hits")
 
-	// Retry until backend is ready.
-	err := backoff.Retry(func() error {
-		res := cache.Incr(ctx, "hits")
-		count = int(res.Val())
-		return res.Err()
-	}, backoff.WithMaxRetries(backoff.NewConstantBackOff(connBackoff), retries))
-
-	if err != nil {
-		log.Fatalf("%v", err)
+	if res.Err() != nil {
+		log.Fatalf("%v", res.Err())
 	}
 
-	return count
+	return int(res.Val())
 }
