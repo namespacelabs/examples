@@ -1,7 +1,4 @@
 module: "namespacelabs.dev/examples"
-requirements: {
-	api: 41
-}
 environment: {
 	dev: {
 		runtime: "kubernetes"
