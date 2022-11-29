@@ -11,23 +11,18 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
-	"github.com/cenkalti/backoff/v4"
 	"github.com/gorilla/mux"
 	"namespacelabs.dev/foundation/framework/pages"
 	"namespacelabs.dev/foundation/framework/runtime"
 )
 
-const (
-	connBackoff = 500 * time.Millisecond
-	httpPort    = 4000 // Alternatively, could be read from /namespace/config/runtime.json.
-)
+const httpPort = 4000 // Alternatively, could be read from /namespace/config/runtime.json.
 
 func main() {
 	ctx := context.Background()
@@ -43,27 +38,14 @@ func main() {
 
 	bucketName := os.Getenv("S3_BUCKET_NAME")
 
-	// Retry until bucket is ready.
-	log.Printf("Creating bucket %s.\n", bucketName)
-	if err = backoff.Retry(func() error {
-		// Speed up bucket creation through faster retries.
-		ctx, cancel := context.WithTimeout(ctx, connBackoff)
-		defer cancel()
-
-		_, err := cli.CreateBucket(ctx, &s3.CreateBucketInput{
-			Bucket: aws.String(bucketName),
-		})
+	if _, err = cli.CreateBucket(ctx, &s3.CreateBucketInput{Bucket: aws.String(bucketName)}); err != nil {
 		var alreadyExists *types.BucketAlreadyExists
 		var alreadyOwned *types.BucketAlreadyOwnedByYou
-		if err == nil || errors.As(err, &alreadyExists) || errors.As(err, &alreadyOwned) {
-			return nil
+		if !errors.As(err, &alreadyExists) && !errors.As(err, &alreadyOwned) {
+			log.Fatal(err)
 		}
-
-		log.Printf("failed to create bucket: %v\n", err)
-		return err
-	}, backoff.WithContext(backoff.NewConstantBackOff(connBackoff), ctx)); err != nil {
-		log.Fatal(err)
 	}
+
 	log.Printf("Bucket %s created\n", bucketName)
 
 	r := mux.NewRouter()
