@@ -25,7 +25,6 @@ import (
 )
 
 const (
-	minioServer = "namespacelabs.dev/examples/golang/01-simple/minio"
 	connBackoff = 500 * time.Millisecond
 	httpPort    = 4000 // Alternatively, could be read from /namespace/config/runtime.json.
 )
