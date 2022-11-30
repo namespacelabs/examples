@@ -12,21 +12,13 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
-	"github.com/cenkalti/backoff/v4"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v4"
 
 	"namespacelabs.dev/foundation/framework/pages"
 	"namespacelabs.dev/foundation/framework/runtime"
-	runtimepb "namespacelabs.dev/foundation/schema/runtime"
-)
-
-const (
-	dbPackage   = "namespacelabs.dev/examples/multitier/02-withsecrets/postgres"
-	connBackoff = 500 * time.Millisecond
 )
 
 var (
@@ -41,7 +33,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	conn, err := connectPG(ctx, config)
+	password, err := os.ReadFile(os.Getenv("POSTGRES_PASSWORD_FILE"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	conn, err := pgx.Connect(ctx, fmt.Sprintf("postgres://postgres:%s@%s/%s",
+		string(password), os.Getenv("PG_ENDPOINT"), os.Getenv("POSTGRES_DB")))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -67,39 +65,4 @@ func main() {
 		handlers.AllowedHeaders([]string{"Content-Type"}),
 		handlers.AllowedOrigins([]string{"*"}),
 	)(r))
-}
-
-func connectPG(ctx context.Context, config *runtimepb.RuntimeConfig) (conn *pgx.Conn, err error) {
-	db := os.Getenv("POSTGRES_DB")
-	passwordFile := os.Getenv("POSTGRES_PASSWORD_FILE")
-
-	data, err := os.ReadFile(passwordFile)
-	if err != nil {
-		return nil, err
-	}
-	password := string(data)
-
-	endpoint, err := runtime.ServerEndpoint(config, dbPackage, "postgres")
-	if err != nil {
-		return nil, err
-	}
-
-	cfg, err := pgx.ParseConfig(fmt.Sprintf("postgres://postgres:%s@%s/%s", password, endpoint, db))
-	if err != nil {
-		return nil, err
-	}
-	cfg.ConnectTimeout = connBackoff
-
-	// Retry until backend is ready.
-	err = backoff.Retry(func() error {
-		conn, err = pgx.ConnectConfig(ctx, cfg)
-		if err == nil {
-			return nil
-		}
-
-		log.Printf("failed to connect to postgres: %v\n", err)
-		return err
-	}, backoff.WithContext(backoff.NewConstantBackOff(connBackoff), ctx))
-
-	return conn, err
 }

@@ -8,6 +8,11 @@ server: {
 	env: {
 		POSTGRES_DB:            "todos"
 		POSTGRES_PASSWORD_FILE: "/postgres/secrets/password"
+
+		// Injects the endpoint of Postgres server into an environment variable.
+		// Alternatively, could be read from /namespace/config/runtime.json.
+		// See also https://github.com/namespacelabs/foundation/blob/main/framework/runtime/parsing.go
+		PG_ENDPOINT: fromServiceEndpoint: "namespacelabs.dev/examples/multitier/02-withsecrets/postgres:postgres"
 	}
 
 	services: {

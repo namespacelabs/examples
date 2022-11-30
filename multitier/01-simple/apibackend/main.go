@@ -12,21 +12,15 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
-	"github.com/cenkalti/backoff/v4"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v4"
 	"namespacelabs.dev/foundation/framework/pages"
 	"namespacelabs.dev/foundation/framework/runtime"
-	runtimepb "namespacelabs.dev/foundation/schema/runtime"
 )
 
-const (
-	dbPackage   = "namespacelabs.dev/examples/multitier/01-simple/postgres"
-	connBackoff = 500 * time.Millisecond
-)
+const httpPort = 4000 // Alternatively, could be read from /namespace/config/runtime.json.
 
 var (
 	//go:embed schema.sql
@@ -40,7 +34,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	conn, err := connectPG(ctx, config)
+	conn, err := pgx.Connect(ctx, fmt.Sprintf("postgres://postgres:%s@%s/%s",
+		os.Getenv("POSTGRES_PASSWORD"), os.Getenv("PG_ENDPOINT"), os.Getenv("POSTGRES_DB")))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -60,39 +55,9 @@ func main() {
 	r.HandleFunc("/stream", stream(conn))
 	r.PathPrefix("/").HandlerFunc(pages.WelcomePage(config.Current))
 
-	port := config.Current.Port[0].Port
-	log.Printf("Listening on port: %d\n", port)
-	http.ListenAndServe(fmt.Sprintf(":%d", port), handlers.CORS(
+	log.Printf("Listening on port: %d\n", httpPort)
+	http.ListenAndServe(fmt.Sprintf(":%d", httpPort), handlers.CORS(
 		handlers.AllowedHeaders([]string{"Content-Type"}),
 		handlers.AllowedOrigins([]string{"*"}),
 	)(r))
-}
-
-func connectPG(ctx context.Context, config *runtimepb.RuntimeConfig) (conn *pgx.Conn, err error) {
-	db := os.Getenv("POSTGRES_DB")
-	password := os.Getenv("POSTGRES_PASSWORD")
-
-	endpoint, err := runtime.ServerEndpoint(config, dbPackage, "postgres")
-	if err != nil {
-		return nil, err
-	}
-
-	cfg, err := pgx.ParseConfig(fmt.Sprintf("postgres://postgres:%s@%s/%s", password, endpoint, db))
-	if err != nil {
-		return nil, err
-	}
-	cfg.ConnectTimeout = connBackoff
-
-	// Retry until backend is ready.
-	err = backoff.Retry(func() error {
-		conn, err = pgx.ConnectConfig(ctx, cfg)
-		if err == nil {
-			return nil
-		}
-
-		log.Printf("failed to connect to postgres: %v\n", err)
-		return err
-	}, backoff.WithContext(backoff.NewConstantBackOff(connBackoff), ctx))
-
-	return conn, err
 }

@@ -11,6 +11,11 @@ server: {
 		// Using a hard-coded password to simplify this example.
 		// See multitier/02-withsecrets/ for an example using generated secrets.
 		POSTGRES_PASSWORD: "DemoPasswordValue"
+
+		// Injects the endpoint of Postgres server into an environment variable.
+		// Alternatively, could be read from /namespace/config/runtime.json.
+		// See also https://github.com/namespacelabs/foundation/blob/main/framework/runtime/parsing.go
+		PG_ENDPOINT: fromServiceEndpoint: "namespacelabs.dev/examples/multitier/01-simple/postgres:postgres"
 	}
 
 	services: {
