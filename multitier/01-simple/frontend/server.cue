@@ -14,3 +14,13 @@ server: {
 		}
 	}
 }
+
+tests: {
+	health: {
+		integration: shellscript: "test/test.sh"
+
+		env: {
+			ENDPOINT: fromServiceEndpoint: ":frontend"
+		}
+	}
+}
