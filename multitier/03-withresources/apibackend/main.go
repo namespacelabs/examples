@@ -39,7 +39,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	conn, err := pgx.Connect(ctx, fmt.Sprintf("postgres://postgres:%s@%s/%s", db.Cluster.Password, db.Cluster.Url, db.Name))
+	conn, err := pgx.Connect(ctx, db.ConnectionUri)
 	if err != nil {
 		log.Fatal(err)
 	}
