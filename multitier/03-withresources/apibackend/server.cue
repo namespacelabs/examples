@@ -31,8 +31,8 @@ server: {
 			}
 
 			resources: {
-				// Select which cluster to host the Postgres database in.
-				// We use a local package reference to refer to the resource below.
+				// Select which cluster to host the Postgres database in. A foundation managed
+				// colocated Postgres server is used for demonstration purposes.
 				"cluster": "namespacelabs.dev/foundation/library/oss/postgres:colocated"
 			}
 		}
