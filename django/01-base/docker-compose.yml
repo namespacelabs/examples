@@ -1,0 +1,33 @@
+# From https://docs.docker.com/compose/gettingstarted/
+version: "3.9"
+services:
+  web:
+    build: .
+    command: "./scripts/runserver-docker-compose.sh"
+    depends_on:
+      - db
+      - storage
+    ports:
+      - "8000:8000"
+    environment:
+      ENV_NAME: "dev-dockercompose"
+      DJANGO_APPLICATION_SETTINGS: "todo.settings.dev"
+      DJANGO_SECRET_KEY: "secret"
+      DJANGO_DEBUG: "True"
+      DJANGO_DATABASE: "postgresql://postgres:valami137@db:5432/todo"
+      AWS_ACCESS_KEY_ID: "foo"
+      AWS_SECRET_ACCESS_KEY: "foo"
+      AWS_S3_ENDPOINT_URL: "http://storage:4566"
+      AWS_STORAGE_BUCKET_NAME: "ns-django-example-static"
+      DJANGO_STATIC_URL: "http://localhost:4566/ns-django-example-static/"
+  db:
+    image: "postgres:13.9-bullseye"
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_PASSWORD: "valami137"
+      POSTGRES_DB: "todo"
+  storage:
+    image: "localstack/localstack:latest"
+    ports:
+      - "4566:4566"

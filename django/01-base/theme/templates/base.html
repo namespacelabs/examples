@@ -1,0 +1,90 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <meta name="keywords" content="namespace, django" />
+        <meta name="description" content="Namespace: Django Todo Example" />
+        {% tailwind_css %}
+        <title>Namespace: Django Todo Example</title>
+    </head>
+    <body>
+        <div id="root">
+            <div>
+                <div class="flex flex-col mt-8 justify-center items-center">
+                    <div>
+                        <div class="mb-8 flex">
+                            <img src="{% static 'img/logo.svg' %}" alt="logo" class="w-12 h-12" />
+                        </div>
+                        <div class="mb-24">
+                            <div class="mx-auto max-w-2xl text-left">
+                                <h2 class="text-xl font-bold tracking-tight text-white sm:text-4xl">
+                                    <span class="block">Welcome to Namespace.</span>
+                                </h2>
+                                <div class="mt-4 text-lg leading-6 text-indigo-200">
+                                    <div>
+                                        In this example Namespace deployed an application that consists of:
+                                        <ul class="list-disc list-inside px-5">
+                                            <li>Django + HTMX app</li>
+                                            <li>A Postgres instance for the persistence layer</li>
+                                            <li>A S3 Bucket emulated by Localstack for serving static asstes</li>
+                                        </ul>
+                                    </div>
+                                    <p class="py-5">
+                                        When you add an item, the django application server will handle your request, and store the data in Postgres.
+                                    </p>
+                                </div>
+                                <a href="https://namespace.so/docs"
+                                   target="_blank"
+                                   class="inline-flex items-center justify-center text-base font-medium text-indigo-600">
+                                    Documentation
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         strokeWidth="1.5"
+                                         stroke="currentColor"
+                                         class="w-5 h-5 ml-2">
+                                        <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                                        />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mx-auto max-w-2xl text-left rounded-xl border border-indigo-200 overflow-hidden">
+                            <div class="flex flex-col bg-white text-black p-5">
+                                {% block item_form %}
+                                {% endblock item_form %}
+                                <div class="py-4">
+                                    <div class="mt-8 flex flex-col">
+                                        <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                            <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                                                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                                                    <table class="min-w-full divide-y divide-gray-300">
+                                                        <thead class="bg-gray-50">
+                                                            <tr>
+                                                                <th scope="col"
+                                                                    class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Items</th>
+                                                            </tr>
+                                                        </thead>
+                                                        {% block item_list %}
+                                                        {% endblock item_list %}
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://unpkg.com/htmx.org@1.8.4"></script>
+    </body>
+</html>

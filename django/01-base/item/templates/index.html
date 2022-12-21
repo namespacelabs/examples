@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block item_form %}
+    {% include "form.html" %}
+{% endblock item_form %}
+{% block item_list %}
+    <tbody id="item-list"
+           hx-get="{% url 'item-list' %}"
+           hx-trigger="itemCreated from:body"
+           class="divide-y divide-gray-200 bg-white">
+        {% include "list.html" %}
+    </tbody>
+{% endblock item_list %}

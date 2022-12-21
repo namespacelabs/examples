@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "todo"
+version = "0.1.0"
+description = "Simple Todo Application"
+authors = ["Ferenc Szalai <szferi@pionlab.com>"]
+license = "Apache 2"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^4.1.4"
+django-environ = "^0.9.0"
+psycopg2-binary = "^2.9.5"
+django-tailwind = "^3.4.0"
+django-storages = "^1.13.1"
+boto3 = "^1.26.32"
+uvicorn = "^0.20.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.12.0"
+flake8 = "^6.0.0"
+djlint = "^1.19.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
