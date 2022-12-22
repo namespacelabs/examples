@@ -29,7 +29,7 @@ server: {
 			fieldRef: "url"
 		}
         DJANGO_STATIC_BASE_URL: "http://localhost:4566"
-        // DJANGO_STATIC_URL_BASE: fromServiceIngress: "namespacelabs.dev/examples/django/01-original/infra/localstack:api"
+        DJANGO_STATIC_URL_BASE: fromServiceIngress: "namespacelabs.dev/examples/django/01-base/infra/localstack:api"
         // MY_INGRESS: fromServiceIngress: ":app"
     }
     services: {
@@ -66,9 +66,9 @@ server: {
             }
         }
     }
-    // requires: [
-    //     "namespacelabs.dev/examples/django/01-original/infra/localstack"
-    // ]
+    requires: [
+        "namespacelabs.dev/examples/django/01-base/infra/localstack"
+    ]
 }
 
 resources: {
