@@ -8,7 +8,7 @@ server: {
         DJANGO_APPLICATION_SETTINGS: "todo.settings.dev"
         DJANGO_DATABASE: fromResourceField: {
             resource: ":db"
-            fieldRef: "connection_uri"
+            fieldRef: "connectionUri"
         }
         DJANGO_SECRET_KEY: "secret"
         DJANGO_DEBUG: "True"
@@ -26,11 +26,12 @@ server: {
 		}
 		AWS_S3_ENDPOINT_URL: fromResourceField: {
 			resource: ":staticBucket"
-			fieldRef: "url"
+			fieldRef: "privateEndpointUrl"
 		}
-        DJANGO_STATIC_BASE_URL: "http://localhost:4566"
-        DJANGO_STATIC_URL_BASE: fromServiceIngress: "namespacelabs.dev/examples/django/01-base/infra/localstack:api"
-        // MY_INGRESS: fromServiceIngress: ":app"
+        DJANGO_STATIC_BASE_URL: fromResourceField: {
+			resource: ":staticBucket"
+			fieldRef: "public_url"
+        }
     }
     services: {
         app: {

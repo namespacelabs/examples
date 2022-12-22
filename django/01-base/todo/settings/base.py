@@ -131,4 +131,4 @@ AWS_STORAGE_BUCKET_NAME = env(
 
 static_url = urlparse(env("DJANGO_STATIC_BASE_URL"))
 AWS_S3_URL_PROTOCOL = f"{static_url.scheme}:"
-AWS_S3_CUSTOM_DOMAIN = f"{static_url.netloc}{AWS_STORAGE_BUCKET_NAME}"
+AWS_S3_CUSTOM_DOMAIN = f"{static_url.netloc}{static_url.path}"
