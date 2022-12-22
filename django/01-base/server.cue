@@ -77,7 +77,7 @@ resources: {
         provider: "namespacelabs.dev/foundation/library/oss/postgres"
 
         intent: {
-            server: packageName: "namespacelabs.dev/examples/django/01-original/infra/postgres"
+            server: packageName: "namespacelabs.dev/examples/django/01-base/infra/postgres"
         }
     }
     localstackCluster: {
@@ -85,7 +85,7 @@ resources: {
         provider: "namespacelabs.dev/foundation/library/oss/localstack"
 
         intent: {
-            server: packageName: "namespacelabs.dev/examples/django/01-original/infra/localstack"
+            server: packageName: "namespacelabs.dev/examples/django/01-base/infra/localstack"
         }
     }
 }
