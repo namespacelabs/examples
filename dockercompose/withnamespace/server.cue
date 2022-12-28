@@ -7,7 +7,8 @@ server: {
 		HTTP_PORT: "5000"
 
 		// Injects the endpoint of Redis server into an environment variable.
-		REDIS_URL: fromServiceEndpoint: "namespacelabs.dev/foundation/library/oss/redis/server:redis"
+		REDIS_URL: fromServiceEndpoint:  "namespacelabs.dev/foundation/library/oss/redis/server:redis"
+		REDIS_ROOT_PASSWORD: fromSecret: "namespacelabs.dev/foundation/library/oss/redis/server:password"
 	}
 
 	services: {

@@ -13,8 +13,9 @@ import (
 func main() {
 	ctx := context.Background()
 	cache := redis.NewClient(&redis.Options{
-		Network: "tcp",
-		Addr:    os.Getenv("REDIS_URL"),
+		Network:  "tcp",
+		Addr:     os.Getenv("REDIS_URL"),
+		Password: os.Getenv("REDIS_ROOT_PASSWORD"),
 	})
 
 	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
