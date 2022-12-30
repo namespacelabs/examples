@@ -31,9 +31,7 @@ server: {
 	}
 
 	env: {
-		// Injects the bucket instance fields into environment variables.
-		// Alternatively, could be read from /namespace/config/resources.json.
-		// See also https://github.com/namespacelabs/foundation/tree/main/framework/resources/parsing.go 
+		// Injects the database instance fields into environment variables.
 		SPRING_DATASOURCE_USERNAME: fromResourceField: {
 			resource: ":todosDatabase"
 			fieldRef: "user"
@@ -57,8 +55,6 @@ server: {
 
 	args: [
 		"java", "-jar", "/app/target/app.jar",
-		// TODO directly specify SPRING_DATASOURCE_URL once we support CUE interpolation for resource fields
-		//"-Dspring-boot.run.arguments=--spring.datasource.url=jdbc:postgresql://$(POSTGRES_ADDRESS)/$(POSTGRES_DB)",
 		"--spring.datasource.url=jdbc:postgresql://$(POSTGRES_ADDRESS)/$(POSTGRES_DB)",
 	]
 
