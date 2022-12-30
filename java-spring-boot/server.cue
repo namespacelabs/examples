@@ -56,9 +56,10 @@ server: {
 	}
 
 	args: [
-		"./mvnw", "spring-boot:run",
+		"java", "-jar", "/app/target/app.jar",
 		// TODO directly specify SPRING_DATASOURCE_URL once we support CUE interpolation for resource fields
-		"-Dspring-boot.run.arguments=--spring.datasource.url=jdbc:postgresql://$(POSTGRES_ADDRESS)/$(POSTGRES_DB)",
+		//"-Dspring-boot.run.arguments=--spring.datasource.url=jdbc:postgresql://$(POSTGRES_ADDRESS)/$(POSTGRES_DB)",
+		"--spring.datasource.url=jdbc:postgresql://$(POSTGRES_ADDRESS)/$(POSTGRES_DB)",
 	]
 
 	services: {

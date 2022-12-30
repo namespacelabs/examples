@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-RUN ./mvnw dependency:resolve
-
 COPY src ./src
+
+RUN ./mvnw clean package spring-boot:repackage
+RUN cp ./target/*.jar ./target/app.jar
