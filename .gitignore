@@ -38,3 +38,5 @@ web/ui/dist
 
 # Next.js cache
 **/.next/*
+
+.DS_Store
