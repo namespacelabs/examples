@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Namespace: example of a Java Spring Boot server</title>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+
+	<body>
+		<h1>Welcome to Namespace.</h1>
+
+		<p>
+			In this example, Namespace deployed a Java Spring Boot application that uses Postgres as a
+			database.
+		</p>
+		<p>
+			The database is consumed as a Namespace resource provided by a shared Postgres provider. The
+			resource produces a typed instance object which provides a password along with the endpoint
+			for the Java application to consume. Another advantage is that resources have their own
+			lifetime modeling and initialization only happens once. In the case of a database, this means
+			that the schema will be applied as part of the lifecycle and our application does not need to
+			worry about it.
+		</p>
+
+		<form action="#" th:action="@{/todos}" th:object="${todo}" method="post">
+			<input type="text" th:field="*{name}" id="name" placeholder="Type the item description" />
+			<input type="submit" value="Add item" />
+		</form>
+
+		<table>
+			<tr>
+				<th>Items</th>
+			</tr>
+
+			<tr th:each="todo : ${todos}">
+				<td th:text="${todo.name}">Name</td>
+			</tr>
+		</table>
+	</body>
+</html>
