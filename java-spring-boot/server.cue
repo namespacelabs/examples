@@ -4,7 +4,7 @@ server: {
 	name: "java-spring-boot-demo"
 
 	// Using Dockerfile for a simple integration.
-	// A native Java integration (on our roadmap) would allow best-in-class
+	// A native Java integration (on our roadmap) will allow best-in-class
 	// build performance and minimal image size.
 	integration: "dockerfile"
 
