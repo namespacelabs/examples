@@ -1,0 +1,60 @@
+name: e2e
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "*"
+
+permissions:
+  packages: read
+  contents: read
+
+jobs:
+  run_e2e_tests:
+    name: e2e tests
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+
+      - name: Install namespace
+        run: |
+          curl -H 'CI: true' -fsSL https://get.namespace.so/install.sh | sh
+
+      - name: Login
+        # Consider using secrets.GITHUB_TOKEN
+        run: echo ${{ secrets.NSL_GH_SERVICE }} | ~/.ns/bin/ns login robot github.com/namespacelabs/examples
+
+      - name: Run tests
+        run: |
+          ~/.ns/bin/ns test \
+            --use_prebuilts=true \
+            --golang_use_buildkit=true \
+            --tools_invocation_can_use_buildkit \
+            --testing_use_namespace_cloud \
+            --testing_use_namespace_cloud_build \
+            --parallel \
+            --all
+
+      - uses: k0kubun/action-slack@v2.0.0
+        with:
+          payload: |
+            {
+              "attachments": [{
+                "title": "${{ github.repository }}: ${{ job.status }}: ${{ github.workflow }}",
+                "title_link": "https://github.com/${{ github.repository }}/commit/${{ github.sha }}/checks",
+                "text": "${{ github.repository }}@${{ github.ref }}: <https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>",
+                "fields": [{ "value": ${{ toJson(github.event.head_commit.message) }}, "short": false }],
+                "footer": "${{ github.event.head_commit.committer.name }} at ${{ github.event.head_commit.timestamp }}",
+                "color": "danger"
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: failure() && github.ref_name == 'main'
