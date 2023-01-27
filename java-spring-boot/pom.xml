@@ -15,7 +15,7 @@
 	<name>todos</name>
 	<description>Simple Todo application in Java Spring Boot with Postgres for persistence</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>19</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
