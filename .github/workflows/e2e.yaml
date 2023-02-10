@@ -27,9 +27,8 @@ jobs:
         run: |
           curl -H 'CI: true' -fsSL https://get.namespace.so/install.sh | sh
 
-      - name: Login
-        # Consider using secrets.GITHUB_TOKEN
-        run: echo ${{ secrets.NSL_GH_SERVICE }} | ~/.ns/bin/ns login robot github.com/namespacelabs/examples
+      - name: Login with Github Token
+        run: ~/.ns/bin/ns auth exchange-github-token
 
       - name: Run tests
         run: |
