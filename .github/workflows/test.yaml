@@ -32,7 +32,7 @@ jobs:
         run: git config --global url.https://x-access-token:$NSL_GH_SERVICE@github.com/.insteadOf https://github.com/
       - name: Test
         run: cd ./main && go test ./...
-      - uses: k0kubun/action-slack@v2.0.0
+      - uses: ruby/action-slack@v3.2.1
         with:
           payload: |
             {
