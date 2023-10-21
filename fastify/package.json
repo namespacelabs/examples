@@ -8,7 +8,7 @@
 		"dev": "nodemon src/server.ts"
 	},
 	"dependencies": {
-		"fastify": "^4.9.2"
+		"fastify": "^4.10.2"
 	},
 	"devDependencies": {
 		"@tsconfig/node16": "^1.0.3",
