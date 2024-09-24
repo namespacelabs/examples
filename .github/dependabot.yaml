@@ -17,3 +17,14 @@ updates:
       interval: "daily"
     commit-message:
       prefix: ".github:"
+  - package-ecosystem: "npm"
+    directory: "/"
+    registries: "*"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: ".npm:"
+    # "This option has no impact on security updates, which have a separate, internal limit of ten open pull requests."
+    # https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file#open-pull-requests-limit
+    open-pull-requests-limit: 0
+
