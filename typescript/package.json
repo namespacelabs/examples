@@ -1,0 +1,26 @@
+{
+	"name": "namespace-sdk-examples",
+	"type": "module",
+	"scripts": {
+		"containers-demo": "tsx containers-demo/main.ts",
+		"kubernetes-demo": "tsx kubernetes-demo/main.ts",
+		"iam-demo": "tsx iam-demo/main.ts",
+		"macos-app-demo": "tsx macos-app-demo/main.ts"
+	},
+	"dependencies": {
+		"@bufbuild/protobuf": "^1.10.0",
+		"@connectrpc/connect": "^1.7.0",
+		"@connectrpc/connect-node": "^1.7.0",
+		"@namespacelabs/sdk": "^0.1.0",
+		"jsonwebtoken": "^9.0.2"
+	},
+	"devDependencies": {
+		"@types/jsonwebtoken": "^9.0.4",
+		"tsx": "^4.20.6"
+	},
+	"prettier": {
+		"options": {
+			"editorconfig": true
+		}
+	}
+}
