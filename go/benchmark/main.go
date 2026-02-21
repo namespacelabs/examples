@@ -123,7 +123,7 @@ func runOne(ctx context.Context, cli compute.Client, token api.TokenSource, idx 
 		Deadline:          timestamppb.New(time.Now().Add(1 * time.Hour)),
 		Containers: []*computepb.ContainerRequest{{
 			Name:       "ubuntu",
-			ImageRef:   "ubuntu:latest",
+			ImageRef:   "ubuntu@sha256:d1e2e92c075e5ca139d51a140fff46f84315c0fdce203eab2807c7e495eff4f9",
 			Entrypoint: []string{"sleep", "3600"},
 			Args:       []string{},
 		}},
