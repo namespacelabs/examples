@@ -23,7 +23,8 @@ import (
 )
 
 var (
-	count = flag.Int("count", 100, "Number of instances to create in parallel.")
+	count       = flag.Int("count", 100, "Total number of instances to create.")
+	concurrency = flag.Int("concurrency", 0, "Max concurrent instance creations. Defaults to -count.")
 )
 
 type result struct {
@@ -59,13 +60,21 @@ func main() {
 		wg          sync.WaitGroup
 	)
 
-	fmt.Fprintf(os.Stderr, "Launching %d instances in parallel...\n", *count)
+	maxConcurrent := *concurrency
+	if maxConcurrent <= 0 {
+		maxConcurrent = *count
+	}
+
+	fmt.Fprintf(os.Stderr, "Launching %d instances (concurrency=%d)...\n", *count, maxConcurrent)
 	start := time.Now()
 
+	sem := make(chan struct{}, maxConcurrent)
 	for i := 0; i < *count; i++ {
 		wg.Add(1)
+		sem <- struct{}{}
 		go func(idx int) {
 			defer wg.Done()
+			defer func() { <-sem }()
 			r := runOne(ctx, cli, token, idx)
 			mu.Lock()
 			results = append(results, r)
