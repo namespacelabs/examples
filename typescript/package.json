@@ -5,13 +5,15 @@
 		"containers-demo": "tsx containers-demo/main.ts",
 		"kubernetes-demo": "tsx kubernetes-demo/main.ts",
 		"iam-demo": "tsx iam-demo/main.ts",
-		"macos-app-demo": "tsx macos-app-demo/main.ts"
+		"macos-app-demo": "tsx macos-app-demo/main.ts",
+		"exec": "tsx exec/main.ts",
+		"nosdk-exec": "tsx nosdk/exec/main.ts"
 	},
 	"dependencies": {
 		"@bufbuild/protobuf": "^1.10.0",
 		"@connectrpc/connect": "^1.7.0",
 		"@connectrpc/connect-node": "^1.7.0",
-		"@namespacelabs/sdk": "^0.1.0",
+		"@namespacelabs/sdk": "^0.3.0",
 		"jsonwebtoken": "^9.0.2"
 	},
 	"devDependencies": {
