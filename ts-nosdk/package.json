@@ -1,0 +1,16 @@
+{
+	"name": "namespace-nosdk-examples",
+	"type": "module",
+	"scripts": {
+		"exec": "tsx exec/main.ts",
+		"ingress": "tsx ingress/main.ts"
+	},
+	"devDependencies": {
+		"tsx": "^4.20.6"
+	},
+	"prettier": {
+		"options": {
+			"editorconfig": true
+		}
+	}
+}
