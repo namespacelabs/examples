@@ -7,7 +7,7 @@
 		"iam-demo": "tsx iam-demo/main.ts",
 		"macos-app-demo": "tsx macos-app-demo/main.ts",
 		"exec": "tsx exec/main.ts",
-		"nosdk-exec": "tsx nosdk/exec/main.ts"
+		"ingress": "tsx ingress/main.ts"
 	},
 	"dependencies": {
 		"@bufbuild/protobuf": "^1.10.0",
