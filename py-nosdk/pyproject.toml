@@ -1,0 +1,11 @@
+[project]
+name = "py-nosdk"
+version = "0.1.0"
+description = "Namespace Compute API examples using plain HTTP (no SDK)"
+requires-python = ">=3.12"
+dependencies = ["httpx>=0.28"]
+
+[project.scripts]
+createinstance = "createinstance.main:main"
+exec = "exec.main:main"
+ingress = "ingress.main:main"

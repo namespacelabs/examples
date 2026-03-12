@@ -4,10 +4,13 @@
 // It creates an nginx container on the host network listening on port 8080,
 // then exposes it via CreateIngress and outputs the public URL.
 //
-// WARNING: This example loads a bearer token directly from NSC_TOKEN_FILE.
-// This is NOT recommended for production use. Bearer tokens expire and need to
-// be refreshed. Use the @namespacelabs/sdk package instead, which handles token
-// lifecycle (session tokens, caching, refresh) automatically.
+// Authentication: set one of the following environment variables:
+//   NSC_TOKEN      - a bearer token, e.g. from `nsc auth generate-dev-token`
+//   NSC_TOKEN_FILE - path to a token.json file; set automatically inside a
+//                    Namespace instance
+//
+// WARNING: Bearer tokens expire and need to be refreshed. This example does not
+// handle token lifecycle.
 
 import * as fs from "fs/promises";
 
@@ -23,11 +26,18 @@ interface TokenJson {
 }
 
 async function loadBearerToken(): Promise<string> {
+	// Prefer NSC_TOKEN if set (e.g. from `nsc auth generate-dev-token`).
+	const envToken = process.env.NSC_TOKEN;
+	if (envToken) {
+		return envToken;
+	}
+
+	// Fall back to NSC_TOKEN_FILE (set automatically inside a Namespace instance).
 	const tokenFile = process.env.NSC_TOKEN_FILE;
 	if (!tokenFile) {
 		throw new Error(
-			"NSC_TOKEN_FILE environment variable is not set. " +
-				"Point it to a token.json file (e.g. from `nsc login`)."
+			"Set NSC_TOKEN (e.g. from `nsc auth generate-dev-token`) " +
+				"or NSC_TOKEN_FILE (path to a token.json)."
 		);
 	}
 

@@ -2,6 +2,7 @@
 	"name": "namespace-nosdk-examples",
 	"type": "module",
 	"scripts": {
+		"createinstance": "tsx createinstance/main.ts",
 		"exec": "tsx exec/main.ts",
 		"ingress": "tsx ingress/main.ts"
 	},
