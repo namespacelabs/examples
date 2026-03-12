@@ -1,5 +1,5 @@
-// This example demonstrates how to use the Namespace Compute API without the
-// @namespacelabs/sdk package, using only fetch and the Connect protocol (JSON).
+// This example demonstrates how to create a Namespace instance with an nginx
+// container using only fetch and the Connect protocol (JSON).
 //
 // Authentication: set one of the following environment variables:
 //   NSC_TOKEN      - a bearer token, e.g. from `nsc auth generate-dev-token`
@@ -13,6 +13,7 @@ import * as fs from "fs/promises";
 
 const REGION = "us";
 const COMPUTE_API = `https://${REGION}.compute.namespaceapis.com`;
+const SERVICE = "namespace.cloud.compute.v1beta.ComputeService";
 
 interface TokenJson {
 	bearer_token: string;
@@ -74,75 +75,44 @@ void main();
 async function main() {
 	const token = await loadBearerToken();
 
-	const start = Date.now();
-
-	// Create an instance with an ubuntu container.
+	// Create an instance with an nginx container.
 	const createResp = (await connectCall(
 		COMPUTE_API,
-		"namespace.cloud.compute.v1beta.ComputeService",
+		SERVICE,
 		"CreateInstance",
 		token,
 		{
 			shape: { virtualCpu: 2, memoryMegabytes: 4096, machineArch: "amd64" },
-			documentedPurpose: "exec example (no-sdk)",
-			deadline: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
+			documentedPurpose: "createinstance example",
+			deadline: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
 			containers: [
 				{
-					name: "ubuntu",
-					imageRef: "ubuntu:latest",
-					args: ["sleep", "600"],
+					name: "nginx",
+					imageRef: "nginx",
+					args: [],
+					exportPorts: [
+						{ name: "nginx", containerPort: 80, proto: "TCP" },
+					],
 				},
 			],
 		}
 	)) as {
 		instanceUrl: string;
 		metadata: { instanceId: string };
-		extendedMetadata?: { commandServiceEndpoint?: string };
 	};
 
 	const instanceId = createResp.metadata.instanceId;
 	console.error(`[namespace] Instance: ${createResp.instanceUrl}`);
 	console.error(JSON.stringify(createResp, null, 2));
 
-	const endpoint = createResp.extendedMetadata?.commandServiceEndpoint;
-	if (!endpoint) {
-		throw new Error("command service endpoint not available");
-	}
-
-	console.error(`[namespace] Command service endpoint: ${endpoint}`);
-
-	// Run a command in the container via the CommandService.
-	const result = (await connectCall(
-		endpoint,
-		"namespace.cloud.compute.v1beta.CommandService",
-		"RunCommandSync",
+	// Wait until the instance is ready.
+	const waitResp = await connectCall(
+		COMPUTE_API,
+		SERVICE,
+		"WaitInstanceSync",
 		token,
-		{
-			instanceId,
-			targetContainerName: "ubuntu",
-			command: {
-				command: ["uname", "-a"],
-			},
-		}
-	)) as {
-		stdout?: string; // base64-encoded
-		stderr?: string; // base64-encoded
-		exitCode?: number;
-	};
-
-	const elapsed = Date.now() - start;
-	console.error(
-		`[namespace] Total time from CreateInstance to command result: ${elapsed}ms`
+		{ instanceId }
 	);
 
-	if (result.stdout) {
-		process.stdout.write(Buffer.from(result.stdout, "base64"));
-	}
-	if (result.stderr) {
-		process.stderr.write(Buffer.from(result.stderr, "base64"));
-	}
-
-	if (result.exitCode && result.exitCode !== 0) {
-		throw new Error(`command exited with code ${result.exitCode}`);
-	}
+	console.error(JSON.stringify(waitResp, null, 2));
 }
