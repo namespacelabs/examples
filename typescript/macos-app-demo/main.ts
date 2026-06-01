@@ -1,7 +1,7 @@
 import { loadDefaults } from "@namespacelabs/sdk/auth";
 import { createComputeClient } from "@namespacelabs/sdk/api/compute";
 import { WaitInstanceResponse } from "@namespacelabs/sdk/proto/namespace/cloud/compute/v1beta/compute_pb";
-import { Timestamp } from "@bufbuild/protobuf";
+import { timestampDate, timestampFromDate } from "@bufbuild/protobuf/wkt";
 
 void main();
 
@@ -19,7 +19,7 @@ async function main() {
                 { name: "macos.version", value: "26.x" },
             ],
         },
-        deadline: Timestamp.fromDate(new Date(Date.now() + 30 * 60 * 1000)),
+        deadline: timestampFromDate(new Date(Date.now() + 30 * 60 * 1000)),
         applications: [
             {
                 name: "demo",
@@ -48,7 +48,7 @@ async function main() {
 
     for await (const x of api.observability.streamInstanceLogs({ instanceId: instanceId, follow: true })) {
         for (const l of x.lines) {
-            console.log(l.timestamp.toDate(), x.labels, l.content, l.stream);
+            console.log(timestampDate(l.timestamp), x.labels, l.content, l.stream);
         }
     }
 

@@ -1,7 +1,7 @@
 import { loadDefaults } from "@namespacelabs/sdk/auth";
 import { createComputeClient } from "@namespacelabs/sdk/api/compute";
-import { Timestamp } from "@bufbuild/protobuf";
 import { ContainerRequest_Network } from "@namespacelabs/sdk/proto/namespace/cloud/compute/v1beta/compute_pb";
+import { timestampFromDate } from "@bufbuild/protobuf/wkt";
 
 const deadlineMinutes = parseInt(process.argv[2] || "5", 10);
 
@@ -16,7 +16,7 @@ async function main() {
 	const resp = await api.compute.createInstance({
 		shape: { virtualCpu: 2, memoryMegabytes: 4096 },
 		documentedPurpose: "ingress example",
-		deadline: Timestamp.fromDate(
+		deadline: timestampFromDate(
 			new Date(Date.now() + deadlineMinutes * 60 * 1000)
 		),
 		containers: [
