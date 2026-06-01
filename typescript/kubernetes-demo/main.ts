@@ -3,7 +3,7 @@ import * as fs from "fs/promises";
 import { loadDefaults } from "@namespacelabs/sdk/auth";
 import { createComputeClient } from "@namespacelabs/sdk/api/compute";
 import { CreateInstanceRequest_Feature } from "@namespacelabs/sdk/proto/namespace/cloud/compute/v1beta/compute_pb";
-import { Timestamp } from "@bufbuild/protobuf";
+import { timestampDate, timestampFromDate } from "@bufbuild/protobuf/wkt";
 
 void main();
 
@@ -18,7 +18,7 @@ async function main() {
 	const resp = await client.createInstance({
 		shape: { virtualCpu: 2, memoryMegabytes: 4096 },
 		// Run the instance for 30 mins.
-		deadline: Timestamp.fromDate(new Date(Date.now() + 30 * 60 * 1000)),
+		deadline: timestampFromDate(new Date(Date.now() + 30 * 60 * 1000)),
 		// By default the VM is created with only containerd in it and not K8s.
 		features: [
 			CreateInstanceRequest_Feature.KUBERNETES,
@@ -30,7 +30,7 @@ async function main() {
 	console.log("Kubernetes Cluster created.");
 	console.log("   - ID:  ", instanceId);
 	console.log("   - URL: ", resp.instanceUrl);
-	console.log("   - Deadline: ", resp.metadata.deadline.toDate());
+	console.log("   - Deadline: ", timestampDate(resp.metadata.deadline));
 	console.log();
 
 	// Wait for the instance to boot up and K8s to initialize.

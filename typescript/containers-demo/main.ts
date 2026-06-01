@@ -1,6 +1,6 @@
 import { loadDefaults } from "@namespacelabs/sdk/auth";
 import { createComputeClient } from "@namespacelabs/sdk/api/compute";
-import { Timestamp } from "@bufbuild/protobuf";
+import { timestampDate, timestampFromDate } from "@bufbuild/protobuf/wkt";
 
 void main();
 
@@ -13,7 +13,7 @@ async function main() {
 	const resp = await api.compute.createInstance({
 		shape: { virtualCpu: 2, memoryMegabytes: 4096 },
 		// Run the instance for 30 mins.
-		deadline: Timestamp.fromDate(new Date(Date.now() + 30 * 60 * 1000)),
+		deadline: timestampFromDate(new Date(Date.now() + 30 * 60 * 1000)),
 		containers: [
 			{
 				name: "demo",
@@ -32,7 +32,7 @@ async function main() {
 	console.log("Instance created.");
 	console.log("   - ID:  ", instanceId);
 	console.log("   - URL: ", resp.instanceUrl);
-	console.log("   - Deadline: ", resp.metadata.deadline.toDate());
+	console.log("   - Deadline: ", timestampDate(resp.metadata.deadline));
 	console.log();
 
 	for await (const block of api.observability.streamInstanceLogs({
@@ -40,7 +40,7 @@ async function main() {
 		follow: true,
 	})) {
 		for (const line of block.lines) {
-			console.log(line.stream, line.timestamp.toDate(), line.content);
+			console.log(line.stream, timestampDate(line.timestamp), line.content);
 		}
 	}
 

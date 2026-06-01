@@ -1,10 +1,12 @@
 import { createClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-node";
-import { Timestamp } from "@bufbuild/protobuf";
+import { toJson } from "@bufbuild/protobuf";
+import { timestampFromDate } from "@bufbuild/protobuf/wkt";
 import { loadDefaults } from "@namespacelabs/sdk/auth";
 import { createComputeClient } from "@namespacelabs/sdk/api/compute";
 import { bearerAuthInterceptor } from "@namespacelabs/sdk/api";
-import { CommandService } from "@namespacelabs/sdk/proto/namespace/cloud/compute/v1beta/command_connect";
+import { CommandService } from "@namespacelabs/sdk/proto/namespace/cloud/compute/v1beta/command_pb";
+import { DescribeInstanceResponseSchema } from "@namespacelabs/sdk/proto/namespace/cloud/compute/v1beta/compute_pb";
 
 void main();
 
@@ -19,7 +21,7 @@ async function main() {
 	const resp = await api.compute.createInstance({
 		shape: { virtualCpu: 2, memoryMegabytes: 4096, machineArch: "amd64" },
 		documentedPurpose: "exec example",
-		deadline: Timestamp.fromDate(new Date(Date.now() + 10 * 60 * 1000)),
+		deadline: timestampFromDate(new Date(Date.now() + 10 * 60 * 1000)),
 		containers: [
 			{
 				name: "ubuntu",
@@ -31,7 +33,7 @@ async function main() {
 
 	const instanceId = resp.metadata!.instanceId;
 	console.error(`[namespace] Instance: ${resp.instanceUrl}`);
-	console.error(JSON.stringify(resp.toJson(), null, 2));
+	console.error(JSON.stringify(toJson(DescribeInstanceResponseSchema, resp), null, 2));
 
 	const endpoint = resp.extendedMetadata?.commandServiceEndpoint;
 	if (!endpoint) {
