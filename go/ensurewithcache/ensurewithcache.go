@@ -72,6 +72,7 @@ exec httpd -f -p 8080 -h /cache`},
 				SizeMb:          1024,
 				PersistencyKind: computepb.VolumeRequest_CACHE,
 			}},
+			// HTTP ingress requires Namespace authentication by default. See https://namespace.so/docs/architecture/networking/ingress#access-controls.
 			ExportPorts: []*computepb.ContainerPort{{
 				Name:          "http",
 				ContainerPort: 8080,
