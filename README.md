@@ -23,6 +23,7 @@ The Go examples are located in the `go/` directory. Each example demonstrates di
 | **createinstance** | Creating compute instances with specific configurations and running containers |
 | **createpartnerinstance** | AWS identity federation with Namespace and creating instances with federated credentials |
 | **ensuretenant** | Creating and managing tenants using AWS federation for identity management |
+| **ensurewithcache** | Creating or reusing a uniquely tagged instance with a cache volume |
 | **buildandrun** | Complete workflow: build image, create instance, run service, and connect via gRPC |
 | **macrun** | Building and running Go applications on macOS/ARM64 instances |
 | **sidecar** | Advanced instance configuration with sidecar containers and SSH access |
@@ -54,6 +55,9 @@ Demonstrates AWS identity federation with Namespace and creating instances with 
 
 #### ensuretenant
 Shows how to create and manage tenants using AWS federation for identity management.
+
+#### ensurewithcache
+Shows how to create or reuse an instance with a unique tag and attach a cache volume that can be restored across instance lifetimes.
 
 #### buildandrun
 Complete end-to-end example: build a Docker image, create an instance, run a gRPC service, and connect to it.
