@@ -59,7 +59,7 @@ func ensure(ctx context.Context, token api.TokenSource) (string, error) {
 		},
 		Containers: []*computepb.ContainerRequest{{
 			Name:       "server",
-			ImageRef:   "alpine:3.21",
+			ImageRef:   "busybox:1.37@sha256:9db7b59979c38555a39def84a31fb98b5296952f9e3afd4f6f11f05b07adfab0",
 			Entrypoint: []string{"/bin/sh", "-c"},
 			Args: []string{`if [ ! -f /cache/index.html ]; then
   printf 'cache initialized by %s at %s\n' "$HOSTNAME" "$(date -u +%FT%TZ)" > /cache/index.html
