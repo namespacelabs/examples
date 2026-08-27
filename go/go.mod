@@ -6,7 +6,7 @@ toolchain go1.24.1
 
 require (
 	buf.build/gen/go/namespace/cloud/grpc/go v1.6.1-20260220221842-e9199b240c7f.1
-	buf.build/gen/go/namespace/cloud/protocolbuffers/go v1.36.11-20260220221842-e9199b240c7f.1
+	buf.build/gen/go/namespace/cloud/protocolbuffers/go v1.36.12-20260826131057-12f9b25ce7f7.1
 	github.com/containerd/console v1.0.4
 	github.com/docker/cli v28.2.2+incompatible
 	github.com/google/go-containerregistry v0.20.6
@@ -15,7 +15,7 @@ require (
 	golang.org/x/crypto v0.44.0
 	golang.org/x/term v0.37.0
 	google.golang.org/grpc v1.78.0
-	google.golang.org/protobuf v1.36.11
+	google.golang.org/protobuf v1.36.12
 	namespacelabs.dev/integrations v0.0.10
 	namespacelabs.dev/integrations/buildkit v0.0.0-20260204211624-e14e65bed4c0
 	namespacelabs.dev/integrations/examples/buildandrun/testserver v0.0.0-20260204211624-e14e65bed4c0
