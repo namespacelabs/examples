@@ -26,6 +26,8 @@ The Go examples are located in the `go/` directory. Each example demonstrates di
 | **ensurewithcache** | Creating or reusing a uniquely tagged instance with a cache volume |
 | **buildandrun** | Complete workflow: build image, create instance, run service, and connect via gRPC |
 | **macrun** | Building and running Go applications on macOS/ARM64 instances |
+| **macoshttps** | Running an HTTP service on macOS behind a TLS-terminating ingress |
+| **macosmtls** | Running a TCP service on macOS and connecting through an mTLS ingress |
 | **sidecar** | Advanced instance configuration with sidecar containers and SSH access |
 
 ### Getting Started with Go Examples
@@ -64,6 +66,24 @@ Complete end-to-end example: build a Docker image, create an instance, run a gRP
 
 #### macrun
 Demonstrates building Go binaries for macOS/ARM64 and running them on Apple Silicon instances.
+
+#### macoshttps
+Builds an HTTP service for macOS/ARM64, runs it as an application, exposes it through a TLS-terminating HTTP ingress, and calls the resulting HTTPS endpoint.
+
+From the `go` directory, run it with:
+
+```bash
+go run ./macoshttps -basedir ./macoshttps
+```
+
+#### macosmtls
+Builds a TCP echo service for macOS/ARM64, runs it as an application, exposes it through an mTLS-authenticated TCP ingress, and calls it with a short-lived Namespace client certificate.
+
+From the `go` directory, run it with:
+
+```bash
+go run ./macosmtls -basedir ./macosmtls
+```
 
 #### sidecar
 Advanced example showing instance configuration with sidecar containers, volume mounting, and SSH access.
