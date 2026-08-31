@@ -14,7 +14,7 @@ require (
 	golang.org/x/term v0.37.0
 	google.golang.org/grpc v1.78.0
 	google.golang.org/protobuf v1.36.12
-	namespacelabs.dev/integrations v0.0.11-0.20260831163103-bf7923254721
+	namespacelabs.dev/integrations v0.0.11-0.20260831171557-dbbe3bec273a
 	namespacelabs.dev/integrations/buildkit v0.0.0-20260204211624-e14e65bed4c0
 	namespacelabs.dev/integrations/examples/buildandrun/testserver v0.0.0-20260204211624-e14e65bed4c0
 )
