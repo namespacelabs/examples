@@ -148,9 +148,10 @@ func runInstance(ctx context.Context, debugLog io.Writer, token api.TokenSource,
 			Command:  "./entrypoint",
 		}},
 		Ingresses: []*computepb.Ingress{{
-			Name: ingressName,
-			Mode: computepb.Ingress_HTTP,
-			Port: servicePort,
+			Name:          ingressName,
+			Mode:          computepb.Ingress_HTTP,
+			Port:          servicePort,
+			HttpMatchRule: []*computepb.HttpMatchRule{{DoesNotRequireAuth: true}},
 		}},
 	})
 	if err != nil {
