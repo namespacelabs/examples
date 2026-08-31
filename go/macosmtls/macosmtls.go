@@ -147,7 +147,7 @@ func runInstance(ctx context.Context, debugLog io.Writer, token api.TokenSource,
 		Applications: []*computepb.ApplicationRequest{{
 			Name:     "echoserver",
 			ImageRef: imageRef,
-			Command:  "entrypoint",
+			Command:  "./entrypoint",
 		}},
 		Ingresses: []*computepb.Ingress{{
 			Name:                 ingressName,
@@ -160,19 +160,7 @@ func runInstance(ctx context.Context, debugLog io.Writer, token api.TokenSource,
 		return "", err
 	}
 
-	var endpoint string
-	for _, ingress := range resp.GetExtendedMetadata().GetTlsBackedPort() {
-		if ingress.GetName() == ingressName {
-			endpoint = ingress.GetServerName()
-			break
-		}
-	}
-	if endpoint == "" {
-		return "", fmt.Errorf("create response did not include the %q ingress endpoint", ingressName)
-	}
-
 	fmt.Fprintf(debugLog, "[namespace] Instance created: %s\n", resp.InstanceUrl)
-	fmt.Fprintf(debugLog, "[namespace] mTLS endpoint: %s\n", endpoint)
 	fmt.Fprintln(debugLog, "[namespace] Waiting until instance becomes ready")
 	if _, err := client.Compute.WaitInstanceSync(ctx, &computepb.WaitInstanceRequest{
 		InstanceId: resp.Metadata.InstanceId,
@@ -180,6 +168,25 @@ func runInstance(ctx context.Context, debugLog io.Writer, token api.TokenSource,
 		return "", err
 	}
 
+	instance, err := client.Compute.DescribeInstance(ctx, &computepb.DescribeInstanceRequest{
+		InstanceId: resp.Metadata.InstanceId,
+	})
+	if err != nil {
+		return "", err
+	}
+
+	var endpoint string
+	for _, ingress := range instance.GetExtendedMetadata().GetTlsBackedPort() {
+		if ingress.GetName() == ingressName {
+			endpoint = ingress.GetServerName()
+			break
+		}
+	}
+	if endpoint == "" {
+		return "", fmt.Errorf("instance does not include the %q ingress endpoint", ingressName)
+	}
+
+	fmt.Fprintf(debugLog, "[namespace] mTLS endpoint: %s\n", endpoint)
 	return endpoint, nil
 }
 
