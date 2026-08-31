@@ -9,11 +9,11 @@ import (
 	"os"
 	"time"
 
-	computepb "buf.build/gen/go/namespace/cloud/protocolbuffers/go/proto/namespace/cloud/compute/v1beta"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"namespacelabs.dev/integrations/api"
 	"namespacelabs.dev/integrations/api/compute"
 	"namespacelabs.dev/integrations/auth"
+	computepb "namespacelabs.dev/integrations/proto/namespace/cloud/compute/v1beta"
 )
 
 var deadline = flag.Duration("deadline", 5*time.Minute, "How long the instance should run for.")
@@ -55,7 +55,7 @@ func run(ctx context.Context, token api.TokenSource) error {
 			Name:     "nginx",
 			ImageRef: "nginx",
 			Args:     []string{"sh", "-c", "echo 'server { listen 8080; location / { default_type text/plain; return 200 \"hello from nginx\\n\"; } }' > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"},
-			Network: computepb.ContainerRequest_HOST,
+			Network:  computepb.ContainerRequest_HOST,
 		}},
 	})
 	if err != nil {

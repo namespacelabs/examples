@@ -10,13 +10,12 @@ import (
 	"os"
 	"time"
 
-	computepb "buf.build/gen/go/namespace/cloud/protocolbuffers/go/proto/namespace/cloud/compute/v1beta"
-	"buf.build/gen/go/namespace/cloud/grpc/go/proto/namespace/cloud/compute/v1beta/computev1betagrpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"namespacelabs.dev/integrations/api"
 	"namespacelabs.dev/integrations/api/compute"
 	"namespacelabs.dev/integrations/auth"
 	"namespacelabs.dev/integrations/nsc/grpcapi"
+	computepb "namespacelabs.dev/integrations/proto/namespace/cloud/compute/v1beta"
 )
 
 func main() {
@@ -82,7 +81,7 @@ func run(ctx context.Context, debugLog io.Writer, token api.TokenSource, shape *
 
 	defer conn.Close()
 
-	cmdCli := computev1betagrpc.NewCommandServiceClient(conn)
+	cmdCli := computepb.NewCommandServiceClient(conn)
 
 	result, err := cmdCli.RunCommandSync(ctx, &computepb.RunCommandRequest{
 		InstanceId:          resp.Metadata.InstanceId,
