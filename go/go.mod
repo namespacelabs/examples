@@ -3,8 +3,6 @@ module namespacelabs.dev/integrations/examples
 go 1.25.0
 
 require (
-	buf.build/gen/go/namespace/cloud/grpc/go v1.6.1-20260220221842-e9199b240c7f.1
-	buf.build/gen/go/namespace/cloud/protocolbuffers/go v1.36.12-20260826131057-12f9b25ce7f7.1
 	github.com/containerd/console v1.0.4
 	github.com/docker/cli v28.2.2+incompatible
 	github.com/google/go-containerregistry v0.20.6
@@ -15,7 +13,7 @@ require (
 	google.golang.org/grpc v1.78.0
 	google.golang.org/protobuf v1.36.12
 	namespacelabs.dev/integrations v0.0.11-0.20260831171703-361fe4fb432f
-	namespacelabs.dev/integrations/buildkit v0.0.0-20260204211624-e14e65bed4c0
+	namespacelabs.dev/integrations/buildkit v0.0.0-20260831171703-361fe4fb432f
 	namespacelabs.dev/integrations/examples/buildandrun/testserver v0.0.0-20260204211624-e14e65bed4c0
 )
 
@@ -62,7 +60,7 @@ require (
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/websocket v1.5.1 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.24.0 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
@@ -98,7 +96,7 @@ require (
 	go.opentelemetry.io/otel/metric v1.38.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.38.0 // indirect
 	go.opentelemetry.io/otel/trace v1.38.0 // indirect
-	go.opentelemetry.io/proto/otlp v1.4.0 // indirect
+	go.opentelemetry.io/proto/otlp v1.7.0 // indirect
 	golang.org/x/net v0.47.0 // indirect
 	golang.org/x/sync v0.18.0 // indirect
 	golang.org/x/sys v0.38.0 // indirect

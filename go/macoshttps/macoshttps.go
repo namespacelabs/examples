@@ -15,7 +15,6 @@ import (
 	"slices"
 	"time"
 
-	computepb "buf.build/gen/go/namespace/cloud/protocolbuffers/go/proto/namespace/cloud/compute/v1beta"
 	"github.com/google/go-containerregistry/pkg/name"
 	"github.com/google/go-containerregistry/pkg/v1/empty"
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
@@ -27,6 +26,7 @@ import (
 	"namespacelabs.dev/integrations/api/compute"
 	"namespacelabs.dev/integrations/auth"
 	"namespacelabs.dev/integrations/examples"
+	computepb "namespacelabs.dev/integrations/proto/namespace/cloud/compute/v1beta"
 )
 
 const (
@@ -78,7 +78,7 @@ func do(ctx context.Context) error {
 
 	callCtx, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
-	return callService(callCtx, endpoint)
+	return callService(callCtx, token, endpoint)
 }
 
 func gobuild(ctx context.Context, target, srcdir string) error {
@@ -145,7 +145,7 @@ func runInstance(ctx context.Context, debugLog io.Writer, token api.TokenSource,
 		Applications: []*computepb.ApplicationRequest{{
 			Name:     "httpserver",
 			ImageRef: imageRef,
-			Command:  "entrypoint",
+			Command:  "./entrypoint",
 		}},
 		Ingresses: []*computepb.Ingress{{
 			Name: ingressName,
@@ -182,11 +182,18 @@ func runInstance(ctx context.Context, debugLog io.Writer, token api.TokenSource,
 	return "", fmt.Errorf("instance did not include the %q ingress endpoint", ingressName)
 }
 
-func callService(ctx context.Context, endpoint string) error {
+func callService(ctx context.Context, tokenSource api.TokenSource, endpoint string) error {
+	token, err := tokenSource.IssueToken(ctx, 5*time.Minute, false)
+	if err != nil {
+		return fmt.Errorf("issue ingress token: %w", err)
+	}
+
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint, nil)
 	if err != nil {
 		return err
 	}
+	req.Header.Set("x-nsc-ingress-auth", "Bearer "+token)
+
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("get %s: %w", endpoint, err)

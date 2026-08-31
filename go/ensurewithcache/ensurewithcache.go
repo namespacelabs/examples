@@ -8,11 +8,11 @@ import (
 	"os"
 	"time"
 
-	computepb "buf.build/gen/go/namespace/cloud/protocolbuffers/go/proto/namespace/cloud/compute/v1beta"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"namespacelabs.dev/integrations/api"
 	"namespacelabs.dev/integrations/api/compute"
 	"namespacelabs.dev/integrations/auth"
+	computepb "namespacelabs.dev/integrations/proto/namespace/cloud/compute/v1beta"
 )
 
 var (
