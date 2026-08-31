@@ -16,7 +16,6 @@ import (
 	"slices"
 	"time"
 
-	computepb "buf.build/gen/go/namespace/cloud/protocolbuffers/go/proto/namespace/cloud/compute/v1beta"
 	"github.com/google/go-containerregistry/pkg/name"
 	"github.com/google/go-containerregistry/pkg/v1/empty"
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
@@ -26,10 +25,10 @@ import (
 	"namespacelabs.dev/integrations/api"
 	"namespacelabs.dev/integrations/api/builds"
 	"namespacelabs.dev/integrations/api/compute"
-	"namespacelabs.dev/integrations/api/iam"
 	"namespacelabs.dev/integrations/auth"
 	"namespacelabs.dev/integrations/auth/nstls"
 	"namespacelabs.dev/integrations/examples"
+	computepb "namespacelabs.dev/integrations/proto/namespace/cloud/compute/v1beta"
 )
 
 const (
@@ -79,27 +78,9 @@ func do(ctx context.Context) error {
 		return err
 	}
 
-	bearerToken, err := token.IssueToken(ctx, 5*time.Minute, false)
-	if err != nil {
-		return fmt.Errorf("issue token: %w", err)
-	}
-	claims, err := auth.ExtractClaims(bearerToken)
-	if err != nil {
-		return fmt.Errorf("extract token claims: %w", err)
-	}
-	if claims.TenantID == "" {
-		return fmt.Errorf("issued token has no tenant ID")
-	}
-
-	iamClient, err := iam.NewClient(ctx, token)
-	if err != nil {
-		return fmt.Errorf("create IAM client: %w", err)
-	}
-	defer iamClient.Close()
-
 	callCtx, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
-	return callService(callCtx, auth.TenantCertificateSource(iamClient, claims.TenantID), endpoint)
+	return callService(callCtx, auth.TenantCertificateSource(token), endpoint)
 }
 
 func gobuild(ctx context.Context, target, srcdir string) error {
@@ -166,7 +147,7 @@ func runInstance(ctx context.Context, debugLog io.Writer, token api.TokenSource,
 		Applications: []*computepb.ApplicationRequest{{
 			Name:     "echoserver",
 			ImageRef: imageRef,
-			Command:  "entrypoint",
+			Command:  "./entrypoint",
 		}},
 		Ingresses: []*computepb.Ingress{{
 			Name:                 ingressName,
@@ -179,19 +160,7 @@ func runInstance(ctx context.Context, debugLog io.Writer, token api.TokenSource,
 		return "", err
 	}
 
-	var endpoint string
-	for _, ingress := range resp.GetExtendedMetadata().GetTlsBackedPort() {
-		if ingress.GetName() == ingressName {
-			endpoint = ingress.GetServerName()
-			break
-		}
-	}
-	if endpoint == "" {
-		return "", fmt.Errorf("create response did not include the %q ingress endpoint", ingressName)
-	}
-
 	fmt.Fprintf(debugLog, "[namespace] Instance created: %s\n", resp.InstanceUrl)
-	fmt.Fprintf(debugLog, "[namespace] mTLS endpoint: %s\n", endpoint)
 	fmt.Fprintln(debugLog, "[namespace] Waiting until instance becomes ready")
 	if _, err := client.Compute.WaitInstanceSync(ctx, &computepb.WaitInstanceRequest{
 		InstanceId: resp.Metadata.InstanceId,
@@ -199,6 +168,25 @@ func runInstance(ctx context.Context, debugLog io.Writer, token api.TokenSource,
 		return "", err
 	}
 
+	instance, err := client.Compute.DescribeInstance(ctx, &computepb.DescribeInstanceRequest{
+		InstanceId: resp.Metadata.InstanceId,
+	})
+	if err != nil {
+		return "", err
+	}
+
+	var endpoint string
+	for _, ingress := range instance.GetExtendedMetadata().GetTlsBackedPort() {
+		if ingress.GetName() == ingressName {
+			endpoint = ingress.GetServerName()
+			break
+		}
+	}
+	if endpoint == "" {
+		return "", fmt.Errorf("instance does not include the %q ingress endpoint", ingressName)
+	}
+
+	fmt.Fprintf(debugLog, "[namespace] mTLS endpoint: %s\n", endpoint)
 	return endpoint, nil
 }
 
