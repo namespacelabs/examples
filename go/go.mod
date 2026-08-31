@@ -1,8 +1,6 @@
 module namespacelabs.dev/integrations/examples
 
-go 1.24.0
-
-toolchain go1.24.1
+go 1.25.0
 
 require (
 	buf.build/gen/go/namespace/cloud/grpc/go v1.6.1-20260220221842-e9199b240c7f.1
@@ -16,12 +14,13 @@ require (
 	golang.org/x/term v0.37.0
 	google.golang.org/grpc v1.78.0
 	google.golang.org/protobuf v1.36.12
-	namespacelabs.dev/integrations v0.0.10
+	namespacelabs.dev/integrations v0.0.11-0.20260831163103-bf7923254721
 	namespacelabs.dev/integrations/buildkit v0.0.0-20260204211624-e14e65bed4c0
 	namespacelabs.dev/integrations/examples/buildandrun/testserver v0.0.0-20260204211624-e14e65bed4c0
 )
 
 require (
+	connectrpc.com/connect v1.20.0 // indirect
 	github.com/AdaLogics/go-fuzz-headers v0.0.0-20240806141605-e8a1dd7889d6 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.36.3 // indirect
